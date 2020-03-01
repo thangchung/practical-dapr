@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CoolStore.ProductCatalogApi": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5002;http://localhost:15002"
+    }
+  }
+}

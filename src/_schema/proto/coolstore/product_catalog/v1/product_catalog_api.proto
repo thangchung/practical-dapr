@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package coolstore.product_catalog.v1;
+
+option csharp_namespace = "CoolStore.Protobuf.ProductCatalog.V1";
+
+import "product_catalog.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetProductsRequest {
+  int32 current_page = 1;
+  double high_price = 2;
+}
+
+message GetProductsResponse {
+  repeated CatalogProductDto products = 1;
+}
+
+message GetProductByIdRequest {
+  string product_id = 1;
+}
+
+message GetProductByIdResponse {
+  CatalogProductDto product = 1;
+}
+
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  double price = 3;
+  string image_url = 4;
+  string inventory_id = 5;
+  string category_id = 6;
+  string category_name = 7;
+}
+
+message CreateProductResponse {
+  CatalogProductDto product = 1;
+}
+
+message UpdateProductRequest {
+  string product_id = 1;
+  string name = 2;
+  google.protobuf.StringValue description = 3;
+  double price = 4;
+  string image_url = 5;
+  string inventory_id = 6;
+}
+
+message UpdateProductResponse {
+  CatalogProductDto product = 1;
+}
+
+message DeleteProductRequest {
+  string product_id = 1;
+}
+
+message DeleteProductResponse {
+  CatalogProductDto product = 1;
+}

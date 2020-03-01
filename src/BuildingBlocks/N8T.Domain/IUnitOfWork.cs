@@ -7,6 +7,6 @@ namespace N8T.Domain
     {
         Task BeginTransactionAsync(CancellationToken token);
         Task CommitTransactionAsync(CancellationToken token);
-        void RollbackTransaction();
+        Task RollbackTransaction(CancellationToken token);
     }
 }

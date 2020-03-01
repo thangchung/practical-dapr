@@ -2,8 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using HotChocolate.Configuration;
+using HotChocolate.Types;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace N8T.Infrastructure
@@ -22,19 +26,38 @@ namespace N8T.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddServiceInAssembly(this IServiceCollection services,
-            params Assembly[] assemblies)
+        public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
         {
-            if (assemblies == null) return services;
-
-            services.Scan(s => s
-                .FromAssemblies(assemblies)
-                .AddClasses(c => c.AssignableTo(typeof(IDependency)))
-                .AsSelf()
-                .WithScopedLifetime());
-
-            return services;
+            var model = new TModel();
+            configuration.GetSection(section).Bind(model);
+            return model;
         }
+
+        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration,
+            Assembly graphTypeAssembly)
+        {
+            var objectTypes = graphTypeAssembly
+                .GetTypes()
+                .Where(type => typeof(ObjectType).IsAssignableFrom(type));
+
+            foreach (var objectType in objectTypes)
+            {
+                schemaConfiguration.RegisterType(objectType);
+            }
+
+            return schemaConfiguration;
+        }
+
+        public static IServiceCollection AddValidators(this IServiceCollection services,
+            params Assembly[] validatorAssemblies)
+        {
+            return services.Scan(scan => scan
+                .FromAssemblies(validatorAssemblies)
+                .AddClasses(c => c.AssignableTo(typeof(FluentValidation.IValidator<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+        }
+
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this string input)
@@ -64,9 +87,5 @@ namespace N8T.Infrastructure
                 });
             return models;
         }
-    }
-
-    public interface IDependency
-    {
     }
 }

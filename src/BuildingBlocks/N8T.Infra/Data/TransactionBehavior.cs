@@ -56,7 +56,7 @@ namespace N8T.Infrastructure.Data
             catch (Exception ex)
             {
                 _logger.LogError($"Got the error {ex.Message}.");
-                _unitOfWork.RollbackTransaction();
+                await _unitOfWork.RollbackTransaction(cancellationToken);
                 throw;
             }
         }

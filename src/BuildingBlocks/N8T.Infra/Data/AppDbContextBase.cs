@@ -13,7 +13,7 @@ namespace N8T.Infrastructure.Data
     {
         protected IDbContextTransaction CurrentTransaction;
 
-        protected AppDbContextBase(DbContextOptions<AppDbContextBase> options) : base(options)
+        protected AppDbContextBase(DbContextOptions options) : base(options)
         {
         }
 
@@ -25,7 +25,7 @@ namespace N8T.Infrastructure.Data
             }
 
             CurrentTransaction = await Database
-                .BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken: token)
+                .BeginTransactionAsync(IsolationLevel.ReadCommitted, token)
                 .ConfigureAwait(false);
         }
 
@@ -39,7 +39,7 @@ namespace N8T.Infrastructure.Data
             }
             catch
             {
-                RollbackTransaction();
+                await RollbackTransaction(token);
                 throw;
             }
             finally
@@ -52,17 +52,17 @@ namespace N8T.Infrastructure.Data
             }
         }
 
-        public void RollbackTransaction()
+        public async Task RollbackTransaction(CancellationToken token)
         {
             try
             {
-                CurrentTransaction?.Rollback();
+                await CurrentTransaction.RollbackAsync(token);
             }
             finally
             {
                 if (CurrentTransaction != null)
                 {
-                    CurrentTransaction.Dispose();
+                    await CurrentTransaction.DisposeAsync();
                     CurrentTransaction = null;
                 }
             }
