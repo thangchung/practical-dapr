@@ -12,6 +12,7 @@ using HotChocolate;
 using HotChocolate.Execution.Configuration;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using N8T.Domain;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.ValidationModel;
@@ -28,9 +29,22 @@ namespace CoolStore.ProductCatalogApi
                 .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
-            var config = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .Build();
+
+            var configurationBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
+            // https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/
+
+            var env = builder.Environment;
+            configurationBuilder.AddJsonFile("services.json", optional: true);
+            
+            if (env.IsDevelopment())
+            {
+                var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+                configurationBuilder.AddJsonFile(servicesJson, optional: true);
+            }
+
+            var config = configurationBuilder.Build();
 
             builder.Host.UseSerilog();
 

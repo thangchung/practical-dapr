@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{9DCADFAA-8ECD-
 		LICENSE = LICENSE
 		nuget.config = nuget.config
 		README.md = README.md
+		services.json = services.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GraphApi", "GraphApi", "{5C0DE234-8C59-4ADD-8D43-83CDC84A4A13}"
@@ -35,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.GraphApi", "src\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.IdentityServer", "src\Identity\CoolStore.IdentityServer\CoolStore.IdentityServer.csproj", "{A3D14431-DFE6-433E-85C0-B92C60E3503F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolStore.ProductCatalogApi", "src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.ProductCatalogApi.csproj", "{D8D8FE55-07AF-49DC-8437-1F794D629187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.ProductCatalogApi", "src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.ProductCatalogApi.csproj", "{D8D8FE55-07AF-49DC-8437-1F794D629187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
