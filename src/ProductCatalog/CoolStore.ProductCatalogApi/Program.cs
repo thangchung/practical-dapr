@@ -57,7 +57,7 @@ namespace CoolStore.ProductCatalogApi
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
                     });
                 });
-            builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetService<ProductCatalogDbContext>());
+            builder.Services.AddScoped<DbContext>(provider => provider.GetService<ProductCatalogDbContext>());
             builder.Services.AddScoped<IDomainEventContext>(provider => provider.GetService<ProductCatalogDbContext>());
 
             var app = builder.Build();

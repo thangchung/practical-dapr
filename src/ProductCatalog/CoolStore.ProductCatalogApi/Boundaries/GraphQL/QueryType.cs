@@ -6,7 +6,8 @@ namespace CoolStore.ProductCatalogApi.Boundaries.GraphQL
     {
         protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
         {
-            descriptor.Field(x => x.GetProducts(1, 100))
+            descriptor
+                .Field(x => x.GetProducts(default, default))
                 .Name("products");
         }
     }

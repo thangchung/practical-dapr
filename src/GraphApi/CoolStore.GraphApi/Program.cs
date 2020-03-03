@@ -30,11 +30,8 @@ namespace CoolStore.GraphApi
             var configurationBuilder = builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
 
-            // https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/
-
             var env = builder.Environment;
             configurationBuilder.AddJsonFile("services.json", optional: true);
-
             if (env.IsDevelopment())
             {
                 var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
@@ -68,8 +65,8 @@ namespace CoolStore.GraphApi
                 .AddGraphQLSubscriptions()
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
                     .AddSchemaFromHttp("product_catalog")
-                    .AddSchemaFromHttp("inventory")
-                    .AddSchemaFromHttp("shopping_cart")
+                    //.AddSchemaFromHttp("inventory")
+                    //.AddSchemaFromHttp("shopping_cart")
                 );
 
             var app = builder.Build();

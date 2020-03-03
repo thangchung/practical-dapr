@@ -1,28 +1,30 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using N8T.Domain;
+using System;
+using System.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace N8T.Infrastructure.Data
 {
     public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IDomainEventContext _domainEventContext;
+        private readonly DbContext _dbContext;
         private readonly IMediator _mediator;
         private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
 
-        public TransactionBehavior(IUnitOfWork unitOfWork,
+        public TransactionBehavior(DbContext dbContext,
             IDomainEventContext domainEventContext,
             IMediator mediator,
             ILogger<TransactionBehavior<TRequest, TResponse>> logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _domainEventContext = domainEventContext ?? throw new ArgumentNullException(nameof(domainEventContext));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -31,16 +33,17 @@ namespace N8T.Infrastructure.Data
             CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            try
+            _logger.LogInformation($"Open the transaction for {nameof(request)}.");
+            var strategy = _dbContext.Database.CreateExecutionStrategy();
+            return await strategy.ExecuteAsync(async () =>
             {
-                _logger.LogInformation($"Open the transaction for {nameof(request)}.");
-                await _unitOfWork.BeginTransactionAsync(cancellationToken);
+                // Achieving atomicity
+                await using var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.ReadCommitted);
 
                 _logger.LogInformation($"Execute the {nameof(request)} request.");
                 var response = await next();
 
-                _logger.LogInformation($"Commit the transaction for {nameof(request)}.");
-                await _unitOfWork.CommitTransactionAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
 
                 _logger.LogInformation($"Publish domain events for {request}.");
                 var domainEvents = _domainEventContext.GetDomainEvents().ToList();
@@ -51,14 +54,9 @@ namespace N8T.Infrastructure.Data
                 await Task.WhenAll(tasks);
 
                 _logger.LogInformation($"Finish task for {request}.");
+
                 return response;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Got the error {ex.Message}.");
-                await _unitOfWork.RollbackTransaction(cancellationToken);
-                throw;
-            }
+            });
         }
     }
 }
