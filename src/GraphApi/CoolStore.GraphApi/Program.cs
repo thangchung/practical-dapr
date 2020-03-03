@@ -12,6 +12,7 @@ using HotChocolate;
 using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
+using Microsoft.Extensions.Hosting;
 
 namespace CoolStore.GraphApi
 {
@@ -25,9 +26,22 @@ namespace CoolStore.GraphApi
                 .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
-            var config = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .Build();
+
+            var configurationBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
+            // https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/
+
+            var env = builder.Environment;
+            configurationBuilder.AddJsonFile("services.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+                configurationBuilder.AddJsonFile(servicesJson, optional: true);
+            }
+
+            var config = configurationBuilder.Build();
 
             builder.Host.UseSerilog();
 
