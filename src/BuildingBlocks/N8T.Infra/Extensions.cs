@@ -5,10 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using HotChocolate;
 using HotChocolate.Configuration;
+using HotChocolate.Execution.Configuration;
 using HotChocolate.Types;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using N8T.Infrastructure.Data;
+using N8T.Infrastructure.ValidationModel;
+using Path = System.IO.Path;
 
 namespace N8T.Infrastructure
 {
@@ -24,6 +30,45 @@ namespace N8T.Infrastructure
                     .WithScopedLifetime());
 
             return services;
+        }
+
+        public static IServiceCollection AddCustomMediatR(this IServiceCollection services,
+            Type markedType,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            services.AddMediatR(markedType)
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
+            doMoreActions?.Invoke(services);
+            return services;
+        }
+
+        public static IServiceCollection AddCustomGraphQL(this IServiceCollection services,
+            Type markedType,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            services.AddGraphQL(sp => Schema.Create(c =>
+                {
+                    c.RegisterServiceProvider(sp);
+                    c.RegisterObjectTypes(markedType.Assembly);
+                }),
+                new QueryExecutionOptions
+                {
+                    IncludeExceptionDetails = true,
+                    TracingPreference = TracingPreference.Always
+                });
+            doMoreActions?.Invoke(services);
+            return services;
+        }
+
+        public static IServiceCollection AddCustomValidators(this IServiceCollection services,
+            params Assembly[] validatorAssemblies)
+        {
+            return services.Scan(scan => scan
+                .FromAssemblies(validatorAssemblies)
+                .AddClasses(c => c.AssignableTo(typeof(FluentValidation.IValidator<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
         }
 
         public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
@@ -48,16 +93,13 @@ namespace N8T.Infrastructure
             return schemaConfiguration;
         }
 
-        public static IServiceCollection AddValidators(this IServiceCollection services,
-            params Assembly[] validatorAssemblies)
-        {
-            return services.Scan(scan => scan
-                .FromAssemblies(validatorAssemblies)
-                .AddClasses(c => c.AssignableTo(typeof(FluentValidation.IValidator<>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime());
-        }
+        
 
+        [DebuggerStepThrough]
+        public static T ConvertTo<T>(this object input)
+        {
+            return ConvertTo<T>(input.ToString());
+        }
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this string input)

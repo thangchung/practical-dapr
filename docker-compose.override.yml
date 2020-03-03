@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+
+  sqlserver:
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+
+  redis:
+    environment:
+      REDIS_PASSWORD: ""
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - 6379:6379
+
+  zipkin:
+    ports:
+      - 9412:9411
+
+  elasticsearch:
+    environment:
+    - node.name=elasticsearch
+    - cluster.name=docker-cluster
+    - bootstrap.memory_lock=true
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - discovery.type=single-node
+    ports:
+    - 9200:9200
+
+  zookeeper:
+    ports:
+      - 2181:2181
+
+  kafka:
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    ports:
+      - 9092:9092

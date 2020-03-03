@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    restart: on-failure
+    networks:
+      - coolstore
+
+  redis:
+    image: bitnami/redis:5.0.5-debian-9-r124
+    restart: on-failure
+    networks:
+      - coolstore
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    restart: on-failure
+    networks:
+      - coolstore
+
+  elasticsearch:
+    image: elasticsearch:7.4.1
+    hostname: elasticsearch
+    restart: on-failure
+    container_name: elasticsearch
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - coolstore
+
+  zookeeper:
+    image: zookeeper:3.5
+    container_name: zookeeper
+    restart: on-failure
+    networks:
+      - coolstore
+
+  kafka:
+    image: wurstmeister/kafka:2.11-2.0.0
+    container_name: kafka
+    restart: on-failure
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - coolstore
+
+networks:
+  coolstore:
+    name: coolstore-network

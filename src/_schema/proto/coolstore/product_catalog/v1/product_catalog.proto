@@ -26,6 +26,14 @@ message CategoryDto {
   string name = 2;
 }
 
+message ProductCreated {
+  string product_id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+}
+
 message ProductUpdated {
   string product_id = 1;
   string name = 2;
