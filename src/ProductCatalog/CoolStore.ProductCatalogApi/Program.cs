@@ -11,6 +11,7 @@ using N8T.Infrastructure;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System.Threading.Tasks;
+using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -59,6 +60,7 @@ namespace CoolStore.ProductCatalogApi
                 });
             builder.Services.AddScoped<DbContext>(provider => provider.GetService<ProductCatalogDbContext>());
             builder.Services.AddScoped<IDomainEventContext>(provider => provider.GetService<ProductCatalogDbContext>());
+            builder.Services.AddHostedService<DbContextMigratorHostedService>();
 
             var app = builder.Build();
             app.Listen(serviceOptions.ProductCatalogService.RestUri);
