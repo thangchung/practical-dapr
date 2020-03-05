@@ -21,7 +21,8 @@ namespace N8T.Infrastructure.Data
                 .ToList();
 
             var domainEvents = domainEntities
-                .SelectMany(x => x.Entity.DomainEvents);
+                .SelectMany(x => x.Entity.DomainEvents)
+                .ToList();
 
             domainEntities.ForEach(entity => entity.Entity.DomainEvents.Clear());
 
