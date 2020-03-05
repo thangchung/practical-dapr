@@ -16,25 +16,20 @@ $ docker-compose -f docker-compose.yml -f docker-compose.override.yml run sqlser
 ## Step 2
 
 ```bash
-$ cd src\ProductCatalog\CoolStore.ProductCatalogApi
-$ dotnet ef database update
-```
-
-## Step 3
-
-```bash
 $ dotnet run -p \src\GraphApi\CoolStore.GraphApi\CoolStore.GraphApi.csproj
 $ dotnet run -p \src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.ProductCatalogApi.csproj
 ```
 
-## Step 4
+## Step 3
 Go to http://localhost:5000
 
 ```js
-products(currentPage: 1, highPrice: 1000) {
-  id
-  name
-  imageUrl
+query{
+    products(currentPage: 1, highPrice: 1000) {
+    id
+    name
+    imageUrl
+  }
 }
 ```
 
