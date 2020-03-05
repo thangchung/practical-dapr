@@ -42,6 +42,9 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
     }
   }
 }
+```
+
+```js
 {
   "createProductInput": {
     "name": "product 1",
@@ -53,6 +56,8 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
   }
 }
 ```
+
+![](assets/graphql_playground.png)
 
 # Best reference articles
 - https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/

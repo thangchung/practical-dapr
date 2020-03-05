@@ -10,14 +10,13 @@ namespace N8T.Infrastructure.Data
     public class DbContextMigratorHostedService : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
-        public DbContextMigratorHostedService(IServiceProvider serviceProvider)
-            => this._serviceProvider = serviceProvider;
 
-        #region Implementation of IHostedService
+        public DbContextMigratorHostedService(IServiceProvider serviceProvider)
+            => _serviceProvider = serviceProvider;
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            using var scope = this._serviceProvider.CreateScope();
+            using var scope = _serviceProvider.CreateScope();
 
             var applicationDbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
 
@@ -25,7 +24,5 @@ namespace N8T.Infrastructure.Data
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-        #endregion
     }
 }
