@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace N8T.Infrastructure.Data
 {
-    public abstract class AppDbContextBase : DbContext, IDomainEventContext
+    public abstract class AppDbContextBase : DbContext, IDomainEventContext, IDbFacadeResolver
     {
         protected AppDbContextBase(DbContextOptions options) : base(options)
         {

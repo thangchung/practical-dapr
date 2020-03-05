@@ -17,10 +17,8 @@ namespace N8T.Infrastructure.Data
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             using var scope = _serviceProvider.CreateScope();
-
-            var applicationDbContext = scope.ServiceProvider.GetRequiredService<DbContext>();
-
-            await applicationDbContext.Database.MigrateAsync(cancellationToken);
+            var dbFacadeResolver = scope.ServiceProvider.GetRequiredService<IDbFacadeResolver>();
+            await dbFacadeResolver.Database.MigrateAsync(cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

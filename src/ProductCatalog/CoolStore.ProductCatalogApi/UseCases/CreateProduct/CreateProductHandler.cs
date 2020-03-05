@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Domain;
+﻿using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Persistence;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoolStore.ProductCatalogApi.UseCases.CreateProduct
 {

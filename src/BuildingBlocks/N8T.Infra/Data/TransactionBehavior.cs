@@ -14,17 +14,17 @@ namespace N8T.Infrastructure.Data
         where TRequest : IRequest<TResponse>
     {
         private readonly IDomainEventContext _domainEventContext;
-        private readonly DbContext _dbContext;
+        private readonly IDbFacadeResolver _dbFacadeResolver;
         private readonly IMediator _mediator;
         private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
 
-        public TransactionBehavior(DbContext dbContext,
+        public TransactionBehavior(IDbFacadeResolver dbFacadeResolver,
             IDomainEventContext domainEventContext,
             IMediator mediator,
             ILogger<TransactionBehavior<TRequest, TResponse>> logger)
         {
             _domainEventContext = domainEventContext ?? throw new ArgumentNullException(nameof(domainEventContext));
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbFacadeResolver = dbFacadeResolver ?? throw new ArgumentNullException(nameof(dbFacadeResolver));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -44,11 +44,11 @@ namespace N8T.Infrastructure.Data
             }
 
             _logger.LogInformation($"Open the transaction for {nameof(request)}.");
-            var strategy = _dbContext.Database.CreateExecutionStrategy();
+            var strategy = _dbFacadeResolver.Database.CreateExecutionStrategy();
             return await strategy.ExecuteAsync(async () =>
             {
                 // Achieving atomicity
-                await using var transaction = _dbContext.Database.BeginTransaction(IsolationLevel.ReadCommitted);
+                await using var transaction = _dbFacadeResolver.Database.BeginTransaction(IsolationLevel.ReadCommitted);
 
                 _logger.LogInformation($"Execute the {nameof(request)} request.");
                 var response = await next();
