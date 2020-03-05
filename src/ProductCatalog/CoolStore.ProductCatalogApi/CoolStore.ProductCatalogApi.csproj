@@ -36,9 +36,4 @@
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Infra\N8T.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HostedServices\" />
-    <Folder Include="Persistence\Migrations\" />
-  </ItemGroup>
-
 </Project>
