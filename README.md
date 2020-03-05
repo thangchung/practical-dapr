@@ -2,9 +2,7 @@
 Practical Dapr on Coolstore business model
 
 ![graphql-api](https://github.com/thangchung/practical-dapr/workflows/graphql-ci/badge.svg?branch=master)
-
 ![identity-api](https://github.com/thangchung/practical-dapr/workflows/identity-ci/badge.svg?branch=master)
-
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 
 # High Level Architecture
@@ -13,21 +11,42 @@ Practical Dapr on Coolstore business model
 
 # Get starting
 
-## Step 1
+## 1. Manual run with Visual Studio or Visual Code
+
+### Step 1
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.override.yml run sqlserver
 ```
 
-## Step 2
+### Step 2
 
 ```bash
 $ dotnet run -p \src\GraphApi\CoolStore.GraphApi\CoolStore.GraphApi.csproj
 $ dotnet run -p \src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.ProductCatalogApi.csproj
 ```
 
-## Step 3
-Go to http://localhost:5000
+## 2. Run with Dapr
+
+- Follow those steps at https://github.com/dapr/cli to install Dapr CLI
+
+### Step 1
+
+```bash
+$ cd src\ProductCatalog\CoolStore.ProductCatalogApi
+$ dapr run --app-id product-catalog-api --port 5002 --grpc-port 15002 dotnet run
+```
+
+```bash
+$ cd src\GraphApi\CoolStore.GraphApi
+$ dapr run --app-id graphql-api --port 5000 dotnet run
+```
+
+## 3. Test it
+
+- Go to http://localhost:5000
+
+- Query
 
 ```js
 query {
@@ -38,6 +57,8 @@ query {
   }
 }
 ```
+
+- Mutation
 
 ```js
 mutation createProductMutation($createProductInput: CreateProductInput!) {
