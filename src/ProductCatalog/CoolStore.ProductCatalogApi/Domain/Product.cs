@@ -32,6 +32,7 @@ namespace CoolStore.ProductCatalogApi.Domain
                 Price = request.Price,
                 ImageUrl = request.ImageUrl,
                 InventoryId = request.InventoryId.ConvertTo<Guid>(),
+                CategoryId = request.CategoryId.ConvertTo<Guid>(),
                 Created = NewDateTime(),
                 IsDeleted = false
             };

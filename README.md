@@ -38,5 +38,26 @@ products(currentPage: 1, highPrice: 1000) {
 }
 ```
 
+```js
+mutation createProductMutation($createProductInput: CreateProductInput!) {
+  createProduct(createProductInput: $createProductInput) {
+    product {
+      id
+      name
+    }
+  }
+}
+{
+  "createProductInput": {
+    "name": "product 1",
+    "description": "this is a description",
+    "imageUrl": "https://picsum.photos/1200/900?image=100",
+    "price": 100,
+    "categoryId": "77666AA8-682C-4047-B075-04839281630A",
+    "inventoryId": "88ef3cab-5f7e-4111-b151-3fe0d9c20733"
+  }
+}
+```
+
 # Best reference articles
 - https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/

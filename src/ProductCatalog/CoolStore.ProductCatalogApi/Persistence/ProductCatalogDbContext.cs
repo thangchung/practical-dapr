@@ -55,25 +55,25 @@ namespace CoolStore.ProductCatalogApi.Persistence
                 );
             }
 
-            // var productModels = "products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
-            // //Console.WriteLine(productModels.SerializeObject());
-            // foreach (var prod in productModels)
-            // {
-            //     var insertProd = Product.Of(
-            //         prod.Id.ConvertTo<Guid>(),
-            //         new CreateProductRequest
-            //         {
-            //             Name = prod.Name,
-            //             Description = prod.Description,
-            //             ImageUrl = prod.ImageUrl,
-            //             Price = prod.Price,
-            //             InventoryId = prod.InventoryId,
-            //             CategoryId = prod.CategoryId
-            //         });
-            //
-            //     insertProd.AssignCategory(Category.Of(prod.CategoryId.ConvertTo<Guid>(), prod.CategoryName));
-            //     modelBuilder.Entity<Product>().HasData(insertProd);
-            // }
+            var productModels = "products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
+            //Console.WriteLine(productModels.SerializeObject());
+            foreach (var prod in productModels)
+            {
+                modelBuilder.Entity<Product>().HasData(
+                    Product.Of(
+                        prod.Id.ConvertTo<Guid>(),
+                        new CreateProductRequest
+                        {
+                            Name = prod.Name,
+                            Description = prod.Description,
+                            ImageUrl = prod.ImageUrl,
+                            Price = prod.Price,
+                            InventoryId = prod.InventoryId,
+                            CategoryId = prod.CategoryId
+                        }
+                    )
+                );
+            }
         }
     }
 
