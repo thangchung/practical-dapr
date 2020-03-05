@@ -32,7 +32,6 @@ namespace CoolStore.ProductCatalogApi.Domain
                 Price = request.Price,
                 ImageUrl = request.ImageUrl,
                 InventoryId = request.InventoryId.ConvertTo<Guid>(),
-                CategoryId = request.CategoryId.ConvertTo<Guid>(),
                 Created = NewDateTime(),
                 IsDeleted = false
             };
@@ -47,6 +46,13 @@ namespace CoolStore.ProductCatalogApi.Domain
             });
 
             return newProduct;
+        }
+
+        public Product AssignCategory(Category cat)
+        {
+            CategoryId = cat.Id;
+            Category = cat;
+            return this;
         }
 
         public Product UpdateProduct(UpdateProductRequest request)

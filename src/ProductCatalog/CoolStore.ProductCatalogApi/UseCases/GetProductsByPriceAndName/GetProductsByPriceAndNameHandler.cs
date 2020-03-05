@@ -6,9 +6,11 @@ using CoolStore.ProductCatalogApi.Persistence;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
 {
+    [TransactionScope]
     public class GetProductsByPriceAndNameHandler : IRequestHandler<GetProductsRequest, GetProductsResponse>
     {
         private readonly ProductCatalogDbContext _dbContext;
@@ -18,6 +20,7 @@ namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        [TransactionScope]
         public async Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
         {
             var products = await _dbContext.Products

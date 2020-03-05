@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="UseCases\" />
   </ItemGroup>
 
 </Project>

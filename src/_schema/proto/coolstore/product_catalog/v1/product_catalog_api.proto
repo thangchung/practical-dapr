@@ -27,12 +27,11 @@ message GetProductByIdResponse {
 
 message CreateProductRequest {
   string name = 1;
-  string description = 2;
+  google.protobuf.StringValue description = 2;
   double price = 3;
   string image_url = 4;
   string inventory_id = 5;
   string category_id = 6;
-  string category_name = 7;
 }
 
 message CreateProductResponse {

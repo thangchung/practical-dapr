@@ -33,6 +33,16 @@ namespace N8T.Infrastructure.Data
             CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
+            if (next.Method.DeclaringType != null)
+            {
+                var argumentTypes = next.Method.DeclaringType.GenericTypeArguments;
+                var transactionAttr = argumentTypes[0].GetCustomAttributes(typeof(TransactionScopeAttribute), true);
+                if (transactionAttr.Length < 1)
+                {
+                    return await next();
+                }
+            }
+
             _logger.LogInformation($"Open the transaction for {nameof(request)}.");
             var strategy = _dbContext.Database.CreateExecutionStrategy();
             return await strategy.ExecuteAsync(async () =>

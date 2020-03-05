@@ -24,9 +24,13 @@ namespace CoolStore.ProductCatalogApi.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().ToTable("Product", "product_category");
-            modelBuilder.Entity<Category>().ToTable("Category", "product_category");
-            modelBuilder.Entity<Rating>().ToTable("Rating", "product_category");
+            modelBuilder.Entity<Product>().ToTable("Product");
+            modelBuilder.Entity<Category>().ToTable("Category");
+            modelBuilder.Entity<Rating>().ToTable("Rating");
+
+            modelBuilder.Entity<Product>().HasKey(x => x.Id);
+            modelBuilder.Entity<Category>().HasKey(x => x.Id);
+            modelBuilder.Entity<Rating>().HasKey(x => x.Id);
 
             modelBuilder.Entity<Product>().Ignore(x => x.DomainEvents);
             modelBuilder.Entity<Category>().Ignore(x => x.DomainEvents);
@@ -51,24 +55,25 @@ namespace CoolStore.ProductCatalogApi.Persistence
                 );
             }
 
-            var productModels = "products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
-            //Console.WriteLine(productModels.SerializeObject());
-            foreach (var prod in productModels)
-            {
-                modelBuilder.Entity<Product>().HasData(
-                    Product.Of(
-                        prod.Id.ConvertTo<Guid>(),
-                        new CreateProductRequest
-                        {
-                            Name = prod.Name,
-                            Description = prod.Description,
-                            ImageUrl = prod.ImageUrl,
-                            Price = prod.Price,
-                            InventoryId = prod.InventoryId,
-                            CategoryId = prod.CategoryId
-                        })
-                );
-            }
+            // var productModels = "products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
+            // //Console.WriteLine(productModels.SerializeObject());
+            // foreach (var prod in productModels)
+            // {
+            //     var insertProd = Product.Of(
+            //         prod.Id.ConvertTo<Guid>(),
+            //         new CreateProductRequest
+            //         {
+            //             Name = prod.Name,
+            //             Description = prod.Description,
+            //             ImageUrl = prod.ImageUrl,
+            //             Price = prod.Price,
+            //             InventoryId = prod.InventoryId,
+            //             CategoryId = prod.CategoryId
+            //         });
+            //
+            //     insertProd.AssignCategory(Category.Of(prod.CategoryId.ConvertTo<Guid>(), prod.CategoryName));
+            //     modelBuilder.Entity<Product>().HasData(insertProd);
+            // }
         }
     }
 
