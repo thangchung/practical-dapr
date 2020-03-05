@@ -1,10 +1,10 @@
-name: graphql-ci
+name: identity-ci
 
 on:
   push:
     branches: [ master ]
     paths:
-      - "src/GraphApi/*"
+      - "src/Identity/*"
       - "src/BuildingBlocks/*"
       - ".github/workflows/*"
   pull_request:
@@ -40,4 +40,4 @@ jobs:
         dotnet-version: 3.1.101 
 
     - name: Build with dotnet
-      run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
+      run: dotnet build src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj --configuration Release

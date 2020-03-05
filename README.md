@@ -1,6 +1,12 @@
 # practical-dapr
 Practical Dapr on Coolstore business model
 
+![graphql-api](https://github.com/thangchung/practical-dapr/workflows/graphql-ci/badge.svg?branch=master)
+
+![identity-api](https://github.com/thangchung/practical-dapr/workflows/identity-ci/badge.svg?branch=master)
+
+![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
+
 # High Level Architecture
 
 ![](assets/high_level_architecture.png)
@@ -24,7 +30,7 @@ $ dotnet run -p \src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.Produc
 Go to http://localhost:5000
 
 ```js
-query{
+query {
     products(currentPage: 1, highPrice: 1000) {
     id
     name
