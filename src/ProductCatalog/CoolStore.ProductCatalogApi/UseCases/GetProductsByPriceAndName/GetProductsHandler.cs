@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
 {
-    public class GetProductsByPriceAndNameHandler : IRequestHandler<GetProductsRequest, GetProductsResponse>
+    public class GetProductsHandler : IRequestHandler<GetProductsRequest, GetProductsResponse>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public GetProductsByPriceAndNameHandler(ProductCatalogDbContext dbContext)
+        public GetProductsHandler(ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
@@ -23,9 +23,7 @@ namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
             var products = await _dbContext.Products
                 .AsNoTracking()
                 .Include(x => x.Category)
-                .Where(x => x.Price <= request.HighPrice && !x.IsDeleted)
-                .Skip(request.CurrentPage - 1)
-                .Take(10)
+                .Where(x => !x.IsDeleted)
                 .Select(x => new CatalogProductDto
                 {
                     Id = x.Id.ToString(),

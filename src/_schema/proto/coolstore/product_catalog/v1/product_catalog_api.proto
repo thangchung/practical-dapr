@@ -9,8 +9,6 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 message GetProductsRequest {
-  int32 current_page = 1;
-  double high_price = 2;
 }
 
 message GetProductsResponse {

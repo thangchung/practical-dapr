@@ -15,9 +15,9 @@ namespace CoolStore.ProductCatalogApi.Boundaries.GraphQL
             _mediator = mediator;
         }
 
-        public async Task<IEnumerable<CatalogProductDto>> GetProducts(int currentPage, double highPrice)
+        public async Task<IEnumerable<CatalogProductDto>> GetProducts()
         {
-            var response = await _mediator.Send(new GetProductsRequest { CurrentPage = currentPage, HighPrice = highPrice });
+            var response = await _mediator.Send(new GetProductsRequest());
             return response.Products.ToList();
         }
     }
