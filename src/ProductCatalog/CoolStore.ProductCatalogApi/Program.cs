@@ -1,4 +1,5 @@
-﻿using CoolStore.ProductCatalogApi.Persistence;
+﻿using CoolStore.ProductCatalogApi.Boundaries.GraphQL;
+using CoolStore.ProductCatalogApi.Persistence;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,11 @@ namespace CoolStore.ProductCatalogApi
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(typeof(Program))
+                .AddCustomGraphQL(schemaConfiguration =>
+                {
+                    schemaConfiguration.RegisterQueryType<QueryType>();
+                    schemaConfiguration.RegisterMutationType<MutationType>();
+                })
                 .AddCustomValidators(typeof(Program).Assembly)
                 .AddCustomDbContext(config);
 

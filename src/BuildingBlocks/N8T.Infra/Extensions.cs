@@ -1,14 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.Json;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
-using HotChocolate.Types;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +8,12 @@ using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL.Errors;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
 using Path = System.IO.Path;
 
 namespace N8T.Infrastructure
@@ -35,13 +33,13 @@ namespace N8T.Infrastructure
         }
 
         public static IServiceCollection AddCustomGraphQL(this IServiceCollection services,
-            Type markedType,
+            Action<ISchemaConfiguration> schemaConfiguration,
             Action<IServiceCollection> doMoreActions = null)
         {
             services.AddGraphQL(sp => Schema.Create(c =>
                     {
                         c.RegisterServiceProvider(sp);
-                        c.RegisterObjectTypes(markedType.Assembly);
+                        schemaConfiguration.Invoke(c);
                     }),
                     new QueryExecutionOptions
                     {
@@ -69,22 +67,6 @@ namespace N8T.Infrastructure
             configuration.GetSection(section).Bind(model);
             return model;
         }
-
-        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration,
-            Assembly graphTypeAssembly)
-        {
-            var objectTypes = graphTypeAssembly
-                .GetTypes()
-                .Where(type => typeof(ObjectType).IsAssignableFrom(type));
-
-            foreach (var objectType in objectTypes)
-            {
-                schemaConfiguration.RegisterType(objectType);
-            }
-
-            return schemaConfiguration;
-        }
-
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this object input)
