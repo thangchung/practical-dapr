@@ -2,7 +2,6 @@
 using CoolStore.Protobuf.Inventory.V1;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
-using N8T.Infrastructure.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +12,11 @@ namespace CoolStore.ProductCatalogApi.Boundaries.GraphQL
     public class Query
     {
         private readonly IMediator _mediator;
-        private readonly ServiceOptions _serviceOptions;
         private readonly InventoryApi.InventoryApiClient _inventoryApiClient;
 
-        public Query(IMediator mediator, ServiceOptions serviceOptions, InventoryApi.InventoryApiClient inventoryApiClient)
+        public Query(IMediator mediator, InventoryApi.InventoryApiClient inventoryApiClient)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _serviceOptions = serviceOptions ?? throw new ArgumentNullException(nameof(serviceOptions));
             _inventoryApiClient = inventoryApiClient ?? throw new NullReferenceException(nameof(inventoryApiClient));
         }
 

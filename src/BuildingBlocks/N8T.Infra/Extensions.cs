@@ -13,14 +13,36 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using N8T.Domain;
 using Path = System.IO.Path;
 
 namespace N8T.Infrastructure
 {
     public static class Extensions
     {
+        public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
+            this WebApplicationBuilder builder)
+        {
+            var configBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
+            var env = builder.Environment;
+            configBuilder.AddJsonFile("services.json", optional: true);
+
+            if (!env.IsDevelopment()) return (builder, configBuilder);
+
+            var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+            configBuilder.AddJsonFile(servicesJson, optional: true);
+
+            return (builder, configBuilder);
+        }
+
         public static IServiceCollection AddCustomMediatR(this IServiceCollection services,
             Type markedType,
             Action<IServiceCollection> doMoreActions = null)
@@ -66,6 +88,26 @@ namespace N8T.Infrastructure
                 .WithTransientLifetime());
         }
 
+        public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services, Assembly anchorAssembly, IConfiguration config)
+            where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
+        {
+            services
+                .AddDbContext<TDbContext>(options =>
+                {
+                    options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(anchorAssembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
+                    });
+                });
+
+            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
+            services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
+            services.AddHostedService<DbContextMigratorHostedService>();
+
+            return services;
+        }
+
         public static IServiceCollection AddCustomGrpc(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
@@ -83,7 +125,7 @@ namespace N8T.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddCustomClientGrpc(this IServiceCollection services,
+        public static IServiceCollection AddCustomGrpcClient(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
