@@ -1,14 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.Json;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
-using HotChocolate.Types;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,12 +9,40 @@ using N8T.Infrastructure.GraphQL.Errors;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using N8T.Domain;
 using Path = System.IO.Path;
 
 namespace N8T.Infrastructure
 {
     public static class Extensions
     {
+        public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
+            this WebApplicationBuilder builder)
+        {
+            var configBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
+            var env = builder.Environment;
+            configBuilder.AddJsonFile("services.json", optional: true);
+
+            if (!env.IsDevelopment()) return (builder, configBuilder);
+
+            var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+            configBuilder.AddJsonFile(servicesJson, optional: true);
+
+            return (builder, configBuilder);
+        }
+
         public static IServiceCollection AddCustomMediatR(this IServiceCollection services,
             Type markedType,
             Action<IServiceCollection> doMoreActions = null)
@@ -38,13 +58,13 @@ namespace N8T.Infrastructure
         }
 
         public static IServiceCollection AddCustomGraphQL(this IServiceCollection services,
-            Type markedType,
+            Action<ISchemaConfiguration> schemaConfiguration,
             Action<IServiceCollection> doMoreActions = null)
         {
             services.AddGraphQL(sp => Schema.Create(c =>
                     {
                         c.RegisterServiceProvider(sp);
-                        c.RegisterObjectTypes(markedType.Assembly);
+                        schemaConfiguration.Invoke(c);
                     }),
                     new QueryExecutionOptions
                     {
@@ -68,6 +88,26 @@ namespace N8T.Infrastructure
                 .WithTransientLifetime());
         }
 
+        public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services, Assembly anchorAssembly, IConfiguration config)
+            where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
+        {
+            services
+                .AddDbContext<TDbContext>(options =>
+                {
+                    options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(anchorAssembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
+                    });
+                });
+
+            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
+            services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
+            services.AddHostedService<DbContextMigratorHostedService>();
+
+            return services;
+        }
+
         public static IServiceCollection AddCustomGrpc(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
@@ -85,7 +125,7 @@ namespace N8T.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddCustomClientGrpc(this IServiceCollection services,
+        public static IServiceCollection AddCustomGrpcClient(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
@@ -103,22 +143,6 @@ namespace N8T.Infrastructure
             configuration.GetSection(section).Bind(model);
             return model;
         }
-
-        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration,
-            Assembly graphTypeAssembly)
-        {
-            var objectTypes = graphTypeAssembly
-                .GetTypes()
-                .Where(type => typeof(ObjectType).IsAssignableFrom(type));
-
-            foreach (var objectType in objectTypes)
-            {
-                schemaConfiguration.RegisterType(objectType);
-            }
-
-            return schemaConfiguration;
-        }
-
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this object input)

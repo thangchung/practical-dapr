@@ -1,0 +1,34 @@
+name: inventory-ci
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - "src/Inventory/*"
+      - "src/BuildingBlocks/*"
+      - ".github/workflows/*"
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo ${{ github.event.path }}
+    - run: |
+          git fetch --unshallow
+    
+    - uses: aarnott/nbgv@v0.3
+      with:
+        setAllVars: true
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101 
+
+    - name: Build with dotnet
+      run: dotnet build src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj --configuration Release
