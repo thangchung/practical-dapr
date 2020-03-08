@@ -54,8 +54,7 @@ namespace CoolStore.ProductCatalogApi
                     schemaConfig.RegisterMutationType<MutationType>();
                 });
 
-            builder.Services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ProductCatalogDbContext>(options =>
+            builder.Services.AddDbContext<ProductCatalogDbContext>(options =>
                 {
                     options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
                     {
