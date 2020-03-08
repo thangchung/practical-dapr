@@ -88,8 +88,7 @@ namespace CoolStore.ProductCatalogApi
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration config)
         {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ProductCatalogDbContext>(options =>
+            services.AddDbContext<ProductCatalogDbContext>(options =>
                 {
                     options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
                     {
