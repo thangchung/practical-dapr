@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 
@@ -17,8 +17,7 @@ namespace CoolStore.ProductCatalogApi.Boundaries.GraphQL
 
         public async Task<IEnumerable<CatalogProductDto>> GetProducts()
         {
-            var response = await _mediator.Send(new GetProductsRequest());
-            return response.Products.ToList();
+            return await _mediator.Send(new GetProductsQuery());
         }
     }
 }

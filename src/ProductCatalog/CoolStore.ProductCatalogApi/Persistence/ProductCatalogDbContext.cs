@@ -43,7 +43,7 @@ namespace CoolStore.ProductCatalogApi.Persistence
                 .IsRequired();
 
             // seed data
-            var categoryModels = "categories.json".ReadData<List<CategoryDto>>(AppContext.BaseDirectory);
+            var categoryModels = "Persistence/SeedData/categories.json".ReadData<List<CategoryDto>>(AppContext.BaseDirectory);
             //Console.WriteLine(categoryModels.SerializeObject());
             foreach (var cat in categoryModels)
             {
@@ -55,7 +55,7 @@ namespace CoolStore.ProductCatalogApi.Persistence
                 );
             }
 
-            var productModels = "products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
+            var productModels = "Persistence/SeedData/products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
             //Console.WriteLine(productModels.SerializeObject());
             foreach (var prod in productModels)
             {

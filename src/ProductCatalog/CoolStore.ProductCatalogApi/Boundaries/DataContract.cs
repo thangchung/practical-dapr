@@ -1,13 +1,12 @@
 ﻿using MediatR;
 using N8T.Domain;
-using System;
 using N8T.Infrastructure.Data;
+using System;
 using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
 // ReSharper disable CheckNamespace
 namespace CoolStore.Protobuf.ProductCatalog.V1
 {
-    public partial class GetProductsRequest : IRequest<GetProductsResponse> { }
     public partial class GetProductByIdRequest : IRequest<GetProductByIdResponse> { }
     [TransactionScope]
     public partial class CreateProductRequest : IRequest<CreateProductResponse> { }

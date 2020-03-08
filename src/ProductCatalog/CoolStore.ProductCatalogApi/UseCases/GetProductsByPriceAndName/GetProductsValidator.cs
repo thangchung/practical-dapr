@@ -1,9 +1,8 @@
-﻿using CoolStore.Protobuf.ProductCatalog.V1;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
 {
-    public class GetProductsValidator : AbstractValidator<GetProductsRequest>
+    public class GetProductsValidator : AbstractValidator<GetProductsQuery>
     {
     }
 }

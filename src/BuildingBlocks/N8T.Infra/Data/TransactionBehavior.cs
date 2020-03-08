@@ -5,6 +5,7 @@ using N8T.Domain;
 using System;
 using System.Data;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,36 +36,48 @@ namespace N8T.Infrastructure.Data
         {
             if (next.Method.DeclaringType != null)
             {
+                _logger.LogInformation($"Handling query {typeof(TRequest).FullName}");
+                _logger.LogDebug($"Handling {typeof(TRequest).FullName} with content {JsonSerializer.Serialize(request)}");
+
                 var argumentTypes = next.Method.DeclaringType.GenericTypeArguments;
                 var transactionAttr = argumentTypes[0].GetCustomAttributes(typeof(TransactionScopeAttribute), true);
                 if (transactionAttr.Length < 1)
                 {
+                    _logger.LogInformation($"Handled {typeof(TRequest).FullName}");
                     return await next();
                 }
             }
 
-            _logger.LogInformation($"Open the transaction for {nameof(request)}.");
+            _logger.LogInformation($"Handling command {typeof(TRequest).FullName}");
+            _logger.LogDebug($"Handling command {typeof(TRequest).FullName} with content {JsonSerializer.Serialize(request)}");
+            _logger.LogInformation($"Open the transaction for {typeof(TRequest).FullName}.");
             var strategy = _dbFacadeResolver.Database.CreateExecutionStrategy();
             return await strategy.ExecuteAsync(async () =>
             {
                 // Achieving atomicity
                 await using var transaction = _dbFacadeResolver.Database.BeginTransaction(IsolationLevel.ReadCommitted);
 
-                _logger.LogInformation($"Execute the {nameof(request)} request.");
+                _logger.LogInformation($"Executing the {typeof(TRequest).FullName} request.");
                 var response = await next();
 
                 await transaction.CommitAsync(cancellationToken);
 
-                _logger.LogInformation($"Publish domain events for {request}.");
+                _logger.LogInformation($"Publishing domain events for {typeof(TRequest).FullName}.");
                 var domainEvents = _domainEventContext.GetDomainEvents().ToList();
 
                 var tasks = domainEvents
-                    .Select(async @event => { await _mediator.Publish(@event, cancellationToken); });
+                    .Select(async @event =>
+                    {
+                        _logger.LogInformation($"Publishing domain event {@event.GetType().FullName}...");
+                        _logger.LogDebug(
+                            $"Publishing domain event {@event.GetType().FullName} with payload {JsonSerializer.Serialize(@event)}");
+                        await _mediator.Publish(@event, cancellationToken);
+                        _logger.LogInformation($"Published domain event {@event.GetType().FullName}.");
+                    });
 
                 await Task.WhenAll(tasks);
 
-                _logger.LogInformation($"Finish task for {request}.");
-
+                _logger.LogInformation($"Handled {typeof(TRequest).FullName}");
                 return response;
             });
         }

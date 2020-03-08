@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolStore.ProductCatalogApi.Persistence.Migrations
 {
     [DbContext(typeof(ProductCatalogDbContext))]
-    [Migration("20200305132400_InitProductCategoryDb")]
+    [Migration("20200308052940_InitProductCategoryDb")]
     partial class InitProductCategoryDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("ba16da71-c7dd-4eac-9ead-5c2c2244e69f"),
                             CategoryId = new Guid("80287ef3-987f-4312-a0c6-ccc2239aeea3"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 110, DateTimeKind.Utc).AddTicks(2805),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 160, DateTimeKind.Utc).AddTicks(1278),
                             Description = "IPhone 8",
                             ImageUrl = "https://picsum.photos/1200/900?image=1",
                             InventoryId = new Guid("90c9479e-a11c-4d6d-aaaa-0405b6c0efcd"),
@@ -123,7 +123,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("13d02035-2286-4055-ad2d-6855a60efbbb"),
                             CategoryId = new Guid("80287ef3-987f-4312-a0c6-ccc2239aeea3"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5160),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(350),
                             Description = "IPhone X",
                             ImageUrl = "https://picsum.photos/1200/900?image=2",
                             InventoryId = new Guid("90c9479e-a11c-4d6d-aaaa-0405b6c0efcd"),
@@ -135,7 +135,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("b8f0a771-339f-4602-a862-f7a51afd5b79"),
                             CategoryId = new Guid("80287ef3-987f-4312-a0c6-ccc2239aeea3"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5498),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(563),
                             Description = "MacBook Pro 2019",
                             ImageUrl = "https://picsum.photos/1200/900?image=3",
                             InventoryId = new Guid("90c9479e-a11c-4d6d-aaaa-0405b6c0efcd"),
@@ -147,7 +147,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("ffd60654-1802-48bd-b4c3-d49831a8ab2c"),
                             CategoryId = new Guid("80287ef3-987f-4312-a0c6-ccc2239aeea3"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5585),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(621),
                             Description = "Asus UX370U i7 8550U (C4217TS)",
                             ImageUrl = "https://picsum.photos/1200/900?image=4",
                             InventoryId = new Guid("90c9479e-a11c-4d6d-aaaa-0405b6c0efcd"),
@@ -159,7 +159,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("a4811778-5070-4d70-8a9c-e6cb70dfcca4"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5634),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(670),
                             Description = "Mastoidectomy revision",
                             ImageUrl = "https://picsum.photos/1200/900?image=5",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -171,7 +171,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("6a0e6d20-8bcc-450f-bc5c-b8f727083dcd"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5686),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(722),
                             Description = "Fiber-optic bronchoscopy",
                             ImageUrl = "https://picsum.photos/1200/900?image=6",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -183,7 +183,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("fee1fc67-7469-4490-b418-47f4732de53f"),
                             CategoryId = new Guid("1ebdd04f-a447-42a3-9e65-5697c1dacb09"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5777),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(769),
                             Description = "Open periph nerve biopsy",
                             ImageUrl = "https://picsum.photos/1200/900?image=7",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -195,7 +195,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("2d2245e4-213a-49de-93d3-79e9439400f5"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5826),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(878),
                             Description = "Tibia/fibula inj op NOS",
                             ImageUrl = "https://picsum.photos/1200/900?image=8",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -207,7 +207,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("386b04c6-303a-4840-8a51-d92b1ea2d339"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5870),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(931),
                             Description = "Removal of FB NOS",
                             ImageUrl = "https://picsum.photos/1200/900?image=9",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -219,7 +219,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("297c5959-4808-4f40-8d6a-4a899505e1f7"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5917),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(980),
                             Description = "Remove bladder stimulat",
                             ImageUrl = "https://picsum.photos/1200/900?image=10",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -231,7 +231,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("3a0a0a89-9b3a-4046-bf2b-deee64a764d2"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(5962),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1027),
                             Description = "Other bone dx proc NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=11",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -243,7 +243,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("71c46659-9560-4d6a-ac18-893477ed6662"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6005),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1074),
                             Description = "Oth thorac op thymus NOS",
                             ImageUrl = "https://picsum.photos/1200/900?image=12",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -255,7 +255,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("f92bfa6a-2522-4234-a7f1-9004596a4a85"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6049),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1120),
                             Description = "Toxicology-endocrine",
                             ImageUrl = "https://picsum.photos/1200/900?image=13",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -267,7 +267,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("cbe43158-2010-4cb1-a8de-f00da16a7362"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6092),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1166),
                             Description = "Opn/oth part gastrectomy",
                             ImageUrl = "https://picsum.photos/1200/900?image=14",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -279,7 +279,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("85b9767c-1a09-4c33-8e77-faa25f1d69e1"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6194),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1210),
                             Description = "Tendon excision for grft",
                             ImageUrl = "https://picsum.photos/1200/900?image=15",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -291,7 +291,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("22112bb2-c324-4860-8eb9-9c78853a52a5"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6245),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1290),
                             Description = "Vessel operation NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=16",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -303,7 +303,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("97ad5bf4-d153-41c5-a6e0-6d0bfbbb4f67"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6290),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1337),
                             Description = "Skull plate removal",
                             ImageUrl = "https://picsum.photos/1200/900?image=17",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -315,7 +315,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("cfc5cff8-ab2a-4c70-994d-5ab8ccb7cb0d"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6335),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1385),
                             Description = "Chng hnd mus/ten lng NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=18",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -327,7 +327,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("fac2ccc6-2c3f-4c1e-acbd-5354ba0873fb"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6381),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1432),
                             Description = "Plastic rep ext ear NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=19",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -339,7 +339,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("1adbc55a-4354-4205-b96d-c95e2dc806f4"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6425),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1477),
                             Description = "Interat ven retrn transp",
                             ImageUrl = "https://picsum.photos/1200/900?image=20",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -351,7 +351,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("c3770b10-dd0f-4b1c-83aa-d424c175c087"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6469),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1524),
                             Description = "Hepatic lobectomy",
                             ImageUrl = "https://picsum.photos/1200/900?image=20",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -363,7 +363,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("6b8d0110-e3e8-4727-a51e-06f38864e464"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6513),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1570),
                             Description = "Proximal gastrectomy",
                             ImageUrl = "https://picsum.photos/1200/900?image=21",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -375,7 +375,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("3b69e116-9dd6-400f-96ce-9911f4f6ac8b"),
                             CategoryId = new Guid("77666aa8-682c-4047-b075-04839281630a"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6591),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1642),
                             Description = "Appendiceal ops NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=22",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -387,7 +387,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("89b46ea8-b9a6-40e5-8df3-dba1095695f7"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6638),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1691),
                             Description = "Excision of wrist NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=23",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -399,7 +399,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("e88e07f8-358d-48f7-b17c-8a16458f9c0a"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6682),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1738),
                             Description = "Oth chest cage rep/plast",
                             ImageUrl = "https://picsum.photos/1200/900?image=24",
                             InventoryId = new Guid("ec186ddf-f430-44ec-84e5-205c93d84f14"),
@@ -411,7 +411,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("b243a35d-120a-4db3-ad12-7b3fa80e6391"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6745),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1784),
                             Description = "Implt/repl carddefib tot",
                             ImageUrl = "https://picsum.photos/1200/900?image=25",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -423,7 +423,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("6e3ac253-517d-48e5-96ad-800451f8591c"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6818),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1830),
                             Description = "Wound catheter irrigat",
                             ImageUrl = "https://picsum.photos/1200/900?image=26",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),
@@ -435,7 +435,7 @@ namespace CoolStore.ProductCatalogApi.Persistence.Migrations
                         {
                             Id = new Guid("4693520a-2b14-4d90-8b64-541575511382"),
                             CategoryId = new Guid("664690ee-a647-4b12-b87f-af5c511187eb"),
-                            Created = new DateTime(2020, 3, 5, 13, 24, 0, 116, DateTimeKind.Utc).AddTicks(6881),
+                            Created = new DateTime(2020, 3, 8, 5, 29, 40, 166, DateTimeKind.Utc).AddTicks(1876),
                             Description = "Abdomen wall repair NEC",
                             ImageUrl = "https://picsum.photos/1200/900?image=27",
                             InventoryId = new Guid("b8b62196-6369-409d-b709-11c112dd023f"),

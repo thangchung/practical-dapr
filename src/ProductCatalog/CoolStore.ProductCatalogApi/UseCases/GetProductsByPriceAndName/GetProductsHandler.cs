@@ -4,12 +4,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
 {
-    public class GetProductsHandler : IRequestHandler<GetProductsRequest, GetProductsResponse>
+    public class GetProductsHandler : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
@@ -18,9 +16,9 @@ namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+        protected override IQueryable<CatalogProductDto> Handle(GetProductsQuery request)
         {
-            var products = await _dbContext.Products
+            return _dbContext.Products
                 .AsNoTracking()
                 .Include(x => x.Category)
                 .Where(x => !x.IsDeleted)
@@ -33,15 +31,7 @@ namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id.ToString(),
                     CategoryName = x.Category.Name,
-                })
-                .ToListAsync(cancellationToken: cancellationToken);
-
-            // TODO: get stream of inventories
-
-            var response = new GetProductsResponse();
-            response.Products.AddRange(products);
-
-            return response;
+                });
         }
     }
 }

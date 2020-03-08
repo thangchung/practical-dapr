@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -13,7 +14,8 @@ namespace N8T.Infrastructure.ValidationModel
         private readonly IValidator<TRequest> _validator;
         private readonly ILogger<RequestValidationBehavior<TRequest, TResponse>> _logger;
 
-        public RequestValidationBehavior(IValidator<TRequest> validator, ILogger<RequestValidationBehavior<TRequest, TResponse>> logger)
+        public RequestValidationBehavior(IValidator<TRequest> validator,
+            ILogger<RequestValidationBehavior<TRequest, TResponse>> logger)
         {
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -23,9 +25,12 @@ namespace N8T.Infrastructure.ValidationModel
             CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            _logger.LogInformation($"Doing validation for {nameof(request)}");
+            _logger.LogInformation($"Handling {typeof(TRequest).FullName}");
+            _logger.LogDebug($"Handling {typeof(TRequest).FullName} with content {JsonSerializer.Serialize(request)}");
             await _validator.HandleValidation(request);
-            return await next();
+            var response = await next();
+            _logger.LogInformation($"Handled {typeof(TRequest).FullName}");
+            return response;
         }
     }
 }

@@ -13,6 +13,8 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.Data;
+using N8T.Infrastructure.GraphQL.Errors;
+using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
 using Path = System.IO.Path;
 
@@ -20,24 +22,13 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddServiceByInterfaceInAssembly<TRegisteredAssemblyType>(
-            this IServiceCollection services, Type interfaceType)
-        {
-            services.Scan(s =>
-                s.FromAssemblyOf<TRegisteredAssemblyType>()
-                    .AddClasses(c => c.AssignableTo(interfaceType))
-                    .AsImplementedInterfaces()
-                    .WithScopedLifetime());
-
-            return services;
-        }
-
         public static IServiceCollection AddCustomMediatR(this IServiceCollection services,
             Type markedType,
             Action<IServiceCollection> doMoreActions = null)
         {
             services.AddMediatR(markedType)
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
             doMoreActions?.Invoke(services);
             return services;
@@ -48,15 +39,16 @@ namespace N8T.Infrastructure
             Action<IServiceCollection> doMoreActions = null)
         {
             services.AddGraphQL(sp => Schema.Create(c =>
-                {
-                    c.RegisterServiceProvider(sp);
-                    c.RegisterObjectTypes(markedType.Assembly);
-                }),
-                new QueryExecutionOptions
-                {
-                    IncludeExceptionDetails = true,
-                    TracingPreference = TracingPreference.Always
-                });
+                    {
+                        c.RegisterServiceProvider(sp);
+                        c.RegisterObjectTypes(markedType.Assembly);
+                    }),
+                    new QueryExecutionOptions
+                    {
+                        IncludeExceptionDetails = true,
+                        TracingPreference = TracingPreference.Always
+                    })
+                .AddErrorFilter<ValidationErrorFilter>();
             doMoreActions?.Invoke(services);
             return services;
         }
@@ -93,7 +85,6 @@ namespace N8T.Infrastructure
             return schemaConfiguration;
         }
 
-        
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this object input)

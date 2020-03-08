@@ -8,10 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Domain;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System.Threading.Tasks;
-using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -19,51 +19,28 @@ namespace CoolStore.ProductCatalogApi
     {
         private static async Task Main(string[] args)
         {
+            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+                .AddCustomConfiguration();
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
 
-            var builder = WebApplication.CreateBuilder(args);
-
-            var configurationBuilder = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
-
-            var env = builder.Environment;
-            configurationBuilder.AddJsonFile("services.json", optional: true);
-            if (env.IsDevelopment())
-            {
-                var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
-                configurationBuilder.AddJsonFile(servicesJson, optional: true);
-            }
-
-            var config = configurationBuilder.Build();
-
             builder.Host.UseSerilog();
 
+            var config = configBuilder.Build();
             var serviceOptions = config.GetOptions<ServiceOptions>("Services");
+
             builder.Services
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomGraphQL(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly);
-
-            builder.Services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ProductCatalogDbContext>(options =>
-                {
-                    options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
-                    });
-                });
-            builder.Services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<ProductCatalogDbContext>());
-            builder.Services.AddScoped<IDomainEventContext>(provider => provider.GetService<ProductCatalogDbContext>());
-            builder.Services.AddHostedService<DbContextMigratorHostedService>();
+                .AddCustomValidators(typeof(Program).Assembly)
+                .AddCustomDbContext(config);
 
             var app = builder.Build();
-            app.Listen(serviceOptions.ProductCatalogService.RestUri);
 
             app.UseStaticFiles();
             app.UseGraphQL("/graphql");
@@ -83,7 +60,42 @@ namespace CoolStore.ProductCatalogApi
                 });
             });
 
+            app.Listen(serviceOptions.ProductCatalogService.RestUri);
             await app.RunAsync();
+        }
+    }
+
+    internal static class Extensions
+    {
+        public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
+            this WebApplicationBuilder builder)
+        {
+            var configBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
+            var env = builder.Environment;
+            configBuilder.AddJsonFile("services.json", optional: true);
+            if (!env.IsDevelopment()) return (builder, configBuilder);
+            var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+            configBuilder.AddJsonFile(servicesJson, optional: true);
+            return (builder, configBuilder);
+        }
+
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<ProductCatalogDbContext>(options =>
+                {
+                    options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Program).Assembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
+                    });
+                });
+            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<ProductCatalogDbContext>());
+            services.AddScoped<IDomainEventContext>(provider => provider.GetService<ProductCatalogDbContext>());
+            services.AddHostedService<DbContextMigratorHostedService>();
+            return services;
         }
     }
 }
