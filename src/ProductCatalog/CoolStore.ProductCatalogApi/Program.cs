@@ -1,4 +1,5 @@
-﻿using CoolStore.ProductCatalogApi.Persistence;
+﻿using CoolStore.ProductCatalogApi.Boundaries.GraphQL;
+using CoolStore.ProductCatalogApi.Persistence;
 using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
@@ -40,7 +41,11 @@ namespace CoolStore.ProductCatalogApi
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(typeof(Program))
+                .AddCustomGraphQL(schemaConfiguration =>
+                {
+                    schemaConfiguration.RegisterQueryType<QueryType>();
+                    schemaConfiguration.RegisterMutationType<MutationType>();
+                })
                 .AddCustomValidators(typeof(Program).Assembly)
                 .AddCustomDbContext(config)
                 .AddCustomClientGrpc(svc =>
@@ -98,8 +103,7 @@ namespace CoolStore.ProductCatalogApi
 
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration config)
         {
-            services
-                .AddDbContext<ProductCatalogDbContext>(options =>
+            services.AddDbContext<ProductCatalogDbContext>(options =>
                 {
                     options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
                     {
