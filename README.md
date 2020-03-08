@@ -46,19 +46,23 @@ $ dapr run --app-id graphql-api --port 5000 dotnet run
 
 - Go to http://localhost:5000
 
-- Query
+### Query
 
 ```js
 query {
-    products(currentPage: 1, highPrice: 1000) {
-    id
-    name
-    imageUrl
-  }
+    products (page: 1, pageSize:1000) {
+      totalCount,
+    	edges {
+        id,
+        name
+      }
+    }
 }
 ```
 
-- Mutation
+![](assets/graphql_playground_query_products.png)
+
+### Mutation
 
 ```js
 mutation createProductMutation($createProductInput: CreateProductInput!) {
@@ -84,7 +88,7 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 }
 ```
 
-![](assets/graphql_playground.png)
+![](assets/graphql_playground_mutation.png)
 
 # Best reference articles
 - https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/
