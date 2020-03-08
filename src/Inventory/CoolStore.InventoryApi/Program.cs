@@ -1,22 +1,22 @@
-﻿using CoolStore.ProductCatalogApi.Persistence;
-using CoolStore.Protobuf.Inventory.V1;
-using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Playground;
+﻿using CoolStore.InventoryApi.Boundaries.Grpc;
+using CoolStore.InventoryApi.Persistence;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using N8T.Domain;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
-using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Options;
 using Serilog;
-using System;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace CoolStore.ProductCatalogApi
+namespace CoolStore.InventoryApi
 {
     internal class Program
     {
@@ -25,54 +25,31 @@ namespace CoolStore.ProductCatalogApi
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            var config = configBuilder.Build();
+            var serviceOptions = config.GetOptions<ServiceOptions>("Services");
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
 
-            builder.Host.UseSerilog();
-
-            var config = configBuilder.Build();
-            var serviceOptions = config.GetOptions<ServiceOptions>("Services");
+            builder.Host
+                .UseSerilog()
+                .UseCustomHost(serviceOptions);
 
             builder.Services
                 .AddSingleton(serviceOptions)
                 .AddLogging()
-                .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(typeof(Program))
                 .AddCustomValidators(typeof(Program).Assembly)
                 .AddCustomDbContext(config)
-                .AddCustomClientGrpc(svc =>
-                {
-                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                        {
-                            o.Address = new Uri(serviceOptions.InventoryService.GrpcUri);
-                        })
-                        .AddInterceptor<ClientLoggerInterceptor>();
-                });
+                .AddCustomGrpc();
 
             var app = builder.Build();
 
-            app.UseStaticFiles();
-            app.UseGraphQL("/graphql");
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql",
-                Path = "/playground",
-            });
+            app.MapGrpcService<InventoryService>();
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", context =>
-                {
-                    context.Response.Redirect("/playground");
-                    return Task.CompletedTask;
-                });
-            });
-
-            app.Listen(serviceOptions.ProductCatalogService.RestUri);
+            app.Listen(serviceOptions.InventoryService.GrpcUri);
             await app.RunAsync();
         }
     }
@@ -96,10 +73,30 @@ namespace CoolStore.ProductCatalogApi
             return (builder, configBuilder);
         }
 
+        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder, ServiceOptions serviceOptions)
+        {
+            return hostBuilder
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel((ctx, options) =>
+                    {
+                        if (ctx.HostingEnvironment.IsDevelopment())
+                        {
+                            IdentityModelEventSource.ShowPII = true;
+                        }
+
+                        options.Limits.MinRequestBodyDataRate = null;
+                        options.Listen(IPAddress.Any, serviceOptions.InventoryService.RestUri.GetPortOfUrl());
+                        options.Listen(IPAddress.Any, serviceOptions.InventoryService.GrpcUri.GetPortOfUrl(),
+                            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
+                    });
+                });
+        }
+
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration config)
         {
             services
-                .AddDbContext<ProductCatalogDbContext>(options =>
+                .AddDbContext<InventoryDbContext>(options =>
                 {
                     options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
                     {
@@ -108,8 +105,8 @@ namespace CoolStore.ProductCatalogApi
                     });
                 });
 
-            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<ProductCatalogDbContext>());
-            services.AddScoped<IDomainEventContext>(provider => provider.GetService<ProductCatalogDbContext>());
+            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<InventoryDbContext>());
+            services.AddScoped<IDomainEventContext>(provider => provider.GetService<InventoryDbContext>());
             services.AddHostedService<DbContextMigratorHostedService>();
 
             return services;

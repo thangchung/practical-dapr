@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL.Errors;
+using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
 using Path = System.IO.Path;
@@ -30,7 +31,9 @@ namespace N8T.Infrastructure
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
+
             doMoreActions?.Invoke(services);
+
             return services;
         }
 
@@ -49,7 +52,9 @@ namespace N8T.Infrastructure
                         TracingPreference = TracingPreference.Always
                     })
                 .AddErrorFilter<ValidationErrorFilter>();
+
             doMoreActions?.Invoke(services);
+
             return services;
         }
 
@@ -61,6 +66,35 @@ namespace N8T.Infrastructure
                 .AddClasses(c => c.AssignableTo(typeof(FluentValidation.IValidator<>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
+        }
+
+        public static IServiceCollection AddCustomGrpc(this IServiceCollection services,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            services.AddGrpc(options =>
+            {
+                options.Interceptors.Add<RequestLoggerInterceptor>();
+                options.Interceptors.Add<ExceptionHandleInterceptor>();
+                options.EnableDetailedErrors = true;
+            });
+
+            doMoreActions?.Invoke(services);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomClientGrpc(this IServiceCollection services,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            services.AddSingleton<ClientLoggerInterceptor>();
+
+            doMoreActions?.Invoke(services);
+
+            return services;
         }
 
         public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
@@ -104,6 +138,11 @@ namespace N8T.Infrastructure
             {
                 return default;
             }
+        }
+
+        public static int GetPortOfUrl(this string url)
+        {
+            return url.Split(":").Last().ConvertTo<int>();
         }
 
         public static TData ReadData<TData>(this string fileName, string rootFolder)

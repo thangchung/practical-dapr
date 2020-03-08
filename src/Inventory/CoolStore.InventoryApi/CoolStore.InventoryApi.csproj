@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -17,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\_schema\proto\coolstore\product_catalog\v1\product_catalog.proto" Link="protobuf\product_catalog.proto" AdditionalImportDirs="..\..\_schema\proto\" />
     <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory.proto" Link="protobuf\inventory.proto" AdditionalImportDirs="..\..\_schema\proto\" />
-    <Protobuf Include="..\..\_schema\proto\coolstore\product_catalog\v1\product_catalog_api.proto" Link="protobuf\product_catalog_api.proto" AdditionalImportDirs="..\..\_schema\proto\" />
     <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory_api.proto" Link="protobuf\inventory_api.proto" AdditionalImportDirs="..\..\_schema\proto\" />
   </ItemGroup>
 
@@ -32,6 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Domain\N8T.Domain.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Infra\N8T.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\SeedData\" />
   </ItemGroup>
 
 </Project>

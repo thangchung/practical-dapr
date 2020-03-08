@@ -1,0 +1,20 @@
+[
+  {
+    "id": "90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD",
+    "location": "Vietnam",
+    "description": "This store sells electronic gadgets",
+    "website": "https://coolstore-vn.com"
+  },
+  {
+    "id": "B8B62196-6369-409D-B709-11C112DD023F",
+    "location": "Seattle",
+    "description": "This store sells food and beverage products",
+    "website": "https://coolstore-sea.com"
+  },
+  {
+    "id": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "location": "San Francisco",
+    "description": "This store sells food and beverage products",
+    "website": "https://coolstore-san.com"
+  }
+]

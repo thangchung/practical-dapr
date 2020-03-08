@@ -1,11 +1,11 @@
-﻿using CoolStore.ProductCatalogApi.Persistence;
+﻿using System;
+using System.Linq;
+using CoolStore.ProductCatalogApi.Persistence;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
-namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
+namespace CoolStore.ProductCatalogApi.UseCases.GetProducts
 {
     public class GetProductsHandler : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
     {
@@ -31,6 +31,7 @@ namespace CoolStore.ProductCatalogApi.UseCases.GetProductsByPriceAndName
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id.ToString(),
                     CategoryName = x.Category.Name,
+                    InventoryId = x.InventoryId.ToString()
                 });
         }
     }
