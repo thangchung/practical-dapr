@@ -11,6 +11,7 @@ using N8T.Infrastructure;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Boundaries.GraphQL;
 using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi
@@ -46,8 +47,12 @@ namespace CoolStore.ProductCatalogApi
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly);
+                .AddCustomValidators(typeof(Program).Assembly)
+                .AddCustomGraphQL(schemaConfig =>
+                {
+                    schemaConfig.RegisterQueryType<QueryType>();
+                    schemaConfig.RegisterMutationType<MutationType>();
+                });
 
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<ProductCatalogDbContext>(options =>

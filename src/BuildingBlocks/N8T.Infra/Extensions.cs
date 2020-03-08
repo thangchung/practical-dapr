@@ -43,14 +43,12 @@ namespace N8T.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddCustomGraphQL(this IServiceCollection services,
-            Type markedType,
-            Action<IServiceCollection> doMoreActions = null)
+        public static IServiceCollection AddCustomGraphQL(this IServiceCollection services, Action<ISchemaConfiguration> schemaConfiguration, Action<IServiceCollection> doMoreActions = null)
         {
             services.AddGraphQL(sp => Schema.Create(c =>
                 {
                     c.RegisterServiceProvider(sp);
-                    c.RegisterObjectTypes(markedType.Assembly);
+                    schemaConfiguration.Invoke(c);
                 }),
                 new QueryExecutionOptions
                 {
@@ -77,23 +75,6 @@ namespace N8T.Infrastructure
             configuration.GetSection(section).Bind(model);
             return model;
         }
-
-        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration,
-            Assembly graphTypeAssembly)
-        {
-            var objectTypes = graphTypeAssembly
-                .GetTypes()
-                .Where(type => typeof(ObjectType).IsAssignableFrom(type));
-
-            foreach (var objectType in objectTypes)
-            {
-                schemaConfiguration.RegisterType(objectType);
-            }
-
-            return schemaConfiguration;
-        }
-
-        
 
         [DebuggerStepThrough]
         public static T ConvertTo<T>(this object input)
