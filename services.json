@@ -2,27 +2,27 @@
   "Services": {
     "GraphApi": {
       "ServiceName": "GraphQL Api",
-      "RestUri": "http://localhost:5000",
+      "RestUri": "http://localhost:5102",
       "GrpcUri": ""
     },
     "ProductCatalogService": {
       "ServiceName": "Product Catalog Service",
-      "RestUri": "http://localhost:5002",
-      "GrpcUri": "http://localhost:15002"
+      "RestUri": "http://localhost:5202",
+      "GrpcUri": "http://localhost:5203"
     },
     "InventoryService": {
       "ServiceName": "Inventory Service",
-      "RestUri": "http://localhost:5003",
-      "GrpcUri": "http://localhost:15003"
+      "RestUri": "http://localhost:5302",
+      "GrpcUri": "http://localhost:5303"
     },
     "ShoppingCartService": {
       "ServiceName": "Shopping Cart Service",
-      "RestUri": "http://localhost:5004",
-      "GrpcUri": "http://localhost:15004"
+      "RestUri": "http://localhost:5402",
+      "GrpcUri": "http://localhost:5403"
     },
     "IdentityService": {
       "ServiceName": "Identity Service",
-      "Uri": "http://localhost:5001",
+      "Uri": "http://localhost:5000",
       "GrpcUri": ""
     }
   }

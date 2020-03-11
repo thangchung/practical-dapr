@@ -1,4 +1,5 @@
-﻿using CoolStore.InventoryApi.Boundaries.Grpc;
+﻿using System;
+using CoolStore.InventoryApi.Boundaries.Grpc;
 using CoolStore.InventoryApi.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using N8T.Infrastructure.Options;
 using Serilog;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace CoolStore.InventoryApi
 {
@@ -31,7 +33,7 @@ namespace CoolStore.InventoryApi
 
             builder.Host
                 .UseSerilog()
-                .UseCustomHost(serviceOptions);
+                .UseCustomHost();
 
             builder.Services
                 .AddSingleton(serviceOptions)
@@ -43,7 +45,12 @@ namespace CoolStore.InventoryApi
 
             var app = builder.Build();
 
-            app.MapGrpcService<InventoryService>();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<InventoryService>();
+                endpoints.MapGet("/test", context => context.Response.WriteAsync("this is test message."));
+            });
 
             await app.RunAsync();
         }
@@ -51,7 +58,7 @@ namespace CoolStore.InventoryApi
 
     internal static class Extensions
     {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder, ServiceOptions serviceOptions)
+        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
         {
             return hostBuilder
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -59,13 +66,13 @@ namespace CoolStore.InventoryApi
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
                         if (ctx.HostingEnvironment.IsDevelopment())
-                        {
                             IdentityModelEventSource.ShowPII = true;
-                        }
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any, serviceOptions.InventoryService.RestUri.GetPortOfUrl());
-                        options.Listen(IPAddress.Any, serviceOptions.InventoryService.GrpcUri.GetPortOfUrl(),
+                        options.Listen(IPAddress.Any,
+                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
+                        options.Listen(IPAddress.Any,
+                            Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>(),
                             listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
                     });
                 });

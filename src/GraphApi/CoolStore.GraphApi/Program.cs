@@ -7,12 +7,15 @@ using N8T.Infrastructure;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace CoolStore.GraphApi
 {
@@ -40,7 +43,9 @@ namespace CoolStore.GraphApi
 
             var config = configurationBuilder.Build();
 
-            builder.Host.UseSerilog();
+            builder.Host
+                .UseSerilog()
+                .UseCustomHost();
 
             var serviceOptions = config.GetOptions<ServiceOptions>("Services");
             builder.Services.AddHttpContextAccessor();
@@ -94,12 +99,23 @@ namespace CoolStore.GraphApi
         }
     }
 
-    public class ServiceOptions
+    internal static class Extensions
     {
-        public ServiceConfig GraphApi { get; set; }
-        public ServiceConfig IdentityService { get; set; }
-        public ServiceConfig ProductCatalogService { get; set; }
-        public ServiceConfig InventoryService { get; set; }
-        public ServiceConfig ShoppingCartService { get; set; }
+        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel((ctx, options) =>
+                    {
+                        if (ctx.HostingEnvironment.IsDevelopment())
+                            IdentityModelEventSource.ShowPII = true;
+
+                        options.Limits.MinRequestBodyDataRate = null;
+                        options.Listen(IPAddress.Any,
+                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
+                    });
+                });
+        }
     }
 }

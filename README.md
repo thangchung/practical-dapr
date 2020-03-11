@@ -23,40 +23,33 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 
 ## Start required components
 
+- We need Docker for Desktop installed
+- Follow those steps at https://github.com/dapr/cli to install Dapr CLI
+
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.override.yml run sqlserver
 ```
 
-## Manual run with Visual Studio or Visual Code
+## Run projects with Dapr CLI
 
 ```bash
-$ dotnet run -p \src\GraphApi\CoolStore.GraphApi\CoolStore.GraphApi.csproj
-$ dotnet run -p \src\ProductCatalog\CoolStore.ProductCatalogApi\CoolStore.ProductCatalogApi.csproj
-$ dotnet run -p \src\Inventory\CoolStore.InventoryApi\CoolStore.InventoryApi.csproj
+$ cd src\GraphApi\CoolStore.GraphApi
+$ dapr run --app-id graphql-api --port 5102 --app-port 5101 dotnet run
 ```
-
-## Run with Dapr
-
-- Follow those steps at https://github.com/dapr/cli to install Dapr CLI
 
 ```bash
 $ cd src\ProductCatalog\CoolStore.ProductCatalogApi
-$ dapr run --app-id product-catalog-api dotnet run
+$ dapr run --app-id product-catalog-api --port 5202 --app-port 5201 dotnet run
 ```
 
 ```bash
 $ cd src\Inventory\CoolStore.InventoryApi
-$ dapr run --app-id inventory-api dotnet run
-```
-
-```bash
-$ cd src\GraphApi\CoolStore.GraphApi
-$ dapr run --app-id graphql-api dotnet run
+$ dapr run --app-id inventory-api --grpc-port 5303 --port 5302 --app-port 5301 dotnet run
 ```
 
 ## Test it
 
-- Go to http://localhost:5000
+- Go to http://localhost:5102
 
 ### Query
 

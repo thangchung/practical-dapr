@@ -10,7 +10,11 @@ using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -29,7 +33,9 @@ namespace CoolStore.ProductCatalogApi
                 .WriteTo.Console()
                 .CreateLogger();
 
-            builder.Host.UseSerilog();
+            builder.Host
+                .UseSerilog()
+                .UseCustomHost();
 
             builder.Services
                 .AddSingleton(serviceOptions)
@@ -74,6 +80,26 @@ namespace CoolStore.ProductCatalogApi
 
             app.Listen(serviceOptions.ProductCatalogService.RestUri);
             await app.RunAsync();
+        }
+    }
+
+    internal static class Extensions
+    {
+        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel((ctx, options) =>
+                    {
+                        if (ctx.HostingEnvironment.IsDevelopment())
+                            IdentityModelEventSource.ShowPII = true;
+
+                        options.Limits.MinRequestBodyDataRate = null;
+                        options.Listen(IPAddress.Any,
+                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
+                    });
+                });
         }
     }
 }
