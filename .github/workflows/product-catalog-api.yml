@@ -35,6 +35,7 @@ jobs:
     - name: Build with dotnet
       run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
 
+    - uses: actions/checkout@v2
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
