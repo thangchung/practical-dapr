@@ -13,34 +13,28 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  build-dotnet:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ github.event.path }}
-    - run: |
-          git fetch --unshallow
-    
-    - uses: aarnott/nbgv@v0.3
-      with:
-        setAllVars: true
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101 
-
     - name: Build with dotnet
       run: dotnet build src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj --configuration Release
 
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: aarnott/nbgv@v0.3
+      with:
+        setAllVars: true
     - name: Build docker image
       run: docker build . --file ./src/Inventory/CoolStore.InventoryApi/Dockerfile --tag image
-    
     - name: Log into registry
       run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-    
     - name: Push image
       run: |
         VERSION=$NBGV_SemVer2
