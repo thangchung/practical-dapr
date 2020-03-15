@@ -54,7 +54,8 @@ jobs:
         login-server: ${{ secrets.CONTAINER_REGISTRY }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    - run: |
+    - name: Build and publish docker image
+      run: |
         VERSION=$NBGV_SemVer2
         IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
         docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION
@@ -85,7 +86,7 @@ jobs:
           releaseName: ${{steps.generate-release-name.outputs.result}}
           overrides: |
             image.repository:${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-            image.tag:$NBGV_SemVer2
+            image.tag:'$NBGV_SemVer2'
           helm-version: 'latest'
       id: bake
     - uses: azure/k8s-deploy@v1
