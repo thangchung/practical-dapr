@@ -14,6 +14,7 @@ RUN set -ex && \
     rm -v /tmp/*.apk && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
 WORKDIR /src
+RUN ls -la
 COPY ["nuget.config", "./"]
 COPY ["services.json", "./"]
 COPY ["src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj", "src/ProductCatalog/CoolStore.ProductCatalogApi/"]
