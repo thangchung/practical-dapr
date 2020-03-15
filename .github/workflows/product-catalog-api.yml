@@ -6,9 +6,9 @@ on:
       - master
       - feature/*
     paths:
-      - "src/ProductCatalog/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - src/ProductCatalog/*
+      - src/BuildingBlocks/*
+      - .github/workflows/*
   pull_request:
     branches: [ master ]
 
