@@ -72,18 +72,19 @@ jobs:
     - name: Create valid release-name
       id: generate-release-name
       run: |
-        release=product-catalog-api-$NBGV_SemVer2
+        release=product-catalog-api-${NBGV_SemVer2}
         release=${release::53}
         release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
         echo ::set-output name=result::$release
     - uses: azure/k8s-bake@v1
       with:
-          renderEngine: 'helm2'
+          renderEngine: 'helm'
           helmChart: './.helm/product-catalog-api/'
           releaseName: ${{steps.generate-release-name.outputs.result}}
           overrides: |
             image.repository:${{ secrets.CONTAINER_REGISTRY }}/product-catalog-api
             image.tag:$NBGV_SemVer2
+          helm-version: 'latest'
       id: bake
     - uses: azure/k8s-deploy@v1
       with:
