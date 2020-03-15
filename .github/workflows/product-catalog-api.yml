@@ -43,7 +43,7 @@ jobs:
     
     - name: Push image
       run: |
-        VERSION=$env:NBGV_SemVer1
+        VERSION="${{ $env:NBGV_SemVer1 }}"
         IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
