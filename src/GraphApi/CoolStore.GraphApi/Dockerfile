@@ -17,7 +17,7 @@ WORKDIR /src
 COPY ["nuget.config", "./"]
 COPY ["services.json", "./"]
 COPY ["src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj", "src/GraphApi/CoolStore.GraphApi/"]
-COPY ["src/BuildingBlocks/N8T.Infra/N8T.Infrastructure.csproj", "src/BuildingBlocks/N8T.Infra/"]
+COPY ["src/BuildingBlocks/N8T.Infrastructure/N8T.Infrastructure.csproj", "src/BuildingBlocks/N8T.Infrastructure/"]
 COPY ["src/BuildingBlocks/N8T.Domain/N8T.Domain.csproj", "src/BuildingBlocks/N8T.Domain/"]
 RUN dotnet restore "src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj"  --configfile nuget.config
 COPY . .
