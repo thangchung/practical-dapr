@@ -32,3 +32,12 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
+
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: docker.pkg.github.com/elgohr/publish-docker-github-action/publish-docker-github-action
+        username: ${{ github.actor }}
+        password: ${{ secrets.GH_TOKEN }}
+        workdir: ./src/ProductCatalog/CoolStore.ProductCatalogApi
+        registry: docker.pkg.github.com

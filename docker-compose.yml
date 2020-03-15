@@ -2,6 +2,41 @@ version: "3.7"
 
 services:
 
+  graph-api:
+    image: ${REGISTRY:-vndg}/dapr-graph-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/GraphApi/CoolStore.GraphApi/Dockerfile
+    networks:
+      - coolstore
+    depends_on:
+      - product-catalog-api
+      - sqlserver
+      - redis
+
+  product-catalog-api:
+    image: ${REGISTRY:-vndg}/dapr-product-catalog-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile
+    networks:
+      - coolstore
+    depends_on:
+      - inventory-api
+      - sqlserver
+      - redis
+
+  inventory-api:
+    image: ${REGISTRY:-vndg}/dapr-inventory-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Inventory/CoolStore.InventoryApi/Dockerfile
+    networks:
+      - coolstore
+    depends_on:
+      - sqlserver
+      - redis
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2017-latest
     restart: on-failure
