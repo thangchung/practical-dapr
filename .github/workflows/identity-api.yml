@@ -4,9 +4,9 @@ on:
   push:
     branches: [ master ]
     paths:
-      - "src/Identity/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - "src/Identity/**"
+      - "src/BuildingBlocks/**"
+      - ".github/workflows/identity-api.yml"
   pull_request:
     branches: [ master ]
 

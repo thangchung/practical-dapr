@@ -6,9 +6,9 @@ on:
       - master
       - feature/*
     paths:
-      - "src/Inventory/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - "src/Inventory/**"
+      - "src/BuildingBlocks/**"
+      - ".github/workflows/inventory-api.yml"
   pull_request:
     branches: [ master ]
 

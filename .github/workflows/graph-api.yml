@@ -6,9 +6,9 @@ on:
       - master
       - feature/*
     paths:
-      - "src/GraphApi/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - "src/GraphApi/**"
+      - "src/BuildingBlocks/**"
+      - ".github/workflows/graph-api.yml"
   pull_request:
     branches: [ master ]
 
