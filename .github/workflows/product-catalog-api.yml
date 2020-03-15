@@ -36,7 +36,7 @@ jobs:
       run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
     
     - name: Build docker image
-      run: docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile
+      run: docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile --tag latest
     
     - name: Log into registry
       run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
