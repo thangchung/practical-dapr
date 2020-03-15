@@ -58,7 +58,7 @@ jobs:
       run: |
         VERSION=$NBGV_SemVer2
         IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:lastest
+        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
         docker push $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:latest
     - uses: azure/aks-set-context@v1
