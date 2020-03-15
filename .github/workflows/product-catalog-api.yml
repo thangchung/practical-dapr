@@ -91,7 +91,7 @@ jobs:
     - uses: azure/k8s-deploy@v1
       with:
         manifests: ${{ steps.bake.outputs.manifestsBundle }}
-        namespace: ${{steps.generate-child-space-name.outputs.result}}
+        namespace: dev
         imagepullsecrets: |
           ${{ secrets.IMAGE_PULL_SECRET }}
     
