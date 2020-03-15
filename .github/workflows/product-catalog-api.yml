@@ -2,7 +2,9 @@ name: product-catalog-ci
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/*
     paths:
       - "src/ProductCatalog/*"
       - "src/BuildingBlocks/*"

@@ -2,7 +2,9 @@ name: graphql-ci
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/*
     paths:
       - "src/GraphApi/*"
       - "src/BuildingBlocks/*"
