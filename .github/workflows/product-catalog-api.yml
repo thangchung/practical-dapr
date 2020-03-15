@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-dotnet:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -41,3 +41,24 @@ jobs:
         IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
+
+  build-aks:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: aarnott/nbgv@v0.3
+      with:
+        setAllVars: true
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api:$NBGV_SemVer2
+        docker push ${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api:$NBGV_SemVer2
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ secrets.CLUSTER_NAME }}
+        resource-group: ${{ secrets.RESOURCE_GROUP }}
