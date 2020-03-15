@@ -8,7 +8,7 @@ on:
     paths:
       - "src/ProductCatalog/**"
       - "src/BuildingBlocks/**"
-      - ".github/workflows/*"
+      - ".github/workflows/product-catalog-api.yml"
   pull_request:
     branches: [ master ]
 
@@ -43,9 +43,10 @@ jobs:
     
     - name: Push image
       run: |
+        VERSION=$(echo "${{ $env:NBGV_SemVer1 }}")
         IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
-        docker tag image $IMAGE_ID:$env:NBGV_SemVer1
-        docker push $IMAGE_ID:$env:NBGV_SemVer1
+        docker tag image $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$env:$VERSION
     # - name: Publish to Registry
     #   uses: elgohr/Publish-Docker-Github-Action@master
     #   with:
