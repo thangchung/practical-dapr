@@ -15,8 +15,8 @@ RUN set -ex && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
 WORKDIR /src
 RUN ls -la
-COPY ["nuget.config", "./"]
-COPY ["services.json", "./"]
+COPY ./nuget.config ./
+COPY ./services.json ./
 COPY ["src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj", "src/ProductCatalog/CoolStore.ProductCatalogApi/"]
 COPY ["src/BuildingBlocks/N8T.Domain/N8T.Domain.csproj", "src/BuildingBlocks/N8T.Domain/"]
 COPY ["src/BuildingBlocks/N8T.Infrastructure/N8T.Infrastructure.csproj", "src/BuildingBlocks/N8T.Infrastructure/"]
