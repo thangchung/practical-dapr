@@ -1,0 +1,38 @@
+replicaCount: 1
+applicationName: practical-dapr
+
+image:
+  repository: dapracr.azurecr.io/product-catalog-api
+  tag: prod
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  appPort: 5201
+  httpPort: 5202
+  grpcPort: 5203
+
+# resources:
+#   limits:
+#     cpu: "500m"
+#   requests:
+#     cpu: "100m"
+
+# nodeSelector:
+#   "kubernetes.io/os": linux
+
+# tolerations: []
+
+# affinity: {}
+
+env:
+  values:
+    - name: DISABLE_SSL
+      value: "false"
+
+# probes:
+#   liveness:
+#     path: /liveness
+#     initialDelaySeconds: 20
+#     periodSeconds: 30
+#     port: http

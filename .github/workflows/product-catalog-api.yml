@@ -62,3 +62,33 @@ jobs:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: ${{ secrets.CLUSTER_NAME }}
         resource-group: ${{ secrets.RESOURCE_GROUP }}
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: ${{ steps.generate-child-space-name.outputs.result }}
+        container-registry-url: ${{ secrets.CONTAINER_REGISTRY }}
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: ${{ secrets.IMAGE_PULL_SECRET }}
+    - name: Create valid release-name
+      id: generate-release-name
+      run: |
+        release=product-catalog-api-$NBGV_SemVer2
+        release=${release::53}
+        release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
+        echo ::set-output name=result::$release
+    - uses: azure/k8s-bake@v1
+      with:
+          renderEngine: 'helm2'
+          helmChart: './.helm/product-catalog-api/'
+          releaseName: ${{steps.generate-release-name.outputs.result}}
+          overrides: |
+            image.repository:${{ secrets.CONTAINER_REGISTRY }}/product-catalog-api
+            image.tag:$NBGV_SemVer2
+      id: bake
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        namespace: ${{steps.generate-child-space-name.outputs.result}}
+        imagepullsecrets: |
+          ${{ secrets.IMAGE_PULL_SECRET }}
+    

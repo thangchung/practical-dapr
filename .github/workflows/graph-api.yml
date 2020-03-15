@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-dotnet:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
         dotnet-version: 3.1.101 
     - name: Build with dotnet
       run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
-      
+
   build-docker:
     runs-on: ubuntu-latest
     steps:
