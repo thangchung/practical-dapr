@@ -82,7 +82,7 @@ jobs:
           helmChart: './.helm/product-catalog-api/'
           releaseName: ${{steps.generate-release-name.outputs.result}}
           overrides: |
-            image.repository:${{ secrets.CONTAINER_REGISTRY }}/product-catalog-api
+            image.repository:${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
             image.tag:$NBGV_SemVer2
           helm-version: 'latest'
       id: bake
