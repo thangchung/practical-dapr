@@ -55,8 +55,10 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t ${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api:$NBGV_SemVer2
-        docker push ${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api:$NBGV_SemVer2
+        VERSION=$NBGV_SemVer2
+        IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
+        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
     - uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
