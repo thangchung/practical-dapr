@@ -72,7 +72,7 @@ jobs:
     - name: Create valid release-name
       id: generate-release-name
       run: |
-        release=product-catalog-api-${NBGV_SemVer2}
+        release=product-catalog-api-$NBGV_SemVer2
         release=${release::53}
         release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
         echo ::set-output name=result::$release

@@ -2,15 +2,20 @@ replicaCount: 1
 applicationName: practical-dapr
 
 image:
-  repository: dapracr.azurecr.io/product-catalog-api
+  repository: dapracr.azurecr.io/dapr-product-catalog-api
   tag: prod
   pullPolicy: Always
+
+imagePullSecrets: []
 
 service:
   type: ClusterIP
   appPort: 5201
   httpPort: 5202
   grpcPort: 5203
+
+ingress:
+  enabled: false
 
 # resources:
 #   limits:
@@ -27,8 +32,12 @@ service:
 
 env:
   values:
-    - name: DISABLE_SSL
-      value: "false"
+    - name: DAPR_HTTP_PORT
+      value: 5202
+    - name: Services__ProductCatalogService__RestUri
+      value: http://localhost:5202
+    - name: Services__InventoryService__GrpcUri
+      value: http://inventory-api:5303
 
 # probes:
 #   liveness:

@@ -27,7 +27,6 @@ spec:
         dapr.io/config: "tracing"
         dapr.io/log-level: "debug"
     spec:
-      serviceAccountName: {{ .Values.inf.sa }}
       {{ if .Values.imagePullSecrets -}}
       imagePullSecrets:
       {{ range .Values.imagePullSecrets -}}
