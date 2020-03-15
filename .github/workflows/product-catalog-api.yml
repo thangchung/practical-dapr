@@ -38,6 +38,14 @@ jobs:
     - name: Build docker image
       run: docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile
     
+    - name: Log into registry
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+    
+    - name: Push image
+      run: |
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
+        docker tag image $IMAGE_ID:$env:NBGV_SemVer1
+        docker push $IMAGE_ID:$env:NBGV_SemVer1
     # - name: Publish to Registry
     #   uses: elgohr/Publish-Docker-Github-Action@master
     #   with:
