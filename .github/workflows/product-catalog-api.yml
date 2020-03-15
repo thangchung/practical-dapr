@@ -58,8 +58,9 @@ jobs:
       run: |
         VERSION=$NBGV_SemVer2
         IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION
+        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:lastest
         docker push $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:latest
     - uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
@@ -85,11 +86,7 @@ jobs:
           helmChart: './.helm/product-catalog-api/'
           releaseName: ${{steps.generate-release-name.outputs.result}}
           overrides: |
-            VERSION=$NBGV_SemVer2
-            IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-            echo $IMAGE_ID:$VERSION
-            image.repository:$IMAGE_ID
-            image.tag:$VERSION
+            image.repository:${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
           helm-version: 'latest'
       id: bake
     - uses: azure/k8s-deploy@v1

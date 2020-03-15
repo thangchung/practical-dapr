@@ -3,7 +3,7 @@ applicationName: practical-dapr
 
 image:
   repository: dapracr.azurecr.io/dapr-product-catalog-api
-  tag: prod
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets: []
