@@ -109,7 +109,7 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 ![](assets/graphql_playground_mutation.png)
 
 ## Setup Azure
-- [https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions](Publish docker image to ACR and AKS)
+- [Publish docker image to ACR and AKS](https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions) and [example](https://github.com/Azure/dev-spaces/blob/master/.github/workflows/bikes.yml)
 
 ## Contributing
 
