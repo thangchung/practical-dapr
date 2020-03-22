@@ -37,6 +37,16 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: apphttp
+              containerPort: {{ .Values.service.appPort }}
+              protocol: TCP
+            - name: httpPort
+              containerPort: {{ .Values.service.httpPort }}
+              protocol: TCP
+            - name: grpcPort
+              containerPort: {{ .Values.service.grpcPort }}
+              protocol: TCP
           env:
           {{- if .Values.env.values -}}
           {{- range .Values.env.values }}
@@ -44,38 +54,3 @@ spec:
               value: {{ .value | quote }}
           {{- end -}}
           {{- end -}}
-          ports:
-            - name: apphttp
-              containerPort: 5201
-              protocol: TCP
-            - name: httpPort
-              containerPort: 5202
-              protocol: TCP
-            - name: grpcPort
-              containerPort: 5203
-              protocol: TCP
-          # {{ if .Values.probes -}}
-          # {{- if .Values.probes.liveness -}}
-          # livenessProbe:
-          #   httpGet:
-          #     port: {{ .Values.probes.liveness.port }}
-          #     path: {{ .Values.probes.liveness.path }}
-          #   initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
-          #   periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
-          # {{- end -}}
-          # {{- end -}}
-          # {{- if .Values.probes -}}
-          # {{- if .Values.probes.readiness }}
-          # readinessProbe:
-          #   httpGet:
-          #     port: {{ .Values.probes.readiness.port }}
-          #     path: {{ .Values.probes.readiness.path }}
-          #   initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
-          #   periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
-          #   timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
-          # {{- end -}}
-          # {{- end }}
-#           resources:
-# {{ toYaml .Values.resources | indent 12 }}
-#     {{- with .Values.nodeSelector }}
-

@@ -33,10 +33,3 @@ env:
       value: http://inventory-api:5303
     - name: ConnectionStrings__MainDb
       value: Data Source=sqlserver,1433;Initial Catalog=CoolStoreDb;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;
-
-# probes:
-#   liveness:
-#     path: /liveness
-#     initialDelaySeconds: 20
-#     periodSeconds: 30
-#     port: http

@@ -18,7 +18,7 @@ spec:
       targetPort: httpPort
       protocol: TCP
       name: httpPort
-    - port: {{ .Values.service.httpPort }}
+    - port: {{ .Values.service.grpcPort }}
       targetPort: grpcPort
       protocol: TCP
       name: grpcPort
