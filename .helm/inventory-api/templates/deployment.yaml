@@ -23,7 +23,7 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/id: inventory-api
-        dapr.io/port: {{ .Values.service.appPort }}
+        dapr.io/port: "{{ .Values.service.appPort }}"
         dapr.io/config: "tracing"
         dapr.io/log-level: "debug"
     spec:
