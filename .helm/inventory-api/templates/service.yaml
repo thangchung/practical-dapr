@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: inventory
+  name: inventory-api
   labels:
     app: {{ template "inventory.name" . }}
     chart: {{ template "inventory.chart" . }}
