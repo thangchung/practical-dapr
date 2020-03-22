@@ -107,7 +107,7 @@ namespace N8T.Infrastructure
 
             services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
             services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
-            //services.AddHostedService<DbContextMigratorHostedService>();
+            services.AddHostedService<DbContextMigratorHostedService>();
 
             return services;
         }
