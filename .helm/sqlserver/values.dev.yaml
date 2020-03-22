@@ -1,6 +1,8 @@
 fullnameOverride: sqlserver
 acceptEula:
   value: "Y"
+edition:
+  value: "Developer"
 persistence:
   enabled: false
 resources:
