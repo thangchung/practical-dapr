@@ -1,4 +1,7 @@
 fullnameOverride: sqlserver
+image:
+  repository: mcr.microsoft.com/mssql/server
+  tag: 2017-latest
 acceptEula:
   value: "Y"
 edition:
@@ -12,4 +15,4 @@ resources:
   requests:
     cpu: 0.5
     memory: 1Gi
-sapassword: P@ssw0rd
+sapassword: "P@ssw0rd"
