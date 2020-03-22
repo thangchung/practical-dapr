@@ -43,7 +43,7 @@ jobs:
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
 
-  build-aks:
+  build-publish-aks:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
