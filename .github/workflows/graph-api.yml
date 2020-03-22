@@ -13,16 +13,16 @@ on:
     branches: [ master ]
 
 jobs:
-  build-dotnet:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101 
-    - name: Build with dotnet
-      run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
+  # build-dotnet:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: 3.1.101 
+  #   - name: Build with dotnet
+  #     run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
 
   build-docker:
     runs-on: ubuntu-latest

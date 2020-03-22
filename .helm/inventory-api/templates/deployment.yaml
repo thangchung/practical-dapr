@@ -1,29 +1,29 @@
-{{- $name := include "product-catalog.fullname" . -}}
+{{- $name := include "inventory.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "product-catalog.fullname" . }}
+  name: {{ template "inventory.fullname" . }}
   labels:
-    app: {{ template "product-catalog.name" . }}
-    chart: {{ template "product-catalog.chart" . }}
+    app: {{ template "inventory.name" . }}
+    chart: {{ template "inventory.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "product-catalog.name" . }}
+      app: {{ template "inventory.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "product-catalog.name" . }}
+        app: {{ template "inventory.name" . }}
         release: {{ .Release.Name }}
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: product-catalog-api
-        dapr.io/port: "5201"
+        dapr.io/id: inventory-api
+        dapr.io/port: {{ .Values.service.appPort }}
         dapr.io/config: "tracing"
         dapr.io/log-level: "debug"
     spec:
@@ -48,8 +48,11 @@ spec:
             - name: apphttp
               containerPort: 5201
               protocol: TCP
-            - name: http
+            - name: httpPort
               containerPort: 5202
+              protocol: TCP
+            - name: grpcPort
+              containerPort: 5203
               protocol: TCP
           # {{ if .Values.probes -}}
           # {{- if .Values.probes.liveness -}}

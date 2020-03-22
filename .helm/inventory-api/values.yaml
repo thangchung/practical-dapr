@@ -2,7 +2,7 @@ replicaCount: 1
 applicationName: practical-dapr
 
 image:
-  repository: dapracr.azurecr.io/dapr-product-catalog-api
+  repository: dapracr.azurecr.io/dapr-inventory-api
   tag: latest
   pullPolicy: Always
 
@@ -10,9 +10,9 @@ imagePullSecrets: []
 
 service:
   type: ClusterIP
-  appPort: 5201
-  httpPort: 5202
-  grpcPort: 5203
+  appPort: 5301
+  httpPort: 5302
+  grpcPort: 5303
 
 ingress:
   enabled: false
@@ -26,11 +26,9 @@ ingress:
 env:
   values:
     - name: DAPR_HTTP_PORT
-      value: 5202
-    - name: Services__ProductCatalogService__RestUri
-      value: http://localhost:5202
-    - name: Services__InventoryService__GrpcUri
-      value: http://inventory-api:5303
+      value: 5302
+    - name: DAPR_GRPC_PORT
+      value: 5303
     - name: ConnectionStrings__MainDb
       value: Data Source=sqlserver,1433;Initial Catalog=CoolStoreDb;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;
 

@@ -37,7 +37,7 @@ namespace N8T.Infrastructure
 
             if (!env.IsDevelopment()) return (builder, configBuilder);
 
-            var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
+            var servicesJson = Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
             configBuilder.AddJsonFile(servicesJson, optional: true);
 
             return (builder, configBuilder);
