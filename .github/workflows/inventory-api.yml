@@ -8,6 +8,7 @@ on:
     paths:
       - "src/Inventory/**"
       - "src/BuildingBlocks/**"
+      - ".helm/inventory-api/**"
       - ".github/workflows/inventory-api.yml"
   pull_request:
     branches: [ master ]

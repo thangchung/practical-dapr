@@ -8,6 +8,7 @@ on:
     paths:
       - "src/ProductCatalog/**"
       - "src/BuildingBlocks/**"
+      - ".helm/product-catalog-api/**"
       - ".github/workflows/product-catalog-api.yml"
   pull_request:
     branches: [ master ]
