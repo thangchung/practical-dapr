@@ -29,16 +29,20 @@ namespace N8T.Infrastructure
         public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
             this WebApplicationBuilder builder)
         {
-            var configBuilder = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
-
             var env = builder.Environment;
+
+            var configBuilder = builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
+            
             configBuilder.AddJsonFile("services.json", optional: true);
 
             if (!env.IsDevelopment()) return (builder, configBuilder);
 
             var servicesJson = Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
-            configBuilder.AddJsonFile(servicesJson, optional: true);
+            configBuilder
+                .AddJsonFile(servicesJson, optional: true)
+                .AddEnvironmentVariables();
 
             return (builder, configBuilder);
         }
