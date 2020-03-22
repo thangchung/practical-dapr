@@ -2,33 +2,42 @@ name: graphql-ci
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/*
     paths:
-      - "src/GraphApi/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - "src/GraphApi/**"
+      - "src/BuildingBlocks/**"
+      - ".github/workflows/graph-api.yml"
   pull_request:
     branches: [ master ]
 
 jobs:
-  build:
+  # build-dotnet:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: 3.1.101 
+  #   - name: Build with dotnet
+  #     run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
 
+  build-docker:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ github.event.path }}
-    - run: |
-          git fetch --unshallow
-    
     - uses: aarnott/nbgv@v0.3
       with:
         setAllVars: true
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101 
-
-    - name: Build with dotnet
-      run: dotnet build src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj --configuration Release
+    - name: Build docker image
+      run: docker build . --file ./src/GraphApi/CoolStore.GraphApi/Dockerfile --tag image
+    - name: Log into registry
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+    - name: Push image
+      run: |
+        VERSION=$NBGV_SemVer2
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-graph-api
+        docker tag image $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION

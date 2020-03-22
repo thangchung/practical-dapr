@@ -7,6 +7,8 @@ Practical Dapr on Coolstore business model
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
+[Docker images](https://github.com/thangchung/practical-dapr/packages)
+
 ## Give a Star! :star:
 
 If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
@@ -105,6 +107,9 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 ```
 
 ![](assets/graphql_playground_mutation.png)
+
+## Setup Azure
+- [Publish docker image to ACR and AKS](https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions) and [example](https://github.com/Azure/dev-spaces/blob/master/.github/workflows/bikes.yml)
 
 ## Contributing
 

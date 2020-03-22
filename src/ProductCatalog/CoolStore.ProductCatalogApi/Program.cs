@@ -1,10 +1,13 @@
-﻿using CoolStore.ProductCatalogApi.Boundaries.GraphQL;
-using CoolStore.ProductCatalogApi.Persistence;
+﻿using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
 using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Options;
@@ -12,9 +15,6 @@ using Serilog;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 
 namespace CoolStore.ProductCatalogApi
 {
