@@ -32,4 +32,4 @@ env:
     - name: Services__InventoryService__GrpcUri
       value: http://inventory-api:5303
     - name: ConnectionStrings__MainDb
-      value: "Server=sqlserver,1433;Database=CoolStoreDb;User Id=sa;Password=P@ssw0rd;Integrated Security=False;MultipleActiveResultSets=True;"
+      value: "Server=tcp:sqlserver, 1433;Database=CoolStoreDb;User Id=sa;Password=P@ssw0rd;Integrated Security=False;MultipleActiveResultSets=True;"
