@@ -30,4 +30,4 @@ env:
     - name: DAPR_GRPC_PORT
       value: 5303
     - name: ConnectionStrings__MainDb
-      value: Data Source=sqlserver,1433;Initial Catalog=CoolStoreDb;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;
+      value: "Data Source=sqlserver,1433;Initial Catalog=CoolStoreDb;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;"
