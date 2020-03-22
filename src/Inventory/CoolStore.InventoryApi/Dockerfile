@@ -13,6 +13,9 @@ RUN set -ex && \
     apk add --allow-untrusted /tmp/*.apk && \
     rm -v /tmp/*.apk && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
+# https://github.com/dotnet/efcore/issues/18025
+RUN apk add icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 WORKDIR /src
 COPY ["nuget.config", "./"]
 COPY ["services.json", "./"]
