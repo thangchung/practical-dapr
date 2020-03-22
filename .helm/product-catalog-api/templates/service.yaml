@@ -11,9 +11,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.appPort }}
-      targetPort: apphttp
+      targetPort: app-http
       protocol: TCP
-      name: apphttp
+      name: app-http
     - port: {{ .Values.service.httpPort }}
       targetPort: http
       protocol: TCP

@@ -11,17 +11,17 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.appPort }}
-      targetPort: apphttp
+      targetPort: app-http
       protocol: TCP
-      name: apphttp
+      name: app-http
     - port: {{ .Values.service.httpPort }}
-      targetPort: httpPort
+      targetPort: http-port
       protocol: TCP
-      name: httpPort
+      name: http-port
     - port: {{ .Values.service.grpcPort }}
-      targetPort: grpcPort
+      targetPort: grpc-port
       protocol: TCP
-      name: grpcPort
+      name: grpc-port
   selector:
     app: {{ template "inventory.name" . }}
     release: {{ .Release.Name }}

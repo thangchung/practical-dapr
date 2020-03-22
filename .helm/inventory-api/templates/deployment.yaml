@@ -38,13 +38,13 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: apphttp
+            - name: app-http
               containerPort: {{ .Values.service.appPort }}
               protocol: TCP
-            - name: httpPort
+            - name: http-port
               containerPort: {{ .Values.service.httpPort }}
               protocol: TCP
-            - name: grpcPort
+            - name: grpc-port
               containerPort: {{ .Values.service.grpcPort }}
               protocol: TCP
           env:
