@@ -49,6 +49,7 @@ namespace CoolStore.InventoryApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<InventoryService>();
+                endpoints.MapGrpcService<DaprService>();
                 endpoints.MapGet("/test", context => context.Response.WriteAsync("this is test message."));
             });
 
@@ -65,14 +66,24 @@ namespace CoolStore.InventoryApi
                 {
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
+                        int httpPort = 5302, grpcPort = 5303;
+
+                        if (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") != null)
+                        {
+                            httpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>();
+                        }
+
+                        if (Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") != null)
+                        {
+                            grpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>();
+                        }
+
                         if (ctx.HostingEnvironment.IsDevelopment())
                             IdentityModelEventSource.ShowPII = true;
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>(),
+                        options.Listen(IPAddress.Any, httpPort);
+                        options.Listen(IPAddress.Any, grpcPort,
                             listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
                     });
                 });

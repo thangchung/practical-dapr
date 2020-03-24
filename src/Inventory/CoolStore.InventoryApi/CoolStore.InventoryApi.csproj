@@ -19,6 +19,7 @@
   <ItemGroup>
     <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory.proto" Link="protobuf\inventory.proto" AdditionalImportDirs="..\..\_schema\proto\" />
     <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory_api.proto" Link="protobuf\inventory_api.proto" AdditionalImportDirs="..\..\_schema\proto\" />
+    <Protobuf Include="..\..\_schema\proto\coolstore\dapr.proto" Link="protobuf\dapr.proto" AdditionalImportDirs="..\..\_schema\proto\" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

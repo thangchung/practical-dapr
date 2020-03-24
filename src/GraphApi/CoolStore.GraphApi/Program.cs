@@ -108,12 +108,18 @@ namespace CoolStore.GraphApi
                 {
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
+                        var httpPort = 5102;
+
+                        if (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") != null)
+                        {
+                            httpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>();
+                        }
+
                         if (ctx.HostingEnvironment.IsDevelopment())
                             IdentityModelEventSource.ShowPII = true;
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
+                        options.Listen(IPAddress.Any, httpPort);
                     });
                 });
         }

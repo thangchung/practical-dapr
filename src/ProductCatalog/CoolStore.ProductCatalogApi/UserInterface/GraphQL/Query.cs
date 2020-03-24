@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Application.UseCase.GetProducts;
+﻿using CoolStore.ProductCatalogApi.Application.UseCase.GetProducts;
 using CoolStore.Protobuf.Inventory.V1;
 using CoolStore.Protobuf.ProductCatalog.V1;
+using Dapr.Client;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
 {
@@ -22,9 +24,20 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
 
         public async Task<IEnumerable<CatalogProductDto>> GetProducts()
         {
+            var options = new JsonSerializerOptions();
+            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+
+            var client = new DaprClientBuilder()
+                .UseEndpoint("http://localhost:5303")
+                .UseJsonSerializationOptions(options)
+                .Build();
+            
+            var inventories = await client.InvokeMethodAsync<GetInventoriesRequest, List<InventoryDto>>("inventory-api",
+                "GetInventories", new GetInventoriesRequest());
+
             var result = await _mediator.Send(new GetProductsQuery());
-            var inventoryResponse = await _inventoryApiClient.GetInventoriesAsync(new GetInventoriesRequest());
-            var inventories = inventoryResponse.Inventories;
+            //var inventoryResponse = await _inventoryApiClient.GetInventoriesAsync(new GetInventoriesRequest());
+            //var inventories = inventoryResponse.Inventories;
 
             return result.ToList().Select(x =>
             {
