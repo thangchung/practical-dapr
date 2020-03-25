@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.UseCases.GetAvailabilityInventories;
+using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
+using CoolStore.InventoryApi.Application.UseCases.GetInventory;
 using CoolStore.Protobuf.Inventory.V1;
 using Dapr.Client.Autogen.Grpc;
 using Google.Protobuf;
@@ -11,7 +12,7 @@ using Grpc.Core;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CoolStore.InventoryApi.Boundaries.Grpc
+namespace CoolStore.InventoryApi.UserInterface.Grpc
 {
     public class DaprService : Dapr.Client.Autogen.Grpc.Dapr.DaprBase
     {
@@ -41,6 +42,13 @@ namespace CoolStore.InventoryApi.Boundaries.Grpc
                     var inventories = new List<InventoryDto>();
                     inventories.AddRange(result);
                     responseEnvelope.Data = ConvertToAnyAsync(inventories);
+                    return responseEnvelope;
+                }
+
+                case "GetInventory":
+                {
+                    var result = await _mediator.Send(new GetInventoryQuery());
+                    responseEnvelope.Data = ConvertToAnyAsync(result);
                     return responseEnvelope;
                 }
             }

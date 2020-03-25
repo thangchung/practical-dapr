@@ -1,12 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.InventoryApi.Infrastructure.Persistence;
 using CoolStore.InventoryApi.Persistence;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoolStore.InventoryApi.UseCases.GetInventory
+namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
 {
     public class GetInventoryHandler : IRequestHandler<GetInventoryQuery, InventoryDto>
     {

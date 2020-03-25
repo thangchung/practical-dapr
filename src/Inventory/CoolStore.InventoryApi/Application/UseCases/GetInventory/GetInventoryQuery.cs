@@ -2,7 +2,7 @@
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
-namespace CoolStore.InventoryApi.UseCases.GetInventory
+namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
 {
     public class GetInventoryQuery : IRequest<InventoryDto>
     {

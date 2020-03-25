@@ -1,8 +1,6 @@
-﻿using System;
-using CoolStore.InventoryApi.Boundaries.Grpc;
-using CoolStore.InventoryApi.Persistence;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,9 +8,11 @@ using Microsoft.IdentityModel.Logging;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Options;
 using Serilog;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using CoolStore.InventoryApi.Infrastructure.Persistence;
+using CoolStore.InventoryApi.UserInterface.Grpc;
 
 namespace CoolStore.InventoryApi
 {
@@ -48,7 +48,6 @@ namespace CoolStore.InventoryApi
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<InventoryService>();
                 endpoints.MapGrpcService<DaprService>();
                 endpoints.MapGet("/test", context => context.Response.WriteAsync("this is test message."));
             });

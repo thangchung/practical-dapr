@@ -39,6 +39,7 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
             //var inventoryResponse = await _inventoryApiClient.GetInventoriesAsync(new GetInventoriesRequest());
             //var inventories = inventoryResponse.Inventories;
 
+
             return result.ToList().Select(x =>
             {
                 var inv = inventories.FirstOrDefault(i => i.Id == x.InventoryId);

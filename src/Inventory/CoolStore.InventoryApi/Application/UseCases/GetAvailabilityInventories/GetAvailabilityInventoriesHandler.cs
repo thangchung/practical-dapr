@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using CoolStore.InventoryApi.Infrastructure.Persistence;
 using CoolStore.InventoryApi.Persistence;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoolStore.InventoryApi.UseCases.GetAvailabilityInventories
+namespace CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories
 {
     public class GetAvailabilityInventoriesHandler : RequestHandler<GetInventoriesQuery, IQueryable<InventoryDto>>
     {

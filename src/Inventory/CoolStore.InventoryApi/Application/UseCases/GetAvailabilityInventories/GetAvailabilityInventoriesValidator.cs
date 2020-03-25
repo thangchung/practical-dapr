@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace CoolStore.InventoryApi.UseCases.GetAvailabilityInventories
+namespace CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories
 {
     public class GetAvailabilityInventoriesValidator : AbstractValidator<GetInventoriesQuery>
     {
