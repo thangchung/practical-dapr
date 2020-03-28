@@ -1,0 +1,21 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: practical-dapr
+services:
+- name: graph-api
+  project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
+  bindings:
+  - port: 5102
+- name: product-catalog-api
+  project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
+  bindings:
+  - port: 5202
+- name: inventory-api
+  project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
+  bindings:
+  - port: 5302
+  - port: 5303

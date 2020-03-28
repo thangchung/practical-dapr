@@ -13,6 +13,7 @@ using System.Net;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Infrastructure.Persistence;
 using CoolStore.InventoryApi.UserInterface.Grpc;
+using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.InventoryApi
 {
@@ -65,24 +66,12 @@ namespace CoolStore.InventoryApi
                 {
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
-                        int httpPort = 5302, grpcPort = 5303;
-
-                        if (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") != null)
-                        {
-                            httpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>();
-                        }
-
-                        if (Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") != null)
-                        {
-                            grpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>();
-                        }
-
                         if (ctx.HostingEnvironment.IsDevelopment())
                             IdentityModelEventSource.ShowPII = true;
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any, httpPort);
-                        options.Listen(IPAddress.Any, grpcPort,
+                        options.Listen(IPAddress.Any, EnvironmentHelper.GetHttpPort(5302));
+                        options.Listen(IPAddress.Any, EnvironmentHelper.GetGrpcPort(5303),
                             listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
                     });
                 });

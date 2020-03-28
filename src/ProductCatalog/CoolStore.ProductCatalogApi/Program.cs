@@ -15,6 +15,7 @@ using Serilog;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -92,18 +93,11 @@ namespace CoolStore.ProductCatalogApi
                 {
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
-                        var httpPort = 5202;
-
-                        if (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") != null)
-                        {
-                            httpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>();
-                        }
-
                         if (ctx.HostingEnvironment.IsDevelopment())
                             IdentityModelEventSource.ShowPII = true;
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any, httpPort);
+                        options.Listen(IPAddress.Any, EnvironmentHelper.GetHttpPort(5202));
                     });
                 });
         }

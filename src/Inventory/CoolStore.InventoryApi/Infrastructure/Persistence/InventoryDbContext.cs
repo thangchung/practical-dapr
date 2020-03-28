@@ -27,7 +27,7 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence
             modelBuilder.Entity<Inventory>().Ignore(x => x.DomainEvents);
 
             // seed data
-            var models = "Persistence/SeedData/inventories.json".ReadData<List<InventoryDto>>(AppContext.BaseDirectory);
+            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<InventoryDto>>(AppContext.BaseDirectory);
             //Console.WriteLine(models.SerializeObject());
             foreach (var inv in models)
             {
