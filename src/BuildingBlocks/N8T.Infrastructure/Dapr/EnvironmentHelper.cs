@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace N8T.Infrastructure.Dapr
 {

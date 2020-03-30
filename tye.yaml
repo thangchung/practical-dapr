@@ -5,17 +5,26 @@
 #    https://aka.ms/AA7q20u
 #
 name: practical-dapr
+extensions:
+- name: dapr
+registry: dapracr.azurecr.io
 services:
-- name: graph-api
-  project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
+- name: sqlserver
+  image: mcr.microsoft.com/mssql/server:2017-latest
+  env:
+    - name: SA_PASSWORD
+      value: "P@ssw0rd"
+    - name: ACCEPT_EULA
+      value: "Y"
   bindings:
-  - port: 5102
+    - port: 1433
+- name: redis
+  image: redis
+  bindings:
+    - port: 6973
+# - name: graph-api
+#   project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
 - name: product-catalog-api
   project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
-  bindings:
-  - port: 5202
 - name: inventory-api
   project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
-  bindings:
-  - port: 5302
-  - port: 5303

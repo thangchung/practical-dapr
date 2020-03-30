@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -34,15 +34,20 @@ namespace CoolStore.InventoryApi
 
             builder.Host
                 .UseSerilog()
-                .UseCustomHost();
+                //.UseCustomHost()
+                ;
+
+            var connString = config["connectionstring:sqlserver"] ??
+                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=CoolStoreDb;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
 
             builder.Services
                 .AddSingleton(serviceOptions)
                 .AddLogging()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, config)
-                .AddCustomGrpc();
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomGrpc()
+                ;
 
             var app = builder.Build();
 
@@ -66,13 +71,15 @@ namespace CoolStore.InventoryApi
                 {
                     webBuilder.ConfigureKestrel((ctx, options) =>
                     {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
+                        options.ConfigureEndpointDefaults(o => o.Protocols = HttpProtocols.Http2);
 
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any, EnvironmentHelper.GetHttpPort(5302));
-                        options.Listen(IPAddress.Any, EnvironmentHelper.GetGrpcPort(5303),
-                            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
+                        // if (ctx.HostingEnvironment.IsDevelopment())
+                        //     IdentityModelEventSource.ShowPII = true;
+                        //
+                        // options.Limits.MinRequestBodyDataRate = null;
+                        // options.Listen(IPAddress.Any, EnvironmentHelper.GetHttpPort());
+                        // options.Listen(IPAddress.Any, EnvironmentHelper.GetGrpcPort(),
+                        //     listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
                     });
                 });
         }

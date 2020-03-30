@@ -1,6 +1,5 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Dapr.Client;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace N8T.Infrastructure.Dapr
 {

@@ -1,4 +1,4 @@
-﻿using HotChocolate;
+using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
 using MediatR;
@@ -112,11 +112,29 @@ namespace N8T.Infrastructure
             return services;
         }
 
+        public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services, Assembly anchorAssembly, string connString)
+	        where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
+        {
+	        services
+		        .AddDbContext<TDbContext>(options =>
+		        {
+			        options.UseSqlServer(connString, sqlOptions =>
+			        {
+				        sqlOptions.MigrationsAssembly(anchorAssembly.GetName().Name);
+				        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
+			        });
+		        });
+
+	        services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
+	        services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
+	        services.AddHostedService<DbContextMigratorHostedService>();
+
+	        return services;
+        }
+
         public static IServiceCollection AddCustomGrpc(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
             services.AddGrpc(options =>
             {
                 options.Interceptors.Add<RequestLoggerInterceptor>();
@@ -132,7 +150,7 @@ namespace N8T.Infrastructure
         public static IServiceCollection AddCustomGrpcClient(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
             services.AddSingleton<ClientLoggerInterceptor>();
 

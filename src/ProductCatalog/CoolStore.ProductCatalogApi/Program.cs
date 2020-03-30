@@ -1,6 +1,5 @@
-﻿using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
-using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -9,13 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Grpc;
+using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Options;
 using Serilog;
 using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
-using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -23,6 +22,8 @@ namespace CoolStore.ProductCatalogApi
     {
         private static async Task Main(string[] args)
         {
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
@@ -36,7 +37,8 @@ namespace CoolStore.ProductCatalogApi
 
             builder.Host
                 .UseSerilog()
-                .UseCustomHost();
+                //.UseCustomHost()
+                ;
 
             builder.Services
                 .AddSingleton(serviceOptions)
@@ -50,14 +52,17 @@ namespace CoolStore.ProductCatalogApi
                 })
                 .AddCustomValidators(typeof(Program).Assembly)
                 .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, config)
+                //.AddCustomDaprClient()
                 .AddCustomGrpcClient(svc =>
                 {
-                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                        {
-                            o.Address = new Uri(serviceOptions.InventoryService.GrpcUri);
-                        })
-                        .AddInterceptor<ClientLoggerInterceptor>();
-                });
+                //     svc.AddGrpcClient<Dapr.Client.Autogen.Grpc.Dapr.DaprClient>();
+                //      svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
+                //          {
+                //              o.Address = new Uri(serviceOptions.InventoryService.GrpcUri);
+                //          })
+                //          .AddInterceptor<ClientLoggerInterceptor>();
+                 })
+                ;
 
             var app = builder.Build();
 
@@ -79,7 +84,7 @@ namespace CoolStore.ProductCatalogApi
                 });
             });
 
-            app.Listen(serviceOptions.ProductCatalogService.RestUri);
+            //app.Listen(serviceOptions.ProductCatalogService.RestUri);
             await app.RunAsync();
         }
     }
@@ -100,6 +105,22 @@ namespace CoolStore.ProductCatalogApi
                         options.Listen(IPAddress.Any, EnvironmentHelper.GetHttpPort(5202));
                     });
                 });
+        }
+
+        public static IServiceCollection AddCustomDaprClient(this IServiceCollection services)
+        {
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            services.AddDaprClient(client =>
+            {
+                client.UseJsonSerializationOptions(options);
+            });
+
+            return services;
         }
     }
 }
