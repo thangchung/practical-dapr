@@ -7,6 +7,7 @@ using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct
 {
@@ -19,6 +20,7 @@ namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        [TransactionScope]
         public async Task<CreateProductResponse> Handle(CreateProductRequest request,
             CancellationToken cancellationToken)
         {

@@ -27,6 +27,7 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 
 - We need Docker for Desktop installed
 - Follow those steps at https://github.com/dapr/cli to install Dapr CLI
+- Follow these steps at https://github.com/dotnet/tye/blob/master/docs/getting_started.md to install `tye` CLI
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.override.yml run sqlserver
@@ -47,6 +48,12 @@ $ dapr run --app-id product-catalog-api --port 5202 --app-port 5201 dotnet run
 ```bash
 $ cd src\Inventory\CoolStore.InventoryApi
 $ dapr run --app-id inventory-api --grpc-port 5303 --port 5302 --app-port 5301 dotnet run
+```
+
+### Run with tye on local development
+
+```bash
+$ type run
 ```
 
 ## Test it

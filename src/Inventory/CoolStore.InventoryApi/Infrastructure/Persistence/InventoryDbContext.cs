@@ -1,4 +1,6 @@
-﻿using CoolStore.InventoryApi.Domain;
+﻿using System;
+using System.Collections.Generic;
+using CoolStore.InventoryApi.Domain;
 using CoolStore.Protobuf.Inventory.V1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -6,10 +8,8 @@ using Microsoft.Extensions.Configuration;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Helpers;
-using System;
-using System.Collections.Generic;
 
-namespace CoolStore.InventoryApi.Persistence
+namespace CoolStore.InventoryApi.Infrastructure.Persistence
 {
     public class InventoryDbContext : AppDbContextBase
     {
@@ -27,7 +27,7 @@ namespace CoolStore.InventoryApi.Persistence
             modelBuilder.Entity<Inventory>().Ignore(x => x.DomainEvents);
 
             // seed data
-            var models = "Persistence/SeedData/inventories.json".ReadData<List<InventoryDto>>(AppContext.BaseDirectory);
+            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<InventoryDto>>(AppContext.BaseDirectory);
             //Console.WriteLine(models.SerializeObject());
             foreach (var inv in models)
             {

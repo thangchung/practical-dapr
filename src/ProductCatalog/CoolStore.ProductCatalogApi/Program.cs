@@ -1,20 +1,18 @@
-﻿using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using System;
+using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
-using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Data;
+using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Options;
+using N8T.Infrastructure.ValidationModel;
 using Serilog;
-using System;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -22,6 +20,8 @@ namespace CoolStore.ProductCatalogApi
     {
         private static async Task Main(string[] args)
         {
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
@@ -34,8 +34,10 @@ namespace CoolStore.ProductCatalogApi
                 .CreateLogger();
 
             builder.Host
-                .UseSerilog()
-                .UseCustomHost();
+                .UseSerilog();
+
+            var connString = config["connectionstring:sqlserver"] ??
+                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_product_catalog_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
 
             builder.Services
                 .AddSingleton(serviceOptions)
@@ -48,25 +50,14 @@ namespace CoolStore.ProductCatalogApi
                     schemaConfiguration.RegisterMutationType<MutationType>();
                 })
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, config)
-                .AddCustomGrpcClient(svc =>
-                {
-                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                        {
-                            o.Address = new Uri(serviceOptions.InventoryService.GrpcUri);
-                        })
-                        .AddInterceptor<ClientLoggerInterceptor>();
-                });
+                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomGrpcClient();
 
             var app = builder.Build();
 
             app.UseStaticFiles();
             app.UseGraphQL("/graphql");
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql",
-                Path = "/playground",
-            });
+            app.UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground",});
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
@@ -78,28 +69,7 @@ namespace CoolStore.ProductCatalogApi
                 });
             });
 
-            app.Listen(serviceOptions.ProductCatalogService.RestUri);
             await app.RunAsync();
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel((ctx, options) =>
-                    {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
-                    });
-                });
         }
     }
 }

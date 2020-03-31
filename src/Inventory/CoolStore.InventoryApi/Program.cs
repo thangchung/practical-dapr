@@ -1,18 +1,15 @@
-﻿using System;
-using CoolStore.InventoryApi.Boundaries.Grpc;
-using CoolStore.InventoryApi.Persistence;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
-using N8T.Infrastructure;
-using N8T.Infrastructure.Options;
-using Serilog;
-using System.Net;
 using System.Threading.Tasks;
+using CoolStore.InventoryApi.Infrastructure.Persistence;
+using CoolStore.InventoryApi.UserInterface.Grpc;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using N8T.Infrastructure;
+using N8T.Infrastructure.Data;
+using N8T.Infrastructure.Grpc;
+using N8T.Infrastructure.Options;
+using N8T.Infrastructure.ValidationModel;
+using Serilog;
 
 namespace CoolStore.InventoryApi
 {
@@ -32,15 +29,17 @@ namespace CoolStore.InventoryApi
                 .CreateLogger();
 
             builder.Host
-                .UseSerilog()
-                .UseCustomHost();
+                .UseSerilog();
+
+            var connString = config["connectionstring:sqlserver"] ??
+                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_inventory_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
 
             builder.Services
                 .AddSingleton(serviceOptions)
                 .AddLogging()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, config)
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, connString)
                 .AddCustomGrpc();
 
             var app = builder.Build();
@@ -48,34 +47,11 @@ namespace CoolStore.InventoryApi
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<InventoryService>();
+                endpoints.MapGrpcService<DaprService>();
                 endpoints.MapGet("/test", context => context.Response.WriteAsync("this is test message."));
             });
 
             await app.RunAsync();
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel((ctx, options) =>
-                    {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>(),
-                            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
-                    });
-                });
         }
     }
 }
