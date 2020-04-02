@@ -85,6 +85,12 @@ jobs:
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         secret-name: ${{ secrets.IMAGE_PULL_SECRET }}
 
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.AKS_DAPR_CLUSTER_CONFIG }}
+      id: setcontext
+
     - name: Deploy to AKS using Tye tool
       run: |
         ls -la /home/runner/.kube
