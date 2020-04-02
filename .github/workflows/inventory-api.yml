@@ -87,6 +87,7 @@ jobs:
 
     - name: Deploy to AKS using Tye tool
       run: |
+        ls -la /home/runner/.kube
         tye deploy
 
     # - name: Create valid release-name
