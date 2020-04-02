@@ -63,13 +63,13 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    - name: Build and publish docker image
-      run: |
-        VERSION=$NBGV_GitCommitIdShort
-        IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-inventory-api
-        docker build . --file ./src/Inventory/CoolStore.InventoryApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
-        docker push $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:latest
+    # - name: Build and publish docker image
+    #   run: |
+    #     VERSION=$NBGV_GitCommitIdShort
+    #     IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-inventory-api
+    #     docker build . --file ./src/Inventory/CoolStore.InventoryApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
+    #     docker push $IMAGE_ID:$VERSION
+    #     docker push $IMAGE_ID:latest
 
     - uses: azure/aks-set-context@v1
       with:
