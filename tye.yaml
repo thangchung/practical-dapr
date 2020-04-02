@@ -18,10 +18,10 @@ services:
       value: "Y"
   bindings:
     - port: 1433
-- name: redis
-  image: redis
-  bindings:
-    - port: 6973
+# - name: redis
+#   image: redis
+#   bindings:
+#     - port: 6973
 - name: graph-api
   project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
 - name: product-catalog-api
