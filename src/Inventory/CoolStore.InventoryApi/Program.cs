@@ -3,6 +3,7 @@ using CoolStore.InventoryApi.Infrastructure.Persistence;
 using CoolStore.InventoryApi.UserInterface.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
@@ -19,6 +20,8 @@ namespace CoolStore.InventoryApi
         {
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
+
+            configBuilder.AddTyeSecrets();
 
             var config = configBuilder.Build();
             var serviceOptions = config.GetOptions<ServiceOptions>("Services");
