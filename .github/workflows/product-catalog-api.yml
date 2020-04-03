@@ -21,7 +21,7 @@ jobs:
   #   - name: Setup .NET Core
   #     uses: actions/setup-dotnet@v1
   #     with:
-  #       dotnet-version: 3.1.101 
+  #       dotnet-version: 3.1.101
   #   - name: Build with dotnet
   #     run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
 
@@ -43,57 +43,56 @@ jobs:
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
 
-  build-publish-aks:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: aarnott/nbgv@v0.3
-      with:
-        setAllVars: true
-    - uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.CONTAINER_REGISTRY }}
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-    - name: Build and publish docker image
-      run: |
-        VERSION=$NBGV_GitCommitIdShort
-        IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-        docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
-        docker push $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:latest
-    - uses: azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ secrets.CLUSTER_NAME }}
-        resource-group: ${{ secrets.RESOURCE_GROUP }}
-    - uses: azure/k8s-create-secret@v1
-      with:
-        namespace: ${{ steps.generate-child-space-name.outputs.result }}
-        container-registry-url: ${{ secrets.CONTAINER_REGISTRY }}
-        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        secret-name: ${{ secrets.IMAGE_PULL_SECRET }}
-    - name: Create valid release-name
-      id: generate-release-name
-      run: |
-        release=product-catalog-api-$NBGV_GitCommitIdShort
-        release=${release::53}
-        release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
-        echo ::set-output name=result::$release
-    - uses: azure/k8s-bake@v1
-      with:
-          renderEngine: 'helm'
-          helmChart: './.helm/product-catalog-api/'
-          releaseName: ${{steps.generate-release-name.outputs.result}}
-          overrides: |
-            image.repository:${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
-          helm-version: 'latest'
-      id: bake
-    - uses: azure/k8s-deploy@v1
-      with:
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
-        namespace: dev
-        imagepullsecrets: |
-          ${{ secrets.IMAGE_PULL_SECRET }}
-    
+  # build-publish-aks:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: aarnott/nbgv@v0.3
+  #     with:
+  #       setAllVars: true
+  #   - uses: azure/docker-login@v1
+  #     with:
+  #       login-server: ${{ secrets.CONTAINER_REGISTRY }}
+  #       username: ${{ secrets.REGISTRY_USERNAME }}
+  #       password: ${{ secrets.REGISTRY_PASSWORD }}
+  #   - name: Build and publish docker image
+  #     run: |
+  #       VERSION=$NBGV_GitCommitIdShort
+  #       IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
+  #       docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
+  #       docker push $IMAGE_ID:$VERSION
+  #       docker push $IMAGE_ID:latest
+  #   - uses: azure/aks-set-context@v1
+  #     with:
+  #       creds: '${{ secrets.AZURE_CREDENTIALS }}'
+  #       cluster-name: ${{ secrets.CLUSTER_NAME }}
+  #       resource-group: ${{ secrets.RESOURCE_GROUP }}
+  #   - uses: azure/k8s-create-secret@v1
+  #     with:
+  #       namespace: ${{ steps.generate-child-space-name.outputs.result }}
+  #       container-registry-url: ${{ secrets.CONTAINER_REGISTRY }}
+  #       container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+  #       container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+  #       secret-name: ${{ secrets.IMAGE_PULL_SECRET }}
+  #   - name: Create valid release-name
+  #     id: generate-release-name
+  #     run: |
+  #       release=product-catalog-api-$NBGV_GitCommitIdShort
+  #       release=${release::53}
+  #       release=$(echo ${release//[!0-9a-zA-Z]/-} | tr '[:upper:]' '[:lower:]' | sed -e 's/^-/z/' -e 's/-$/z/')
+  #       echo ::set-output name=result::$release
+  #   - uses: azure/k8s-bake@v1
+  #     with:
+  #         renderEngine: 'helm'
+  #         helmChart: './.helm/product-catalog-api/'
+  #         releaseName: ${{steps.generate-release-name.outputs.result}}
+  #         overrides: |
+  #           image.repository:${{ secrets.CONTAINER_REGISTRY }}/dapr-product-catalog-api
+  #         helm-version: 'latest'
+  #     id: bake
+  #   - uses: azure/k8s-deploy@v1
+  #     with:
+  #       manifests: ${{ steps.bake.outputs.manifestsBundle }}
+  #       namespace: dev
+  #       imagepullsecrets: |
+  #         ${{ secrets.IMAGE_PULL_SECRET }}
