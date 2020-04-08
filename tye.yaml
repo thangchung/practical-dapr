@@ -7,7 +7,7 @@
 name: practical-dapr
 extensions:
 - name: dapr
-# registry: dapracr.azurecr.io
+# registry: dapracr.azurecr.io docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 services:
 - name: sqlserver
@@ -25,7 +25,11 @@ services:
 #     - port: 6973
 - name: graph-api
   project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
+- name: identity-api
+  project: src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj
 - name: product-catalog-api
   project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
 - name: inventory-api
   project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
+- name: webui
+  project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
