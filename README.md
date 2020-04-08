@@ -1,6 +1,6 @@
 # practical-dapr project
 
-A lightweight low ceremony microservices without Docker and Docker-compose files are lifted and shifted the cloud-native apps to Kubernetes platform and run on Dapr runtime.
+A lightweight low ceremony microservices without Docker, Docker-compose and Helm chart files are lifted and shifted the cloud-native apps to Kubernetes platform and run on Dapr runtime.
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/thangchung/practical-dapr/blob/master/LICENSE)
 ![graphql-api](https://github.com/thangchung/practical-dapr/workflows/graphql-ci/badge.svg?branch=master)
