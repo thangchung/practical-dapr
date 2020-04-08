@@ -1,13 +1,12 @@
-# practical-dapr
-Practical Dapr on Coolstore business model
+# practical-dapr project
+
+A lightweight low ceremony microservices without Docker and Docker-compose files are lifted and shifted the cloud-native apps to Kubernetes platform and run on Dapr runtime.
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/thangchung/practical-dapr/blob/master/LICENSE)
 ![graphql-api](https://github.com/thangchung/practical-dapr/workflows/graphql-ci/badge.svg?branch=master)
 ![identity-api](https://github.com/thangchung/practical-dapr/workflows/identity-ci/badge.svg?branch=master)
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
-
-[Docker images](https://github.com/thangchung/practical-dapr/packages)
 
 ## Give a Star! :star:
 
@@ -25,42 +24,27 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 
 ## Start required components
 
-- We need Docker for Desktop installed
-- Follow those steps at https://github.com/dapr/cli to install Dapr CLI
-- Follow these steps at https://github.com/dotnet/tye/blob/master/docs/getting_started.md to install `tye` CLI
+- We need Docker for Desktop installed with Kubernetes is enabled.
+- Follow those steps at https://github.com/dapr/cli to install Dapr CLI.
+- Follow these steps at https://github.com/dotnet/tye/blob/master/docs/getting_started.md to install `tye` CLI.
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.override.yml run sqlserver
+$ tye run
 ```
 
-## Run projects with Dapr CLI
+Then you can see `tye dashboard` as below
 
-```bash
-$ cd src\GraphApi\CoolStore.GraphApi
-$ dapr run --app-id graphql-api --port 5102 --app-port 5101 dotnet run
-```
-
-```bash
-$ cd src\ProductCatalog\CoolStore.ProductCatalogApi
-$ dapr run --app-id product-catalog-api --port 5202 --app-port 5201 dotnet run
-```
-
-```bash
-$ cd src\Inventory\CoolStore.InventoryApi
-$ dapr run --app-id inventory-api --grpc-port 5303 --port 5302 --app-port 5301 dotnet run
-```
-
-### Run with tye on local development
-
-```bash
-$ type run
-```
+![](assets/tye-dashboard.png)
 
 ## Test it
 
-- Go to http://localhost:5102
+- Go to `webui`, and on `Bindings` column click to `http` link (http://localhost:58275 in the picture) to access to `Blazor Web UI`
+- Go to `identity-api`, and on `Bindings` column click to `http` link (http://localhost:58269 in the picture) to access to `Identity Server 4`
+- Go to `graph-api`, and on `Bindings` column click to `http` link (http://localhost:58267 in the picture) to access to `GraphQL Api Server`
 
-### Query
+### GraphQL Server Playground
+
+On the `graph-api` link above, you will be redirected to GraphQL Playground, and you can play with it as following:
 
 ```js
 query {
