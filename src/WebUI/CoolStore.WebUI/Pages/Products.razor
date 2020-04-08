@@ -1,0 +1,42 @@
+@page "/products"
+@attribute [Authorize]
+@inject HttpClient HttpClient
+
+<div class="row mt-4">
+  @foreach (var product in products)
+  {
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <p class="card-text">Name: @product?.Name</p>
+          <p class="card-text">Store: @product?.InventoryLocation</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>}
+</div>
+
+@code {
+
+  IList<ProductItemVm> products = new List<ProductItemVm>();
+
+  [CascadingParameter]
+  Task<AuthenticationState> authenticationStateTask { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    products = await HttpClient.GetJsonAsync<List<ProductItemVm>>("api/products");
+  }
+
+  class ProductItemVm
+  {
+    public string Name { get; set; }
+    public string InventoryLocation { get; set; }
+  }
+
+}

@@ -1,6 +1,7 @@
-using System;
 using System.Text.Json;
 using Dapr.Client;
+using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -11,42 +12,28 @@ namespace N8T.Infrastructure.Dapr
         public static DaprClient GetDaprClient(
             this IConfiguration config,
             string appId,
-            bool isHttps = false,
             ILogger logger = null)
         {
-            var url = GetDaprClientUrl(config, appId, isHttps);
+            var url = GetDaprClientUrl(config, appId);
             logger?.LogInformation($"Dapr Client Url: {url}");
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
 
             var client = new DaprClientBuilder()
                 .UseEndpoint(url)
-                .UseJsonSerializationOptions(options)
+                .UseJsonSerializationOptions(new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                })
+                .UseGrpcChannelOptions(new GrpcChannelOptions {Credentials = ChannelCredentials.Insecure})
                 .Build();
 
             return client;
         }
 
-        public static string GetDaprClientUrl(this IConfiguration config, string appId, bool isHttps = false)
+        public static string GetDaprClientUrl(this IConfiguration config, string appId)
         {
-            string host, port, url;
-            if (!isHttps)
-            {
-                host = config[$"service:{appId}:host"];
-                port = config[$"service:{appId}:port"];
-                url = $"http://{host}:{port}";
-            }
-            else
-            {
-                var protocol = Environment.GetEnvironmentVariable($"{appId.ToUpper()}_HTTPS_SERVICE_PROTOCOL");
-                port = Environment.GetEnvironmentVariable($"{appId.ToUpper()}_HTTPS_SERVICE_PORT");
-                host = config[$"service:{appId}:host"];
-                url = $"{protocol}://{host}:{port}";
-            }
-
+            var host = config[$"service:{appId}:host"];
+            var port = config[$"service:{appId}:port"];
+            var url = $"http://{host}:{port}";
             return url;
         }
     }

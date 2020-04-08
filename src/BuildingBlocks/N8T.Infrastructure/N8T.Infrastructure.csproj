@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="0.5.0-preview02" />
+    <PackageReference Include="Dapr.AspNetCore" Version="0.6.0-preview01" />
     <PackageReference Include="FeatherHttp" Version="0.1.67-alpha.g69b43bed72" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />

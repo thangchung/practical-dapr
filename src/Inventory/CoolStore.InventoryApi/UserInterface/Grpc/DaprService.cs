@@ -55,7 +55,5 @@ namespace CoolStore.InventoryApi.UserInterface.Grpc
 
             return responseEnvelope;
         }
-
-        
     }
 }

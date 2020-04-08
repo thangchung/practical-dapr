@@ -1,0 +1,47 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sqlserver
+  labels:
+    app.kubernetes.io/name: sqlserver
+    app.kubernetes.io/part-of: practical-dapr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sqlserver
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sqlserver
+        app.kubernetes.io/part-of: practical-dapr
+    spec:
+      containers:
+        - name: sqlserver
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          env:
+            - name: SA_PASSWORD
+              value: "P@ssw0rd"
+            - name: ACCEPT_EULA
+              value: "Y"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 200Mi
+          ports:
+            - containerPort: 1433
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver
+  labels:
+    app.kubernetes.io/name: sqlserver
+    app.kubernetes.io/part-of: practical-dapr
+spec:
+  ports:
+    - port: 1433
+      targetPort: 1433
+  selector:
+    app.kubernetes.io/name: sqlserver

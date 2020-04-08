@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MyShop.BlazorFrontend.Host": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:6868",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

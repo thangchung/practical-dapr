@@ -1,13 +1,13 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CoolStore.ProductCatalogApi.Application.UseCase.GetProducts;
 using CoolStore.Protobuf.Inventory.V1;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using N8T.Infrastructure.Dapr;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
 {
@@ -17,10 +17,10 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
         private readonly IConfiguration _config;
         private readonly ILogger<Query> _logger;
 
-        public Query(IMediator mediator
-            , IConfiguration config
-            , ILogger<Query> logger
-            )
+        public Query(
+            IMediator mediator,
+            IConfiguration config,
+            ILogger<Query> logger)
         {
             _mediator = mediator;
             _config = config;
@@ -29,12 +29,13 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
 
         public async Task<IEnumerable<CatalogProductDto>> GetProducts()
         {
-            var daprClient = _config.GetDaprClient("inventory-api", true);
+            var daprClient = _config.GetDaprClient("inventory-api", _logger);
+             var inventories = await daprClient.InvokeMethodAsync<GetInventoriesRequest, List<InventoryDto>>(
+                 "inventory-api",
+                 "GetInventories",
+                 new GetInventoriesRequest());
 
-            var inventories = await daprClient.InvokeMethodAsync<GetInventoriesRequest, List<InventoryDto>>(
-                "inventory-api",
-                "GetInventories",
-                new GetInventoriesRequest());
+            _logger.LogInformation($"Got {inventories.Count} items from gRPC.");
 
             var result = await _mediator.Send(new GetProductsQuery());
 
