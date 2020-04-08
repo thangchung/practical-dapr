@@ -28,6 +28,8 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 - Follow those steps at https://github.com/dapr/cli to install Dapr CLI.
 - Follow these steps at https://github.com/dotnet/tye/blob/master/docs/getting_started.md to install `tye` CLI.
 
+## One tye command to rule them all
+
 ```bash
 $ tye run
 ```
@@ -36,7 +38,7 @@ Then you can see `tye dashboard` as below
 
 ![](assets/tye-dashboard.png)
 
-## Test it
+## Testing it
 
 - Go to `webui`, and on `Bindings` column click to `http` link (http://localhost:58275 in the picture) to access to `Blazor Web UI`
 - Go to `identity-api`, and on `Bindings` column click to `http` link (http://localhost:58269 in the picture) to access to `Identity Server 4`
@@ -98,6 +100,10 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 ```
 
 ![](assets/graphql_playground_mutation.png)
+
+## Debugging application
+
+Follow steps at [Debugging Dapr application using Tye tool](https://dev.to/thangchung/debugging-dapr-application-using-tye-tool-1djb)
 
 ## Setup Azure
 - [Publish docker image to ACR and AKS](https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions) and [example](https://github.com/Azure/dev-spaces/blob/master/.github/workflows/bikes.yml)
