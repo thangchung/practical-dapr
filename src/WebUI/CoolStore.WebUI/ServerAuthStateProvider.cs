@@ -28,4 +28,13 @@ namespace CoolStore.WebUI
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
     }
+
+    public class UserInfo
+    {
+        public bool IsAuthenticated { get; set; }
+
+        public string Name { get; set; }
+
+        public string AccessToken { get; set; }
+    }
 }
