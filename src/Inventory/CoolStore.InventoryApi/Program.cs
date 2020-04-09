@@ -1,18 +1,18 @@
-﻿using System;
-using CoolStore.InventoryApi.Boundaries.Grpc;
-using CoolStore.InventoryApi.Persistence;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using CoolStore.InventoryApi.Infrastructure.Persistence;
+using CoolStore.InventoryApi.UserInterface.Grpc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Options;
+using N8T.Infrastructure.Data;
+using N8T.Infrastructure.Grpc;
+using N8T.Infrastructure.Tye;
+using N8T.Infrastructure.ValidationModel;
 using Serilog;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace CoolStore.InventoryApi
 {
@@ -20,11 +20,14 @@ namespace CoolStore.InventoryApi
     {
         private static async Task Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            configBuilder.AddTyeBindingSecrets();
+
             var config = configBuilder.Build();
-            var serviceOptions = config.GetOptions<ServiceOptions>("Services");
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -32,50 +35,37 @@ namespace CoolStore.InventoryApi
                 .CreateLogger();
 
             builder.Host
-                .UseSerilog()
-                .UseCustomHost();
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(options =>
+                    {
+                        options.ConfigureEndpointDefaults(o => o.Protocols = HttpProtocols.Http2);
+                    });
+                })
+                .UseSerilog();
+
+            var connString = config["connectionstring:sqlserver"] ??
+                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_inventory_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
 
             builder.Services
-                .AddSingleton(serviceOptions)
                 .AddLogging()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, config)
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, connString)
                 .AddCustomGrpc();
 
             var app = builder.Build();
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGrpcService<InventoryService>();
-                endpoints.MapGet("/test", context => context.Response.WriteAsync("this is test message."));
-            });
+            app
+                .UseRouting()
+                .UseCloudEvents()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapSubscribeHandler();
+                    endpoints.MapGrpcService<DaprService>();
+                });
 
             await app.RunAsync();
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel((ctx, options) =>
-                    {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_GRPC_PORT").ConvertTo<int>(),
-                            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
-                    });
-                });
         }
     }
 }

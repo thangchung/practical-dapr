@@ -1,0 +1,66 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  products(order_by: CatalogProductDtoSort page: Int pageSize: Int where: CatalogProductDtoFilter): OffsetPagingOfCatalogProductDto
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): CreateProductResponse!
+}
+
+type CatalogProductDto {
+  categoryId: String
+  categoryName: String
+  description: String
+  id: String
+  imageUrl: String
+  inventoryDescription: String
+  inventoryId: String
+  inventoryLocation: String
+  inventoryWebsite: String
+  name: String
+  price: Float!
+}
+
+input CatalogProductDtoFilter {
+  AND: [CatalogProductDtoFilter!]
+  name: String
+  name_contains: String
+  OR: [CatalogProductDtoFilter!]
+  price: Float
+  price_gte: Float
+  price_lte: Float
+}
+
+input CatalogProductDtoSort {
+  name: SortOperationKind
+  price: SortOperationKind
+}
+
+type OffsetPagingOfCatalogProductDto {
+  "A list of edges."
+  edges: [CatalogProductDto]
+  totalCount: Int!
+}
+
+type CreateProductResponse {
+  product: CatalogProductDto
+}
+
+input CreateProductInput {
+  categoryId: String
+  description: String
+  imageUrl: String
+  inventoryId: String
+  name: String
+  price: Float!
+}
+
+enum SortOperationKind {
+  ASC
+  DESC
+}
+

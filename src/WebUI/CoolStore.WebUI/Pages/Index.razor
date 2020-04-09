@@ -1,0 +1,20 @@
+@page "/"
+@inject HttpClient HttpClient
+
+<div class="row mt-4">
+  We have @productCount products in the system.
+</div>
+
+@code {
+
+    int? productCount = 0;
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+      productCount = await HttpClient.GetJsonAsync<int>("api/products/count");
+    }
+
+}

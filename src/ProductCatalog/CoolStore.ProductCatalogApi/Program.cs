@@ -1,20 +1,18 @@
-﻿using CoolStore.ProductCatalogApi.Boundaries.GraphQL;
-using CoolStore.ProductCatalogApi.Persistence;
-using CoolStore.Protobuf.Inventory.V1;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Grpc;
-using N8T.Infrastructure.Options;
+using N8T.Infrastructure.Data;
+using N8T.Infrastructure.GraphQL;
+using N8T.Infrastructure.Tye;
+using N8T.Infrastructure.ValidationModel;
 using Serilog;
-using System;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -22,11 +20,15 @@ namespace CoolStore.ProductCatalogApi
     {
         private static async Task Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
             var (builder, configBuilder) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            configBuilder.AddTyeBindingSecrets();
+
             var config = configBuilder.Build();
-            var serviceOptions = config.GetOptions<ServiceOptions>("Services");
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -34,11 +36,12 @@ namespace CoolStore.ProductCatalogApi
                 .CreateLogger();
 
             builder.Host
-                .UseSerilog()
-                .UseCustomHost();
+                .UseSerilog();
+
+            var connString = config["connectionstring:sqlserver"] ??
+                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_product_catalog_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
 
             builder.Services
-                .AddSingleton(serviceOptions)
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
@@ -48,58 +51,28 @@ namespace CoolStore.ProductCatalogApi
                     schemaConfiguration.RegisterMutationType<MutationType>();
                 })
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, config)
-                .AddCustomGrpcClient(svc =>
-                {
-                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                        {
-                            o.Address = new Uri(serviceOptions.InventoryService.GrpcUri);
-                        })
-                        .AddInterceptor<ClientLoggerInterceptor>();
-                });
+                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString);
 
             var app = builder.Build();
 
             app.UseStaticFiles();
             app.UseGraphQL("/graphql");
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql",
-                Path = "/playground",
-            });
+            app.UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground",});
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", context =>
+            app
+                .UseRouting()
+                .UseCloudEvents()
+                .UseEndpoints(endpoints =>
                 {
-                    context.Response.Redirect("/playground");
-                    return Task.CompletedTask;
-                });
-            });
-
-            app.Listen(serviceOptions.ProductCatalogService.RestUri);
-            await app.RunAsync();
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel((ctx, options) =>
+                    endpoints.MapGet("/", context =>
                     {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
+                        context.Response.Redirect("/playground");
+                        return Task.CompletedTask;
                     });
+                    endpoints.MapSubscribeHandler();
                 });
+
+            await app.RunAsync();
         }
     }
 }

@@ -1,0 +1,9 @@
+query getProducts {
+  products (page: 1, pageSize: 9) {
+    edges {
+      name
+      inventoryLocation
+    }
+    totalCount
+  }
+}

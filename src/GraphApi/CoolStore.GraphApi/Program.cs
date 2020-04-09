@@ -1,21 +1,17 @@
-﻿using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Playground;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using N8T.Infrastructure;
-using N8T.Infrastructure.Options;
-using Serilog;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore;
+using HotChocolate.AspNetCore.Playground;
 using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
+using N8T.Infrastructure.Dapr;
+using Serilog;
 
 namespace CoolStore.GraphApi
 {
@@ -44,26 +40,26 @@ namespace CoolStore.GraphApi
             var config = configurationBuilder.Build();
 
             builder.Host
-                .UseSerilog()
-                .UseCustomHost();
+                .UseSerilog();
 
-            var serviceOptions = config.GetOptions<ServiceOptions>("Services");
             builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddHttpClient("product_catalog",
                 (sp, client) =>
                 {
-                    client.BaseAddress = new Uri($"{serviceOptions.ProductCatalogService.RestUri}/graphql");
+                    client.BaseAddress = new Uri($"{config.GetDaprClientUrl("product-catalog-api")}/graphql");
                 });
-            builder.Services.AddHttpClient("inventory",
-                (sp, client) =>
-                {
-                    client.BaseAddress = new Uri($"{serviceOptions.InventoryService.RestUri}/graphql");
-                });
-            builder.Services.AddHttpClient("shopping_cart",
-                (sp, client) =>
-                {
-                    client.BaseAddress = new Uri($"{serviceOptions.ShoppingCartService.RestUri}/graphql");
-                });
+
+            // builder.Services.AddHttpClient("inventory",
+            //     (sp, client) =>
+            //     {
+            //         client.BaseAddress = new Uri($"{serviceOptions.InventoryService.RestUri}/graphql");
+            //     });
+            // builder.Services.AddHttpClient("shopping_cart",
+            //     (sp, client) =>
+            //     {
+            //         client.BaseAddress = new Uri($"{serviceOptions.ShoppingCartService.RestUri}/graphql");
+            //     });
 
             builder.Services.AddSingleton<IQueryResultSerializer, JsonQueryResultSerializer>();
             builder.Services
@@ -75,7 +71,6 @@ namespace CoolStore.GraphApi
                 );
 
             var app = builder.Build();
-            app.Listen(serviceOptions.GraphApi.RestUri);
 
             app.UseStaticFiles();
             app.UseGraphQL("/graphql");
@@ -96,26 +91,6 @@ namespace CoolStore.GraphApi
             });
 
             await app.RunAsync();
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IHostBuilder UseCustomHost(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel((ctx, options) =>
-                    {
-                        if (ctx.HostingEnvironment.IsDevelopment())
-                            IdentityModelEventSource.ShowPII = true;
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any,
-                            Environment.GetEnvironmentVariable("DAPR_HTTP_PORT").ConvertTo<int>());
-                    });
-                });
         }
     }
 }

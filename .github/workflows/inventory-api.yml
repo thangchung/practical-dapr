@@ -2,33 +2,97 @@ name: inventory-ci
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/*
     paths:
-      - "src/Inventory/*"
-      - "src/BuildingBlocks/*"
-      - ".github/workflows/*"
+      - "src/Inventory/**"
+      - "src/BuildingBlocks/**"
+      - ".helm/inventory-api/**"
+      - ".github/workflows/inventory-api.yml"
   pull_request:
     branches: [ master ]
 
 jobs:
-  build:
+  # build-dotnet:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: 3.1.101
+  #   - name: Build with dotnet
+  #     run: dotnet build src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj --configuration Release
 
+  build-docker:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ github.event.path }}
-    - run: |
-          git fetch --unshallow
-    
     - uses: aarnott/nbgv@v0.3
       with:
         setAllVars: true
+    - name: Build docker image
+      run: docker build . --file ./src/Inventory/CoolStore.InventoryApi/Dockerfile --tag image
+    - name: Log into registry
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+    - name: Push image
+      run: |
+        VERSION=$NBGV_GitCommitIdShort
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-inventory-api
+        docker tag image $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101 
+  # build-publish-aks:
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-    - name: Build with dotnet
-      run: dotnet build src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj --configuration Release
+  #   - uses: actions/checkout@v2
+
+  #   - uses: aarnott/nbgv@v0.3
+  #     with:
+  #       setAllVars: true
+
+  #   - name: Install type tool
+  #     run: |
+  #       dotnet tool install -g Microsoft.Tye --version "0.1.0-*" --add-source https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+
+  #   - uses: azure/docker-login@v1
+  #     with:
+  #       login-server: ${{ secrets.CONTAINER_REGISTRY }}
+  #       username: ${{ secrets.REGISTRY_USERNAME }}
+  #       password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    # - name: Build and publish docker image
+    #   run: |
+    #     VERSION=$NBGV_GitCommitIdShort
+    #     IMAGE_ID=${{ secrets.CONTAINER_REGISTRY }}/dapr-inventory-api
+    #     docker build . --file ./src/Inventory/CoolStore.InventoryApi/Dockerfile -t $IMAGE_ID:$VERSION -t $IMAGE_ID:latest
+    #     docker push $IMAGE_ID:$VERSION
+    #     docker push $IMAGE_ID:latest
+
+    # - uses: azure/aks-set-context@v1
+    #   with:
+    #     creds: '${{ secrets.AZURE_CREDENTIALS }}'
+    #     cluster-name: ${{ secrets.CLUSTER_NAME }}
+    #     resource-group: ${{ secrets.RESOURCE_GROUP }}
+
+    # - uses: azure/k8s-create-secret@v1
+    #   with:
+    #     namespace: ${{ steps.generate-child-space-name.outputs.result }}
+    #     container-registry-url: ${{ secrets.CONTAINER_REGISTRY }}
+    #     container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+    #     container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+    #     secret-name: ${{ secrets.IMAGE_PULL_SECRET }}
+
+    # - uses: azure/k8s-set-context@v1
+    #   with:
+    #     method: kubeconfig
+    #     kubeconfig: ${{ secrets.AKS_DAPR_CLUSTER_CONFIG }}
+    #   id: setcontext
+
+    # - name: Deploy to AKS using Tye tool
+    #   run: |
+    #     ls -la $(echo $KUBECONFIG)
+    #     ls -la /home/runner/.kube
+    #     tye deploy

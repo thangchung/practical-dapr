@@ -1,0 +1,16 @@
+<div class="user-info ml-md-auto">
+    <AuthorizeView>
+        <Authorizing>
+            <text>...</text>
+        </Authorizing>
+        <Authorized>
+            <div>
+                <span class="username">Hello @context.User.Identity.Name</span>
+                <a class="sign-out" href="account/signout">Logout</a>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <a class="sign-in" href="account/signin">Login</a>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
