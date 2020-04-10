@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\..\services.json" Link="services.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Domain\N8T.Domain.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Infrastructure\N8T.Infrastructure.csproj" />
   </ItemGroup>

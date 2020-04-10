@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure.Tye;
 
 namespace CoolStore.WebUI.Host
 {
@@ -36,7 +36,7 @@ namespace CoolStore.WebUI.Host
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = _config.GetDaprClientUrl("identity-api");
+                    options.Authority = _config.GetTyeAppUrl("identity-api");
                     options.RequireHttpsMetadata = false;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
@@ -60,7 +60,7 @@ namespace CoolStore.WebUI.Host
             services.AddHttpClient("GraphQLClient")
                 .ConfigureHttpClient((svc, client) =>
                 {
-                    client.BaseAddress = new System.Uri($"{_config.GetDaprClientUrl("graph-api")}/graphql");
+                    client.BaseAddress = new System.Uri($"{_config.GetTyeAppUrl("graph-api")}/graphql");
                 });
 
             services.AddGraphQLClient();

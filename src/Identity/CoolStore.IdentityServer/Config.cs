@@ -6,7 +6,7 @@ using IdentityServer4.Models;
 using System.Collections.Generic;
 using IdentityServer4;
 using Microsoft.Extensions.Configuration;
-using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure.Tye;
 
 namespace CoolStore.IdentityServer
 {
@@ -41,10 +41,10 @@ namespace CoolStore.IdentityServer
                     AllowOfflineAccess = true,
 
                     // where to redirect to after login
-                    RedirectUris = { $"{config.GetDaprClientUrl("webui")}/signin-oidc" },
+                    RedirectUris = { $"{config.GetTyeAppUrl("webui")}/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { $"{config.GetDaprClientUrl("webui")}/signout" },
+                    PostLogoutRedirectUris = { $"{config.GetTyeAppUrl("webui")}/signout" },
 
                     AllowedScopes = new List<string>
                     {

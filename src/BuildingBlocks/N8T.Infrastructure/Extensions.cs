@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
@@ -25,15 +24,7 @@ namespace N8T.Infrastructure
 
             var configBuilder = builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
-            
-            configBuilder.AddJsonFile("services.json", optional: true);
-
-            if (!env.IsDevelopment()) return (builder, configBuilder);
-
-            var servicesJson = Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
-            configBuilder
-                .AddJsonFile(servicesJson, optional: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
             return (builder, configBuilder);
@@ -88,6 +79,7 @@ namespace N8T.Infrastructure
             return url.Split(":").Last().ConvertTo<int>();
         }
 
+        [DebuggerStepThrough]
         public static TData ReadData<TData>(this string fileName, string rootFolder)
         {
             var seedData = Path.GetFullPath(fileName, rootFolder);

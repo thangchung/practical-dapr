@@ -1,26 +1,27 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoolStore.WebUI.Host
 {
-    public class AccountController : Controller
+    [ApiController]
+    [Route("account")]
+    public class AccountController : ControllerBase
     {
-        private static UserInfo LoggedOutUser = new UserInfo { IsAuthenticated = false };
-
-        [HttpGet("account/user")]
+        [HttpGet("user")]
         public async Task<UserInfo> GetUser()
         {
+            var loggedOutUser = new UserInfo {IsAuthenticated = false};
             if (User.Identity.IsAuthenticated)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                return new UserInfo { Name = User.Identity.Name, IsAuthenticated = true, AccessToken = accessToken };
+                return new UserInfo {Name = User.Identity.Name, IsAuthenticated = true, AccessToken = accessToken};
             }
 
-            return LoggedOutUser;
+            return loggedOutUser;
         }
 
-        [HttpGet("account/signin")]
+        [HttpGet("signin")]
         public IActionResult SignIn(string redirectUri)
         {
             if (string.IsNullOrEmpty(redirectUri) || !Url.IsLocalUrl(redirectUri))
@@ -28,13 +29,13 @@ namespace CoolStore.WebUI.Host
                 redirectUri = "/";
             }
 
-            return Challenge(new AuthenticationProperties { RedirectUri = redirectUri }, "oidc");
+            return Challenge(new AuthenticationProperties {RedirectUri = redirectUri}, "oidc");
         }
 
-        [HttpGet("account/signout")]
+        [HttpGet("signout")]
         public IActionResult SignOut()
         {
-            return SignOut(new AuthenticationProperties { RedirectUri = "/" }, "Cookies", "oidc");
+            return SignOut(new AuthenticationProperties {RedirectUri = "/"}, "Cookies", "oidc");
         }
     }
 }
