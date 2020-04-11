@@ -7,3 +7,12 @@ query getProducts {
     totalCount
   }
 }
+
+mutation createProductMutation($createProductInput: CreateProductInput!) {
+  createProduct(createProductInput: $createProductInput) {
+    product {
+      id
+      name
+    }
+  }
+}

@@ -38,7 +38,9 @@ namespace CoolStore.WebUI.Host
                     sp.GetRequiredService<IClientOptions>().GetResultParsers(_clientName)));
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
+                .AddValueSerializer(() => new CreateProductInputSerializer())
                 .AddResultParser(serializers => new GetProductsResultParser(serializers))
+                .AddResultParser(serializers => new CreateProductMutationResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(b => b.UseHttpDefaultPipeline());
 

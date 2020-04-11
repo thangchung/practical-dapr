@@ -14,7 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\N8T.Infrastructure\N8T.Infrastructure.csproj" />
+    <Folder Include="GraphQL\Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CoolStore.WebUI\CoolStore.WebUI.csproj" />
   </ItemGroup>
 

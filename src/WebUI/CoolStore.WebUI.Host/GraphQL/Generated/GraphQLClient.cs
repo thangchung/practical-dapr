@@ -40,5 +40,31 @@ namespace CoolStore.WebUI.Host
 
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
+            global::StrawberryShake.Optional<global::CoolStore.WebUI.Host.CreateProductInput> createProductInput = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (createProductInput.HasValue && createProductInput.Value is null)
+            {
+                throw new ArgumentNullException(nameof(createProductInput));
+            }
+
+            return _executor.ExecuteAsync(
+                new CreateProductMutationOperation { CreateProductInput = createProductInput },
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
+            CreateProductMutationOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
     }
 }

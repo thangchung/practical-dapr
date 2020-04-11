@@ -16,5 +16,13 @@ namespace CoolStore.WebUI.Host
         Task<IOperationResult<global::CoolStore.WebUI.Host.IGetProducts>> GetProductsAsync(
             GetProductsOperation operation,
             CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
+            Optional<global::CoolStore.WebUI.Host.CreateProductInput> createProductInput = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
+            CreateProductMutationOperation operation,
+            CancellationToken cancellationToken = default);
     }
 }
