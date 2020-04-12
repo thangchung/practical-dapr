@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using CoolStore.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using N8T.Infrastructure;
 using StrawberryShake;
 
 namespace CoolStore.WebUI.Host.Controllers
@@ -25,6 +27,14 @@ namespace CoolStore.WebUI.Host.Controllers
         {
             var result = await _client.GetProductsAsync();
             return result.Data?.Products?.TotalCount;
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ICatalogProductDto> GetProductCount(Guid id)
+        {
+            var result = await _client.GetProductsAsync(1, int.MaxValue);
+            return result.Data?.Products?.Edges?.FirstOrDefault(x=>x.Id.ConvertTo<Guid>() == id);
         }
 
         [Authorize]
@@ -74,6 +84,13 @@ namespace CoolStore.WebUI.Host.Controllers
             }));
 
             return result.Data.CreateProduct;
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<ICreateProductResponse> EditProduct([FromBody] EditProductModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,11 +1,11 @@
-@page "/create-product"
+@page "/edit-product/{Id:guid}"
 @attribute [Authorize]
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
 <div class="card">
   <div class="card-header">
-    Create a New Product
+    Edit the Product
   </div>
   <div class="card-body">
     <EditForm Model="@_productModel" OnValidSubmit="HandleValidSubmit">
@@ -33,7 +33,14 @@
           <option value="">Select...</option>
           @foreach (var cat in _categories)
           {
-            <option value="@cat.Key">@cat.Value</option>
+            if (cat.Key.ToString() == _productModel.CategoryId)
+            {
+              <option value="@cat.Key" selected>@cat.Value</option>
+            }
+            else
+            {
+              <option value="@cat.Key">@cat.Value</option>
+            }
           }
         </InputSelect>
       </p>
@@ -46,7 +53,14 @@
           <option value="">Select...</option>
           @foreach (var inv in _inventories)
           {
-            <option value="@inv.Key">@inv.Value</option>
+            if (inv.Key.ToString() == _productModel.InventoryId)
+            {
+              <option value="@inv.Key" selected>@inv.Value</option>
+            }
+            else
+            {
+              <option value="@inv.Key">@inv.Value</option>
+            }
           }
         </InputSelect>
       </p>
@@ -72,19 +86,34 @@
 
 @code {
 
-  private readonly CreateProductModel _productModel = new CreateProductModel();
+  [Parameter]
+  public Guid Id { get; set; }
+
+  private readonly EditProductModel _productModel = new EditProductModel();
   IList<KeyValueModel> _categories = new List<KeyValueModel>();
   IList<KeyValueModel> _inventories = new List<KeyValueModel>();
 
   protected override async Task OnInitializedAsync()
   {
+    _productModel.Id = Id.ToString();
     _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
     _inventories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories");
+
+    var product = await HttpClient.GetJsonAsync<ProductItemDetailModel>($"api/products/{Id}");
+    if (product != null)
+    {
+      _productModel.Name = product.Name;
+      _productModel.Price = product.Price;
+      _productModel.ImageUrl = product.ImageUrl;
+      _productModel.InventoryId = product.InventoryId.ToString();
+      _productModel.CategoryId = product.CategoryId.ToString();
+      _productModel.Description = product.Description;
+    }
   }
 
   private async Task HandleValidSubmit()
   {
-    await HttpClient.PostJsonAsync("/api/products", _productModel);
+    await HttpClient.PutJsonAsync("/api/products", _productModel);
     NavigationManager.NavigateTo("/products");
   }
 
