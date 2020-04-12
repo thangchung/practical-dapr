@@ -11,6 +11,9 @@ namespace CoolStore.WebUI.Host
     public partial interface IGraphQLClient
     {
         Task<IOperationResult<global::CoolStore.WebUI.Host.IGetProducts>> GetProductsAsync(
+            Optional<int?> page = default,
+            Optional<int?> pageSize = default,
+            Optional<global::CoolStore.WebUI.Host.CatalogProductDtoFilter> where = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<global::CoolStore.WebUI.Host.IGetProducts>> GetProductsAsync(

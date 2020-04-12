@@ -17,9 +17,32 @@ namespace CoolStore.WebUI.Host
 
         public Type ResultType => typeof(IGetProducts);
 
+        public Optional<int?> Page { get; set; }
+
+        public Optional<int?> PageSize { get; set; }
+
+        public Optional<global::CoolStore.WebUI.Host.CatalogProductDtoFilter> Where { get; set; }
+
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
-            return Array.Empty<VariableValue>();
+            var variables = new List<VariableValue>();
+
+            if (Page.HasValue)
+            {
+                variables.Add(new VariableValue("page", "Int", Page.Value));
+            }
+
+            if (PageSize.HasValue)
+            {
+                variables.Add(new VariableValue("pageSize", "Int", PageSize.Value));
+            }
+
+            if (Where.HasValue)
+            {
+                variables.Add(new VariableValue("where", "CatalogProductDtoFilter", Where.Value));
+            }
+
+            return variables;
         }
     }
 }

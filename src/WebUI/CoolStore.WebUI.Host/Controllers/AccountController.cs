@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoolStore.WebUI.Host
+namespace CoolStore.WebUI.Host.Controllers
 {
     [ApiController]
     [Route("account")]

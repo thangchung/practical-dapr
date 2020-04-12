@@ -20,6 +20,10 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 
 ![](assets/commucation_style.png)
 
+# CoolStore Application
+
+![](assets/webui-products.png)
+
 # Get starting
 
 ## Start required components

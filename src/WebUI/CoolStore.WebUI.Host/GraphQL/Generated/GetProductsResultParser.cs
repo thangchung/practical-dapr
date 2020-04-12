@@ -16,6 +16,7 @@ namespace CoolStore.WebUI.Host
     {
         private readonly IValueSerializer _intSerializer;
         private readonly IValueSerializer _stringSerializer;
+        private readonly IValueSerializer _floatSerializer;
 
         public GetProductsResultParser(IValueSerializerCollection serializerResolver)
         {
@@ -25,6 +26,7 @@ namespace CoolStore.WebUI.Host
             }
             _intSerializer = serializerResolver.Get("Int");
             _stringSerializer = serializerResolver.Get("String");
+            _floatSerializer = serializerResolver.Get("Float");
         }
 
         protected override IGetProducts ParserData(JsonElement data)
@@ -78,7 +80,13 @@ namespace CoolStore.WebUI.Host
                 JsonElement element = obj[objIndex];
                 list[objIndex] = new CatalogProductDto
                 (
+                    DeserializeNullableString(element, "id"),
                     DeserializeNullableString(element, "name"),
+                    DeserializeNullableString(element, "imageUrl"),
+                    DeserializeFloat(element, "price"),
+                    DeserializeNullableString(element, "categoryId"),
+                    DeserializeNullableString(element, "categoryName"),
+                    DeserializeNullableString(element, "inventoryId"),
                     DeserializeNullableString(element, "inventoryLocation")
                 );
 
@@ -105,6 +113,12 @@ namespace CoolStore.WebUI.Host
             }
 
             return (string)_stringSerializer.Deserialize(value.GetString());
+        }
+
+        private double DeserializeFloat(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (double)_floatSerializer.Deserialize(value.GetDouble());
         }
     }
 }

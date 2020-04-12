@@ -4,7 +4,7 @@
       "Name": "GraphQL",
       "Type": "http",
       "File": "GraphQL.graphql",
-      "Url": "http://localhost:53099/graphql"
+      "Url": "http://localhost:58859/graphql"
     }
   ],
   "ClientName": "GraphQLClient"

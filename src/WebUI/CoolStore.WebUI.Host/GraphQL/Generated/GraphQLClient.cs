@@ -21,11 +21,19 @@ namespace CoolStore.WebUI.Host
         }
 
         public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetProducts>> GetProductsAsync(
+            global::StrawberryShake.Optional<int?> page = default,
+            global::StrawberryShake.Optional<int?> pageSize = default,
+            global::StrawberryShake.Optional<global::CoolStore.WebUI.Host.CatalogProductDtoFilter> where = default,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new GetProductsOperation(),
+                new GetProductsOperation
+                {
+                    Page = page, 
+                    PageSize = pageSize, 
+                    Where = where
+                },
                 cancellationToken);
         }
 

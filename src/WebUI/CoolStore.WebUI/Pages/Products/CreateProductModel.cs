@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoolStore.WebUI.Models
@@ -17,5 +18,11 @@ namespace CoolStore.WebUI.Models
         [Required] public string InventoryId { get; set; }
 
         [Required] public double Price { get; set; } = 1000;
+    }
+
+    public class KeyValueModel
+    {
+        public Guid Key { get; set; }
+        public string Value { get; set; }
     }
 }

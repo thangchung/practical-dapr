@@ -27,25 +27,30 @@ namespace CoolStore.IdentityServer
             };
 
 
-        public static IEnumerable<Client> Clients(IConfiguration config) =>
-            new []
+        public static IEnumerable<Client> Clients(IConfiguration config)
+        {
+            var webUiUrl = config.GetTyeAppUrl("webui");
+            if (config.GetValue<bool>("IsStandAloneMode"))
+            {
+                webUiUrl = config.GetValue<string>("WebUIUrl");
+            }
+
+            return new[]
             {
                 new Client
                 {
                     ClientId = "webui",
-                    ClientSecrets = { new Secret("mysecret".Sha256()) },
-
+                    ClientSecrets = {new Secret("mysecret".Sha256())},
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireConsent = false,
                     RequirePkce = true,
                     AllowOfflineAccess = true,
 
                     // where to redirect to after login
-                    RedirectUris = { $"{config.GetTyeAppUrl("webui")}/signin-oidc" },
+                    RedirectUris = {$"{webUiUrl}/signin-oidc"},
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { $"{config.GetTyeAppUrl("webui")}/signout" },
-
+                    PostLogoutRedirectUris = {$"{webUiUrl}/signout"},
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -55,5 +60,6 @@ namespace CoolStore.IdentityServer
                     }
                 }
             };
+        }
     }
 }

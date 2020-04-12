@@ -57,7 +57,7 @@ namespace CoolStore.WebUI.Host
                 });
 
             services.AddHttpClient("GraphQLClient")
-                .ConfigureHttpClient((svc, client) =>
+                .ConfigureHttpClient(client =>
                 {
                     client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, "graph-api")}/graphql");
                 });
@@ -92,6 +92,18 @@ namespace CoolStore.WebUI.Host
 
         public string GetTyeAppUrl(IConfiguration config, string appId)
         {
+            if (config.GetValue<bool>("IsStandAloneMode"))
+            {
+                if (appId == "identity-api")
+                {
+                    return config.GetValue<string>("IdentityUrl");
+                }
+                else if (appId == "graph-api")
+                {
+                    return config.GetValue<string>("GraphQLUrl");
+                }
+            }
+
             var host = config[$"service:{appId}:host"];
             var port = config[$"service:{appId}:port"];
             var url = $"http://{host}:{port}";
