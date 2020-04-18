@@ -19,6 +19,10 @@ message GetInventoriesResponse {
   repeated InventoryDto inventories = 1;
 }
 
+message GetInventoriesByIds {
+  repeated string ids = 1;
+}
+
 message GetInventoryStreamRequest {}
 message GetInventoryStreamResponse {
   string id = 1;

@@ -15,6 +15,7 @@ namespace CoolStore.WebUI.Host
         : JsonResultParserBase<IGetProducts>
     {
         private readonly IValueSerializer _intSerializer;
+        private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
         private readonly IValueSerializer _floatSerializer;
 
@@ -25,6 +26,7 @@ namespace CoolStore.WebUI.Host
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
             _intSerializer = serializerResolver.Get("Int");
+            _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
             _floatSerializer = serializerResolver.Get("Float");
         }
@@ -80,14 +82,13 @@ namespace CoolStore.WebUI.Host
                 JsonElement element = obj[objIndex];
                 list[objIndex] = new CatalogProductDto
                 (
-                    DeserializeNullableString(element, "id"),
+                    DeserializeUuid(element, "id"),
                     DeserializeNullableString(element, "name"),
                     DeserializeNullableString(element, "imageUrl"),
                     DeserializeFloat(element, "price"),
-                    DeserializeNullableString(element, "categoryId"),
+                    DeserializeUuid(element, "categoryId"),
                     DeserializeNullableString(element, "categoryName"),
-                    DeserializeNullableString(element, "inventoryId"),
-                    DeserializeNullableString(element, "inventoryLocation")
+                    ParseGetProductsProductsEdgesInventory(element, "inventory")
                 );
 
             }
@@ -95,11 +96,32 @@ namespace CoolStore.WebUI.Host
             return list;
         }
 
+        private global::CoolStore.WebUI.Host.IInventoryDto ParseGetProductsProductsEdgesInventory(
+            JsonElement parent,
+            string field)
+        {
+            JsonElement obj = parent.GetProperty(field);
+
+            return new InventoryDto
+            (
+                DeserializeUuid(obj, "id"),
+                DeserializeNullableString(obj, "website"),
+                DeserializeNullableString(obj, "location"),
+                DeserializeNullableString(obj, "description")
+            );
+        }
+
         private int DeserializeInt(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (int)_intSerializer.Deserialize(value.GetInt32());
         }
+        private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
+        }
+
         private string DeserializeNullableString(JsonElement obj, string fieldName)
         {
             if (!obj.TryGetProperty(fieldName, out JsonElement value))

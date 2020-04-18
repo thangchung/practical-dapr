@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
+using System.Reflection;
 using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.GraphQL.Errors;
 
@@ -13,6 +16,8 @@ namespace N8T.Infrastructure.GraphQL
             Action<ISchemaConfiguration> schemaConfiguration,
             Action<IServiceCollection> doMoreActions = null)
         {
+            services.AddDataLoaderRegistry();
+
             services.AddGraphQL(sp => Schema.Create(c =>
                     {
                         c.RegisterServiceProvider(sp);
@@ -28,6 +33,20 @@ namespace N8T.Infrastructure.GraphQL
             doMoreActions?.Invoke(services);
 
             return services;
+        }
+
+        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration, Assembly graphTypeAssembly)
+        {
+            var objectTypes = graphTypeAssembly
+                .GetTypes()
+                .Where(type => typeof(ObjectType).IsAssignableFrom(type));
+
+            foreach (var objectType in objectTypes)
+            {
+                schemaConfiguration.RegisterType(objectType);
+            }
+
+            return schemaConfiguration;
         }
     }
 }

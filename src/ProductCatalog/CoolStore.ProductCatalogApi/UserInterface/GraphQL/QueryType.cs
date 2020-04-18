@@ -1,4 +1,4 @@
-﻿using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters;
+using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Sorts;
 using CoolStore.Protobuf.ProductCatalog.V1;
 using HotChocolate.Types;
@@ -13,7 +13,7 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
             descriptor
                 .Field(x => x.GetProducts())
                 .Name("products")
-                .UseOffsetPaging<ProductType, CatalogProductDto>()
+                .UseOffsetPaging<CatalogProductType, CatalogProductDto>()
                 .UseFiltering<ProductFilterType>()
                 .UseSorting<ProductSortType>();
         }

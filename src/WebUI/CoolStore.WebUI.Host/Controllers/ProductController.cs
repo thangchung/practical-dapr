@@ -31,7 +31,7 @@ namespace CoolStore.WebUI.Host.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ICatalogProductDto> GetProductCount(Guid id)
+        public async Task<ICatalogProductDto> GetProduct(Guid id)
         {
             var result = await _client.GetProductsAsync(1, int.MaxValue);
             return result.Data?.Products?.Edges?.FirstOrDefault(x=>x.Id.ConvertTo<Guid>() == id);

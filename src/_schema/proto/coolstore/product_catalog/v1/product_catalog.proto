@@ -14,11 +14,8 @@ message CatalogProductDto {
   double price = 4;
   string image_url = 5;
   string inventory_id = 6;
-  string inventory_location = 7;
-  string inventory_website = 8;
-  string inventory_description = 9;
-  string category_id = 10;
-  string category_name = 11;
+  string category_id = 7;
+  string category_name = 8;
 }
 
 message CategoryDto {

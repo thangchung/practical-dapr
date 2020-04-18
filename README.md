@@ -8,19 +8,19 @@ A lightweight low ceremony microservices without Docker, Docker-compose and Helm
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
-## Give a Star! :star:
+## Show your support
 
 If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
 
-# High Level Architecture
+# High level architecture
 
 ![](assets/high_level_architecture.png)
 
-# Communication Style
+# Communication style
 
 ![](assets/commucation_style.png)
 
-# CoolStore Application
+# CoolStore application
 
 ![](assets/webui-products.png)
 
@@ -48,7 +48,7 @@ Then you can see `tye dashboard` as below
 - Go to `identity-api`, and on `Bindings` column click to `http` link (http://localhost:58269 in the picture) to access to `Identity Server 4`
 - Go to `graph-api`, and on `Bindings` column click to `http` link (http://localhost:58267 in the picture) to access to `GraphQL Api Server`
 
-### GraphQL Server Playground
+### GraphQL server playground
 
 On the `graph-api` link above, you will be redirected to GraphQL Playground, and you can play with it as following:
 
@@ -109,7 +109,8 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 
 Follow steps at [Debugging Dapr application using Tye tool](https://dev.to/thangchung/debugging-dapr-application-using-tye-tool-1djb)
 
-## Setup Azure
+## Setup azure cloud services
+
 - [Publish docker image to ACR and AKS](https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions) and [example](https://github.com/Azure/dev-spaces/blob/master/.github/workflows/bikes.yml)
 
 ## Contributing

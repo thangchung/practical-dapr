@@ -41,14 +41,22 @@ namespace CoolStore.InventoryApi.UserInterface.Grpc
                     _logger.LogInformation($"Got {result.ToList().Count} items.");
                     var inventories = new List<InventoryDto>();
                     inventories.AddRange(result);
-                    responseEnvelope.Data = inventories.ConvertToAnyAsync();
+                    responseEnvelope.Data = inventories.ConvertToAnyTypeAsync();
                     return responseEnvelope;
                 }
 
                 case "GetInventory":
                 {
                     var result = await _mediator.Send(new GetInventoryQuery());
-                    responseEnvelope.Data = result.ConvertToAnyAsync();
+                    responseEnvelope.Data = result.ConvertToAnyTypeAsync();
+                    return responseEnvelope;
+                }
+
+                case "GetInventoriesByIds":
+                {
+                    var queryRequest = request.Data.ConvertFromAnyTypeAsync<GetInventoriesByIdsQuery>();
+                    var result = await _mediator.Send(queryRequest);
+                    responseEnvelope.Data = result.ConvertToAnyTypeAsync();
                     return responseEnvelope;
                 }
             }

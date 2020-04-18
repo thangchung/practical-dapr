@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Infrastructure.Gateways;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
+using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -44,13 +46,16 @@ namespace CoolStore.ProductCatalogApi
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(schemaConfiguration =>
+                .AddCustomGraphQL(c =>
                 {
-                    schemaConfiguration.RegisterQueryType<QueryType>();
-                    schemaConfiguration.RegisterMutationType<MutationType>();
+                    c.RegisterQueryType<QueryType>();
+                    c.RegisterMutationType<MutationType>();
+                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterExtendedScalarTypes();
                 })
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString);
+                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomServices();
 
             var app = builder.Build();
 
@@ -72,6 +77,15 @@ namespace CoolStore.ProductCatalogApi
                 });
 
             await app.RunAsync();
+        }
+    }
+
+    internal static class Extensions
+    {
+        internal static IServiceCollection AddCustomServices(this IServiceCollection services)
+        {
+            services.AddScoped<IInventoryGateway, InventoryGateway>();
+            return services;
         }
     }
 }

@@ -10,14 +10,14 @@ namespace CoolStore.WebUI.Host
         : ICatalogProductDto1
     {
         public CatalogProductDto1(
-            string id, 
+            System.Guid id, 
             string name)
         {
             Id = id;
             Name = name;
         }
 
-        public string Id { get; }
+        public System.Guid Id { get; }
 
         public string Name { get; }
     }

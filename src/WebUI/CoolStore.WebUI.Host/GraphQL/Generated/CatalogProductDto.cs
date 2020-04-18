@@ -10,14 +10,13 @@ namespace CoolStore.WebUI.Host
         : ICatalogProductDto
     {
         public CatalogProductDto(
-            string id, 
+            System.Guid id, 
             string name, 
             string imageUrl, 
             double price, 
-            string categoryId, 
+            System.Guid categoryId, 
             string categoryName, 
-            string inventoryId, 
-            string inventoryLocation)
+            global::CoolStore.WebUI.Host.IInventoryDto inventory)
         {
             Id = id;
             Name = name;
@@ -25,11 +24,10 @@ namespace CoolStore.WebUI.Host
             Price = price;
             CategoryId = categoryId;
             CategoryName = categoryName;
-            InventoryId = inventoryId;
-            InventoryLocation = inventoryLocation;
+            Inventory = inventory;
         }
 
-        public string Id { get; }
+        public System.Guid Id { get; }
 
         public string Name { get; }
 
@@ -37,12 +35,10 @@ namespace CoolStore.WebUI.Host
 
         public double Price { get; }
 
-        public string CategoryId { get; }
+        public System.Guid CategoryId { get; }
 
         public string CategoryName { get; }
 
-        public string InventoryId { get; }
-
-        public string InventoryLocation { get; }
+        public global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
     }
 }

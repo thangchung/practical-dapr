@@ -8,7 +8,7 @@ namespace CoolStore.WebUI.Host
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public partial interface ICatalogProductDto
     {
-        string Id { get; }
+        System.Guid Id { get; }
 
         string Name { get; }
 
@@ -16,12 +16,10 @@ namespace CoolStore.WebUI.Host
 
         double Price { get; }
 
-        string CategoryId { get; }
+        System.Guid CategoryId { get; }
 
         string CategoryName { get; }
 
-        string InventoryId { get; }
-
-        string InventoryLocation { get; }
+        global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
     }
 }

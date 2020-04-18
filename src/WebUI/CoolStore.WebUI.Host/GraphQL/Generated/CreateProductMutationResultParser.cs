@@ -14,6 +14,7 @@ namespace CoolStore.WebUI.Host
     public partial class CreateProductMutationResultParser
         : JsonResultParserBase<ICreateProductMutation>
     {
+        private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
 
         public CreateProductMutationResultParser(IValueSerializerCollection serializerResolver)
@@ -22,6 +23,7 @@ namespace CoolStore.WebUI.Host
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
+            _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
         }
 
@@ -62,9 +64,15 @@ namespace CoolStore.WebUI.Host
 
             return new CatalogProductDto1
             (
-                DeserializeNullableString(obj, "id"),
+                DeserializeUuid(obj, "id"),
                 DeserializeNullableString(obj, "name")
             );
+        }
+
+        private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
         private string DeserializeNullableString(JsonElement obj, string fieldName)

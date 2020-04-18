@@ -5,10 +5,14 @@ query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
       name
       imageUrl
       price
-      categoryId
+      categoryId 
       categoryName
-      inventoryId
-      inventoryLocation
+      inventory {
+        id
+        website
+        location
+        description
+      }
     }
     totalCount
   }

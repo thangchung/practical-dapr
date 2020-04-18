@@ -8,7 +8,7 @@ namespace N8T.Infrastructure.Grpc
 {
     public static class Extensions
     {
-        public static Any ConvertToAnyAsync<T>(this T data, JsonSerializerOptions options = null)
+        public static Any ConvertToAnyTypeAsync<T>(this T data, JsonSerializerOptions options = null)
         {
             options ??= new JsonSerializerOptions
             {
@@ -16,13 +16,24 @@ namespace N8T.Infrastructure.Grpc
             };
 
             var any = new Any();
-
             if (data == null)
                 return any;
+
             var bytes = JsonSerializer.SerializeToUtf8Bytes(data, options);
             any.Value = ByteString.CopyFrom(bytes);
 
             return any;
+        }
+
+        public static T ConvertFromAnyTypeAsync<T>(this Any any, JsonSerializerOptions options = null)
+        {
+            options ??= new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            var utf8String = any.Value.ToStringUtf8();
+            return JsonSerializer.Deserialize<T>(utf8String, options);
         }
 
         public static IServiceCollection AddCustomGrpc(this IServiceCollection services,

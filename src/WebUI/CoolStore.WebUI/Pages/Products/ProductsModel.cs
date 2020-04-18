@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CoolStore.WebUI.Models
@@ -10,10 +11,16 @@ namespace CoolStore.WebUI.Models
 
     public class ProductItemModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public string InventoryLocation { get; set; }
         public string ImageUrl { get; set; }
         public double Price { get; set; }
+        public InventoryModel Inventory { get; set; } = new InventoryModel();
+    }
+
+    public class InventoryModel
+    {
+        public Guid Id { get; set; }
+        public string Location { get; set; }
     }
 }
