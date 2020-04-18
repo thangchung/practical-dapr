@@ -8,7 +8,7 @@ name: practical-dapr
 extensions:
 - name: dapr
   log-level: debug
-# registry: dapracr.azurecr.io docker.pkg.github.com/thangchung/practical-dapr
+# registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 services:
 - name: sqlserver
@@ -32,5 +32,5 @@ services:
   project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
 - name: inventory-api
   project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
-# - name: webui
-#   project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
+- name: webui
+  project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
