@@ -1,0 +1,91 @@
+@page "/create-product"
+@attribute [Authorize]
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<div class="card">
+  <div class="card-header">
+    Create a New Product
+  </div>
+  <div class="card-body">
+    <EditForm Model="@_productModel" OnValidSubmit="HandleValidSubmit">
+      <DataAnnotationsValidator/>
+      <ValidationSummary/>
+      <p class="form-group">
+        <label class="control-label">
+          Name
+        </label>
+        <InputText id="name" @bind-Value="_productModel.Name" class="form-control"/>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          Price
+        </label>
+        <InputNumber id="price" @bind-Value="_productModel.Price" class="form-control"/>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          Category
+        </label>
+        <InputSelect id="categoryId" @bind-Value="_productModel.CategoryId" class="form-control">
+          <option value="">Select...</option>
+          @foreach (var cat in _categories)
+          {
+            <option value="@cat.Key">@cat.Value</option>
+          }
+        </InputSelect>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          Inventory
+        </label>
+        <InputSelect id="inventoryId" @bind-Value="_productModel.InventoryId" class="form-control">
+          <option value="">Select...</option>
+          @foreach (var inv in _inventories)
+          {
+            <option value="@inv.Key">@inv.Value</option>
+          }
+        </InputSelect>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          Image
+        </label>
+        <InputText id="imageUrl" @bind-Value="_productModel.ImageUrl" class="form-control"/>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          Description
+        </label>
+        <InputText id="description" @bind-Value="_productModel.Description" class="form-control"/>
+      </p>
+
+      <button type="submit" class="btn btn-outline-primary">Create</button>
+    </EditForm>
+  </div>
+</div>
+
+@code {
+
+  private readonly CreateProductModel _productModel = new CreateProductModel();
+  IList<KeyValueModel> _categories = new List<KeyValueModel>();
+  IList<KeyValueModel> _inventories = new List<KeyValueModel>();
+
+  protected override async Task OnInitializedAsync()
+  {
+    _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
+    _inventories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories");
+  }
+
+  private async Task HandleValidSubmit()
+  {
+    await HttpClient.PostJsonAsync("/api/products", _productModel);
+    NavigationManager.NavigateTo("/products");
+  }
+
+}

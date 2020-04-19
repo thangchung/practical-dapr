@@ -1,6 +1,4 @@
-﻿using CoolStore.Protobuf.ProductCatalog.V1;
 using N8T.Domain;
-using N8T.Infrastructure;
 using System;
 using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
@@ -9,10 +7,10 @@ namespace CoolStore.ProductCatalogApi.Domain
     public class Product : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; private set; } = string.Empty;
+        public string? Description { get; private set; }
         public double Price { get; private set; }
-        public string ImageUrl { get; private set; }
+        public string ImageUrl { get; private set; } = "https://picsum.photos/1200/900?image=1";
         public Guid InventoryId { get; private set; }
         public bool IsDeleted { get; private set; }
         public Guid CategoryId { get; private set; }
@@ -22,28 +20,29 @@ namespace CoolStore.ProductCatalogApi.Domain
         {
         }
 
-        public static Product Of(Guid productId, CreateProductRequest request)
+        public static Product Of(Guid productId, string name, string? description, double price, string imageUrl,
+            Guid inventoryId, Guid categoryId)
         {
             var newProduct = new Product
             {
                 Id = productId,
-                Name = request.Name,
-                Description = request.Description,
-                Price = request.Price,
-                ImageUrl = request.ImageUrl,
-                InventoryId = request.InventoryId.ConvertTo<Guid>(),
-                CategoryId = request.CategoryId.ConvertTo<Guid>(),
+                Name = name,
+                Description = description,
+                Price = price,
+                ImageUrl = imageUrl,
+                InventoryId = inventoryId,
+                CategoryId = categoryId,
                 Created = NewDateTime(),
                 IsDeleted = false
             };
 
             newProduct.AddDomainEvent(new ProductCreated
             {
-                ProductId = productId.ToString(),
-                Name = request.Name,
-                Price = request.Price,
-                ImageUrl = request.ImageUrl,
-                Description = request.Description
+                ProductId = productId,
+                Name = name,
+                Price = price,
+                ImageUrl = imageUrl,
+                Description = description
             });
 
             return newProduct;
@@ -56,23 +55,27 @@ namespace CoolStore.ProductCatalogApi.Domain
             return this;
         }
 
-        public Product UpdateProduct(UpdateProductRequest request)
+        public Product UpdateProduct(string name, string? description, double price, string imageUrl, Guid inventoryId)
         {
-            Name = request.Name;
-            Description = request.Description;
-            Price = request.Price;
-            ImageUrl = request.ImageUrl;
+            Name = name;
+            Description = description;
+            Price = price;
+            ImageUrl = imageUrl;
 
-            if (!string.IsNullOrEmpty(request.InventoryId))
+            if (inventoryId == Guid.Empty)
             {
-                InventoryId = request.InventoryId.ConvertTo<Guid>();
+                throw new InventoryNullException();
+            }
+            else
+            {
+                InventoryId = inventoryId;
             }
 
             Updated = NewDateTime();
 
             AddDomainEvent(new ProductUpdated
             {
-                ProductId = Id.ToString(),
+                ProductId = Id,
                 Name = Name,
                 Price = Price,
                 ImageUrl = ImageUrl,
@@ -88,7 +91,7 @@ namespace CoolStore.ProductCatalogApi.Domain
 
             AddDomainEvent(new ProductDeleted
             {
-                ProductId = Id.ToString()
+                ProductId = Id
             });
 
             return this;

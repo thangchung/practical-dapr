@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N8T.Domain", "src\BuildingB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{9DCADFAA-8ECD-4959-9320-EE08ECADE524}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		global.json = global.json
@@ -18,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{9DCADFAA-8ECD-
 		nuget.config = nuget.config
 		README.md = README.md
 		services.json = services.json
+		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GraphApi", "GraphApi", "{5C0DE234-8C59-4ADD-8D43-83CDC84A4A13}"
@@ -46,16 +48,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{BCEFF6E3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.OrderApi", "src\Order\CoolStore.OrderApi\CoolStore.OrderApi.csproj", "{1A3DCA3D-6E35-43F8-BD1F-164C9719AC80}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{49AD1C33-D5BC-45C7-B78C-75D11AD86B05}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{42D6E17C-BD7A-4499-94F0-13889869F7E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebUI", "WebUI", "{2BC95510-F8A7-45EE-B681-AEB3EF543451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.WebUI.Host", "src\WebUI\CoolStore.WebUI.Host\CoolStore.WebUI.Host.csproj", "{464235CB-7E36-4015-BF14-99B614938135}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.WebUI", "src\WebUI\CoolStore.WebUI\CoolStore.WebUI.csproj", "{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.WebUI.Host", "src\WebUI\CoolStore.WebUI.Host\CoolStore.WebUI.Host.csproj", "{2796AF2D-0688-4669-BDBC-923353C7DAB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolStore.WebUI", "src\WebUI\CoolStore.WebUI\CoolStore.WebUI.csproj", "{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,14 +92,14 @@ Global
 		{1A3DCA3D-6E35-43F8-BD1F-164C9719AC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A3DCA3D-6E35-43F8-BD1F-164C9719AC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A3DCA3D-6E35-43F8-BD1F-164C9719AC80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2796AF2D-0688-4669-BDBC-923353C7DAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2796AF2D-0688-4669-BDBC-923353C7DAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2796AF2D-0688-4669-BDBC-923353C7DAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2796AF2D-0688-4669-BDBC-923353C7DAB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464235CB-7E36-4015-BF14-99B614938135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464235CB-7E36-4015-BF14-99B614938135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464235CB-7E36-4015-BF14-99B614938135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464235CB-7E36-4015-BF14-99B614938135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,9 +120,9 @@ Global
 		{417E233D-4A16-4EA5-A221-A3B879F03E58} = {9814F542-3D82-41B7-BE56-943A5E69278A}
 		{BCEFF6E3-BD86-4268-B0FF-3797F56EB803} = {A4A723DA-686E-4AF3-8CF8-709E1E75C99C}
 		{1A3DCA3D-6E35-43F8-BD1F-164C9719AC80} = {BCEFF6E3-BD86-4268-B0FF-3797F56EB803}
-		{2BC95510-F8A7-45EE-B681-AEB3EF543451} = {A4A723DA-686E-4AF3-8CF8-709E1E75C99C}
-		{AB351DE3-BEC6-4DA4-9D89-8EA4B0194D1D} = {2BC95510-F8A7-45EE-B681-AEB3EF543451}
-		{2796AF2D-0688-4669-BDBC-923353C7DAB0} = {2BC95510-F8A7-45EE-B681-AEB3EF543451}
+		{42D6E17C-BD7A-4499-94F0-13889869F7E8} = {A4A723DA-686E-4AF3-8CF8-709E1E75C99C}
+		{464235CB-7E36-4015-BF14-99B614938135} = {42D6E17C-BD7A-4499-94F0-13889869F7E8}
+		{2AF38C8A-7CE1-4C03-B9EF-A7766DDA6FAB} = {42D6E17C-BD7A-4499-94F0-13889869F7E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {765FF0DA-E88E-4254-9C2B-434D0AFF69C0}

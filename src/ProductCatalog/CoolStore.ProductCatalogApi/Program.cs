@@ -1,8 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.ProductCatalogApi.UserInterface.Gateways;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
+using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -38,20 +41,22 @@ namespace CoolStore.ProductCatalogApi
             builder.Host
                 .UseSerilog();
 
-            var connString = config["connectionstring:sqlserver"] ??
-                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_product_catalog_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
+            var connString = config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb");
 
             builder.Services
                 .AddLogging()
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomGraphQL(schemaConfiguration =>
+                .AddCustomGraphQL(c =>
                 {
-                    schemaConfiguration.RegisterQueryType<QueryType>();
-                    schemaConfiguration.RegisterMutationType<MutationType>();
+                    c.RegisterQueryType<QueryType>();
+                    c.RegisterMutationType<MutationType>();
+                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterExtendedScalarTypes();
                 })
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString);
+                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomServices();
 
             var app = builder.Build();
 
@@ -73,6 +78,15 @@ namespace CoolStore.ProductCatalogApi
                 });
 
             await app.RunAsync();
+        }
+    }
+
+    internal static class Extensions
+    {
+        internal static IServiceCollection AddCustomServices(this IServiceCollection services)
+        {
+            services.AddScoped<IInventoryGateway, InventoryGateway>();
+            return services;
         }
     }
 }

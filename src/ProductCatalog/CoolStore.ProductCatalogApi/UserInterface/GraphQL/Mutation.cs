@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using CoolStore.Protobuf.ProductCatalog.V1;
+using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct;
+using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
@@ -13,7 +14,7 @@ namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
             _mediator = mediator;
         }
 
-        public async Task<CreateProductResponse> CreateProduct(CreateProductRequest createProductInput)
+        public async Task<CatalogProductDto> CreateProduct(CreateProductRequest createProductInput)
         {
             return await _mediator.Send(createProductInput);
         }

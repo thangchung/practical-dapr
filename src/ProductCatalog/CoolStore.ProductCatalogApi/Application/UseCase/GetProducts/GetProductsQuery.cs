@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using CoolStore.Protobuf.ProductCatalog.V1;
+using System.Linq;
+using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCase.GetProducts

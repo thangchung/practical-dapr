@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
@@ -7,10 +8,9 @@ using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using N8T.Infrastructure.Dapr;
+using N8T.Infrastructure;
+using N8T.Infrastructure.Tye;
 using Serilog;
 
 namespace CoolStore.GraphApi
@@ -19,35 +19,27 @@ namespace CoolStore.GraphApi
     {
         private static async Task Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
+            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+                .AddCustomConfiguration();
+
+            var config = configBuilder.Build();
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
-
-            var builder = WebApplication.CreateBuilder(args);
-
-            var configurationBuilder = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
-
-            var env = builder.Environment;
-            configurationBuilder.AddJsonFile("services.json", optional: true);
-            if (env.IsDevelopment())
-            {
-                var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
-                configurationBuilder.AddJsonFile(servicesJson, optional: true);
-            }
-
-            var config = configurationBuilder.Build();
 
             builder.Host
                 .UseSerilog();
 
             builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddHttpClient("product_catalog",
+            builder.Services.AddHttpClient("productCatalog",
                 (sp, client) =>
                 {
-                    client.BaseAddress = new Uri($"{config.GetDaprClientUrl("product-catalog-api")}/graphql");
+                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("product-catalog-api")}/graphql");
                 });
 
             // builder.Services.AddHttpClient("inventory",
@@ -65,7 +57,7 @@ namespace CoolStore.GraphApi
             builder.Services
                 .AddGraphQLSubscriptions()
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
-                    .AddSchemaFromHttp("product_catalog")
+                    .AddSchemaFromHttp("productCatalog")
                     //.AddSchemaFromHttp("inventory")
                     //.AddSchemaFromHttp("shopping_cart")
                 );

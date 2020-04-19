@@ -7,7 +7,8 @@
 name: practical-dapr
 extensions:
 - name: dapr
-# registry: dapracr.azurecr.io docker.pkg.github.com/thangchung/practical-dapr
+  log-level: debug
+# registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 services:
 - name: sqlserver

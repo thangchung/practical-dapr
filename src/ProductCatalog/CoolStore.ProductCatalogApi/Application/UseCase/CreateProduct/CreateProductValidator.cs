@@ -1,4 +1,3 @@
-﻿using CoolStore.Protobuf.ProductCatalog.V1;
 using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct

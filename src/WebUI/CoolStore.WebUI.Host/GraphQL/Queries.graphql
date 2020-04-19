@@ -1,9 +1,29 @@
-query getProducts {
-  products (page: 1, pageSize: 9) {
+query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
+  products (page: $page, pageSize: $pageSize, where: $where, order_by: { price: DESC }) {
     edges {
+      id
       name
-      inventoryLocation
+      imageUrl
+      price
+      description
+      category {
+        id
+        name
+      }
+      inventory {
+        id
+        website
+        location
+        description
+      }
     }
     totalCount
+  }
+}
+
+mutation createProductMutation($createProductInput: CreateProductInput!) {
+  createProduct(createProductInput: $createProductInput) {
+    id
+    name
   }
 }

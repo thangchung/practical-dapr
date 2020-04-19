@@ -10,15 +10,35 @@ namespace CoolStore.WebUI.Host
         : ICatalogProductDto
     {
         public CatalogProductDto(
+            System.Guid id, 
             string name, 
-            string inventoryLocation)
+            string imageUrl, 
+            double price, 
+            string description, 
+            global::CoolStore.WebUI.Host.ICategoryDto category, 
+            global::CoolStore.WebUI.Host.IInventoryDto inventory)
         {
+            Id = id;
             Name = name;
-            InventoryLocation = inventoryLocation;
+            ImageUrl = imageUrl;
+            Price = price;
+            Description = description;
+            Category = category;
+            Inventory = inventory;
         }
+
+        public System.Guid Id { get; }
 
         public string Name { get; }
 
-        public string InventoryLocation { get; }
+        public string ImageUrl { get; }
+
+        public double Price { get; }
+
+        public string Description { get; }
+
+        public global::CoolStore.WebUI.Host.ICategoryDto Category { get; }
+
+        public global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
     }
 }

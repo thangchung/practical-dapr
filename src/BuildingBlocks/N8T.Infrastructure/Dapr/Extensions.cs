@@ -4,6 +4,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using N8T.Infrastructure.Tye;
 
 namespace N8T.Infrastructure.Dapr
 {
@@ -14,7 +15,7 @@ namespace N8T.Infrastructure.Dapr
             string appId,
             ILogger logger = null)
         {
-            var url = GetDaprClientUrl(config, appId);
+            var url = config.GetTyeAppUrl(appId);
             logger?.LogInformation($"Dapr Client Url: {url}");
 
             var client = new DaprClientBuilder()
@@ -27,14 +28,6 @@ namespace N8T.Infrastructure.Dapr
                 .Build();
 
             return client;
-        }
-
-        public static string GetDaprClientUrl(this IConfiguration config, string appId)
-        {
-            var host = config[$"service:{appId}:host"];
-            var port = config[$"service:{appId}:port"];
-            var url = $"http://{host}:{port}";
-            return url;
         }
     }
 }

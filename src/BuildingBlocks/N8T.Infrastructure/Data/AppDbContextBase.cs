@@ -11,7 +11,7 @@ namespace N8T.Infrastructure.Data
         {
         }
 
-        public IEnumerable<IDomainEvent> GetDomainEvents()
+        public IEnumerable<DomainEventBase> GetDomainEvents()
         {
             var domainEntities = ChangeTracker
                 .Entries<EntityBase>()

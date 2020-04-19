@@ -16,5 +16,20 @@ namespace N8T.Infrastructure.Tye
                 config.AddKeyPerFile(directory, optional: true);
             }
         }
+
+        public static string GetTyeAppUrl(this IConfiguration config, string appId)
+        {
+            var host = config[$"service:{appId}:host"];
+            var port = config[$"service:{appId}:port"];
+            var url = $"http://{host}:{port}";
+            return url;
+        }
+
+        public static string GetTyeSqlServerConnString(this IConfiguration config, string appId, string dbName, string dbPassword = "P@ssw0rd")
+        {
+            var connString = config[$"connectionstring:{appId}"] ??
+                             $"Data Source={config["service:" + appId + ":host"]},{config["service:" + appId + ":port"]};Initial Catalog={dbName};User Id=sa;Password={dbPassword};MultipleActiveResultSets=True;";
+            return connString;
+        }
     }
 }

@@ -44,8 +44,7 @@ namespace CoolStore.InventoryApi
                 })
                 .UseSerilog();
 
-            var connString = config["connectionstring:sqlserver"] ??
-                             $"Data Source={config["service:sqlserver:host"]},{config["service:sqlserver:port"]};Initial Catalog=cs_inventory_db;User Id=sa;Password=P@ssw0rd;MultipleActiveResultSets=True;";
+            var connString = config.GetTyeSqlServerConnString("sqlserver", "inventorydb");
 
             builder.Services
                 .AddLogging()

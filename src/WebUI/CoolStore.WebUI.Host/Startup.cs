@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.WebUI.Host
 {
@@ -36,7 +35,7 @@ namespace CoolStore.WebUI.Host
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = _config.GetDaprClientUrl("identity-api");
+                    options.Authority = GetTyeAppUrl(_config, "identity-api");
                     options.RequireHttpsMetadata = false;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
@@ -58,9 +57,9 @@ namespace CoolStore.WebUI.Host
                 });
 
             services.AddHttpClient("GraphQLClient")
-                .ConfigureHttpClient((svc, client) =>
+                .ConfigureHttpClient(client =>
                 {
-                    client.BaseAddress = new System.Uri($"{_config.GetDaprClientUrl("graph-api")}/graphql");
+                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, "graph-api")}/graphql");
                 });
 
             services.AddGraphQLClient();
@@ -89,6 +88,26 @@ namespace CoolStore.WebUI.Host
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToFile("index.html");
             });
+        }
+
+        public string GetTyeAppUrl(IConfiguration config, string appId)
+        {
+            if (config.GetValue<bool>("IsDev"))
+            {
+                if (appId == "identity-api")
+                {
+                    return config.GetValue<string>("IdentityUrl");
+                }
+                else if (appId == "graph-api")
+                {
+                    return config.GetValue<string>("GraphQLUrl");
+                }
+            }
+
+            var host = config[$"service:{appId}:host"];
+            var port = config[$"service:{appId}:port"];
+            var url = $"http://{host}:{port}";
+            return url;
         }
     }
 }

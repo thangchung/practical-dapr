@@ -1,4 +1,4 @@
-﻿using CoolStore.Protobuf.ProductCatalog.V1;
+using CoolStore.ProductCatalogApi.Dtos;
 using HotChocolate.Types.Filters;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters

@@ -1,0 +1,112 @@
+@page "/products"
+@page "/products/{Page:int}"
+@attribute [Authorize]
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<div class="clearfix">
+  <div class="float-left">
+    <NavLink href="/create-product" class="btn btn-outline-primary">Create Product</NavLink>
+  </div>
+  <div class="float-right">
+    <input type="text" value="@_filter" @onchange="@Search" class="form-control" placeholder="search..."/>
+  </div>
+</div>
+
+@if (_productModel.TotalCount <= 0)
+{
+  <p>No product has found!</p>
+}
+else
+{
+  <div class="row mt-4">
+    @foreach (var product in _productModel.Items)
+    {
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="media">
+              <img src="@product?.ImageUrl" class="mr-3" alt="..." width="50" height="50">
+              <div class="media-body">
+                <h5 class="mt-0">@product?.Name</h5>
+                <div>Category: @product?.CategoryName</div>
+                <div>Location: @product?.InventoryLocation</div>
+                <div>Price: <span class="font-weight-bold" style="color: #f08080;">$@product?.Price</span></div>
+                <div class="d-flex justify-content-between align-items-center" style="margin: 15px 0 0;">
+                  <div class="btn-group">
+                    <a href="/edit-product/@product?.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="/products/1" aria-label="First">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        @for (var i = 1; i <= Math.Round((double) _productModel.TotalCount / _pageSize); i++)
+        {
+          <li class="page-item">
+            <a class="page-link" href="/products/@i">@i</a>
+          </li>
+        }
+        <li class="page-item">
+          <a class="page-link" href="/products/@(Math.Round((double) _productModel.TotalCount / _pageSize))" aria-label="Last">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+}
+
+@code {
+
+  [Parameter]
+  public int Page { get; set; } = 1;
+
+  readonly int _pageSize = 9;
+
+  ProductModel _productModel = new ProductModel();
+  readonly string _filter = string.Empty;
+
+  protected override async Task OnInitializedAsync()
+  {
+    _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(_filter));
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(_filter));
+  }
+
+  async Task Search(ChangeEventArgs e)
+  {
+    await Task.Run(async () =>
+    {
+      NavigationManager.NavigateTo($"/products/{Page = 1}");
+      _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(e.Value.ToString()));
+    });
+  }
+
+  private string ProcessUrl(string filter)
+  {
+    var filtered = $"api/products/{Page}/{_pageSize}/&";
+    if (!string.IsNullOrEmpty(filter))
+    {
+      filtered = $"api/products/{Page}/{_pageSize}/{filter}";
+    }
+    return filtered;
+  }
+
+}
