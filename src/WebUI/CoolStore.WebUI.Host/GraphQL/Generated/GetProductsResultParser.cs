@@ -83,17 +83,30 @@ namespace CoolStore.WebUI.Host
                 list[objIndex] = new CatalogProductDto
                 (
                     DeserializeUuid(element, "id"),
-                    DeserializeNullableString(element, "name"),
-                    DeserializeNullableString(element, "imageUrl"),
+                    DeserializeString(element, "name"),
+                    DeserializeString(element, "imageUrl"),
                     DeserializeFloat(element, "price"),
-                    DeserializeUuid(element, "categoryId"),
-                    DeserializeNullableString(element, "categoryName"),
+                    DeserializeNullableString(element, "description"),
+                    ParseGetProductsProductsEdgesCategory(element, "category"),
                     ParseGetProductsProductsEdgesInventory(element, "inventory")
                 );
 
             }
 
             return list;
+        }
+
+        private global::CoolStore.WebUI.Host.ICategoryDto ParseGetProductsProductsEdgesCategory(
+            JsonElement parent,
+            string field)
+        {
+            JsonElement obj = parent.GetProperty(field);
+
+            return new CategoryDto
+            (
+                DeserializeUuid(obj, "id"),
+                DeserializeString(obj, "name")
+            );
         }
 
         private global::CoolStore.WebUI.Host.IInventoryDto ParseGetProductsProductsEdgesInventory(
@@ -105,8 +118,8 @@ namespace CoolStore.WebUI.Host
             return new InventoryDto
             (
                 DeserializeUuid(obj, "id"),
-                DeserializeNullableString(obj, "website"),
-                DeserializeNullableString(obj, "location"),
+                DeserializeString(obj, "website"),
+                DeserializeString(obj, "location"),
                 DeserializeNullableString(obj, "description")
             );
         }
@@ -122,6 +135,18 @@ namespace CoolStore.WebUI.Host
             return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
+        private string DeserializeString(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (string)_stringSerializer.Deserialize(value.GetString());
+        }
+
+        private double DeserializeFloat(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (double)_floatSerializer.Deserialize(value.GetDouble());
+        }
+
         private string DeserializeNullableString(JsonElement obj, string fieldName)
         {
             if (!obj.TryGetProperty(fieldName, out JsonElement value))
@@ -135,12 +160,6 @@ namespace CoolStore.WebUI.Host
             }
 
             return (string)_stringSerializer.Deserialize(value.GetString());
-        }
-
-        private double DeserializeFloat(JsonElement obj, string fieldName)
-        {
-            JsonElement value = obj.GetProperty(fieldName);
-            return (double)_floatSerializer.Deserialize(value.GetDouble());
         }
     }
 }

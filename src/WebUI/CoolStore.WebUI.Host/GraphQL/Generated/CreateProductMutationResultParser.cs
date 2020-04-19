@@ -36,36 +36,16 @@ namespace CoolStore.WebUI.Host
 
         }
 
-        private global::CoolStore.WebUI.Host.ICreateProductResponse ParseCreateProductMutationCreateProduct(
+        private global::CoolStore.WebUI.Host.ICatalogProductDto1 ParseCreateProductMutationCreateProduct(
             JsonElement parent,
             string field)
         {
             JsonElement obj = parent.GetProperty(field);
 
-            return new CreateProductResponse
-            (
-                ParseCreateProductMutationCreateProductProduct(obj, "product")
-            );
-        }
-
-        private global::CoolStore.WebUI.Host.ICatalogProductDto1 ParseCreateProductMutationCreateProductProduct(
-            JsonElement parent,
-            string field)
-        {
-            if (!parent.TryGetProperty(field, out JsonElement obj))
-            {
-                return null;
-            }
-
-            if (obj.ValueKind == JsonValueKind.Null)
-            {
-                return null;
-            }
-
             return new CatalogProductDto1
             (
                 DeserializeUuid(obj, "id"),
-                DeserializeNullableString(obj, "name")
+                DeserializeString(obj, "name")
             );
         }
 
@@ -75,18 +55,9 @@ namespace CoolStore.WebUI.Host
             return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
-        private string DeserializeNullableString(JsonElement obj, string fieldName)
+        private string DeserializeString(JsonElement obj, string fieldName)
         {
-            if (!obj.TryGetProperty(fieldName, out JsonElement value))
-            {
-                return null;
-            }
-
-            if (value.ValueKind == JsonValueKind.Null)
-            {
-                return null;
-            }
-
+            JsonElement value = obj.GetProperty(fieldName);
             return (string)_stringSerializer.Deserialize(value.GetString());
         }
     }

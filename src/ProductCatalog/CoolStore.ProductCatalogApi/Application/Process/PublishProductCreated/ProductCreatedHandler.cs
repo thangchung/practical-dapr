@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using CoolStore.ProductCatalogApi.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CoolStore.ProductCatalogApi.Application.UseCase.PublishProductCreated
+namespace CoolStore.ProductCatalogApi.Application.Process.PublishProductCreated
 {
-    public class PublishProductCreatedHandler : INotificationHandler<Protobuf.ProductCatalog.V1.ProductCreated>
+    public class PublishProductCreatedHandler : INotificationHandler<ProductCreated>
     {
         private readonly ILogger<PublishProductCreatedHandler> _logger;
 
@@ -16,7 +17,7 @@ namespace CoolStore.ProductCatalogApi.Application.UseCase.PublishProductCreated
             _logger = logger ?? throw new NullReferenceException(nameof(logger));
         }
 
-        public Task Handle(Protobuf.ProductCatalog.V1.ProductCreated notification, CancellationToken cancellationToken)
+        public Task Handle(ProductCreated notification, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"We got {JsonSerializer.Serialize(notification)}");
             return Task.CompletedTask;

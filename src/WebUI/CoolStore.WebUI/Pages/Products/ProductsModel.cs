@@ -5,8 +5,8 @@ namespace CoolStore.WebUI.Models
 {
     public class ProductModel
     {
-        public int TotalCount { get; set; }
-        public List<ProductItemModel> Edges { get; set; }
+        public int TotalCount { get; set; } = 0;
+        public List<ProductItemModel> Items { get; set; } = new List<ProductItemModel>();
     }
 
     public class ProductItemModel
@@ -15,7 +15,12 @@ namespace CoolStore.WebUI.Models
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public double Price { get; set; }
-        public InventoryModel Inventory { get; set; } = new InventoryModel();
+        public Guid InventoryId { get; set; }
+        public string InventoryLocation { get; set; }
+        public Guid CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+        //public InventoryModel Inventory { get; set; } = new InventoryModel();
     }
 
     public class InventoryModel

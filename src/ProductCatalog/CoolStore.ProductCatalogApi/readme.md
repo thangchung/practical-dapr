@@ -1,3 +1,3 @@
 ```bash
-$ dotnet ef migrations add InitProductCategoryDb -o Persistence/Migrations
+$ dotnet ef migrations add InitProductCategoryDb -o Infrastructure/Persistence/Migrations
 ```

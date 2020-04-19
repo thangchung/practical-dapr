@@ -5,8 +5,11 @@ query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
       name
       imageUrl
       price
-      categoryId 
-      categoryName
+      description
+      category {
+        id
+        name
+      }
       inventory {
         id
         website
@@ -20,9 +23,7 @@ query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
 
 mutation createProductMutation($createProductInput: CreateProductInput!) {
   createProduct(createProductInput: $createProductInput) {
-    product {
-      id
-      name
-    }
+    id
+    name
   }
 }

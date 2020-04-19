@@ -1,21 +1,20 @@
 using System;
-using CoolStore.ProductCatalogApi.Infrastructure.Gateways;
-using CoolStore.Protobuf.Inventory.V1;
-using CoolStore.Protobuf.ProductCatalog.V1;
+using CoolStore.ProductCatalogApi.Domain;
+using CoolStore.ProductCatalogApi.Dtos;
 using GreenDonut;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using N8T.Infrastructure;
-using N8T.Infrastructure.GraphQL;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
 {
-    public class CatalogProductType : ProtoObjectType<CatalogProductDto>
+    public class CatalogProductType : ObjectType<CatalogProductDto>
     {
         protected override void Configure(IObjectTypeDescriptor<CatalogProductDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
-            descriptor.Field(t => t.CategoryId).Type<NonNullType<UuidType>>();
+
+            descriptor.Field(t => t.Category).Type<NonNullType<CategoryType>>();
 
             descriptor.Field("inventory").Type<NonNullType<InventoryType>>().Resolver(async ctx =>
             {

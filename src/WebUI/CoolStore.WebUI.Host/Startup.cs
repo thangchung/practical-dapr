@@ -92,7 +92,7 @@ namespace CoolStore.WebUI.Host
 
         public string GetTyeAppUrl(IConfiguration config, string appId)
         {
-            if (config.GetValue<bool>("IsStandAloneMode"))
+            if (config.GetValue<bool>("IsDev"))
             {
                 if (appId == "identity-api")
                 {

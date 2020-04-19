@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
 using CoolStore.InventoryApi.Application.UseCases.GetInventory;
-using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.InventoryApi.Dtos;
 using Grpc.Core;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -42,13 +42,6 @@ namespace CoolStore.InventoryApi.UserInterface.Grpc
                     var inventories = new List<InventoryDto>();
                     inventories.AddRange(result);
                     responseEnvelope.Data = inventories.ConvertToAnyTypeAsync();
-                    return responseEnvelope;
-                }
-
-                case "GetInventory":
-                {
-                    var result = await _mediator.Send(new GetInventoryQuery());
-                    responseEnvelope.Data = result.ConvertToAnyTypeAsync();
                     return responseEnvelope;
                 }
 

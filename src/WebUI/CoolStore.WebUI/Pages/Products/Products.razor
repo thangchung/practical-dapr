@@ -20,7 +20,7 @@
 else
 {
   <div class="row mt-4">
-    @foreach (var product in _productModel.Edges)
+    @foreach (var product in _productModel.Items)
     {
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
@@ -28,8 +28,9 @@ else
             <div class="media">
               <img src="@product?.ImageUrl" class="mr-3" alt="..." width="50" height="50">
               <div class="media-body">
-                <h5 class="mt-0">Name: @product?.Name</h5>
-                <div>Location: @product?.Inventory?.Location</div>
+                <h5 class="mt-0">@product?.Name</h5>
+                <div>Category: @product?.CategoryName</div>
+                <div>Location: @product?.InventoryLocation</div>
                 <div>Price: <span class="font-weight-bold" style="color: #f08080;">$@product?.Price</span></div>
                 <div class="d-flex justify-content-between align-items-center" style="margin: 15px 0 0;">
                   <div class="btn-group">
@@ -76,7 +77,7 @@ else
 
   readonly int _pageSize = 9;
 
-  ProductModel _productModel = new ProductModel {TotalCount = 0, Edges = new List<ProductItemModel>()};
+  ProductModel _productModel = new ProductModel();
   readonly string _filter = string.Empty;
 
   protected override async Task OnInitializedAsync()

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoolStore.InventoryApi.Persistence.Migrations
+namespace CoolStore.InventoryApi.Infrastructure.Persistence.Migrations
 {
     public partial class InitInventoryDb : Migration
     {
@@ -18,9 +18,9 @@ namespace CoolStore.InventoryApi.Persistence.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Updated = table.Column<DateTime>(nullable: true),
-                    Location = table.Column<string>(nullable: true),
+                    Location = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Website = table.Column<string>(nullable: true)
+                    Website = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

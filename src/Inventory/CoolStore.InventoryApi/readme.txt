@@ -1,1 +1,1 @@
-﻿dotnet ef migrations add InitInventoryDb -o Persistence/Migrations
+dotnet ef migrations add InitInventoryDb -o Infrastructure/Persistence/Migrations

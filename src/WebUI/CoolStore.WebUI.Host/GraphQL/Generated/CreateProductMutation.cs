@@ -10,11 +10,11 @@ namespace CoolStore.WebUI.Host
         : ICreateProductMutation
     {
         public CreateProductMutation(
-            global::CoolStore.WebUI.Host.ICreateProductResponse createProduct)
+            global::CoolStore.WebUI.Host.ICatalogProductDto1 createProduct)
         {
             CreateProduct = createProduct;
         }
 
-        public global::CoolStore.WebUI.Host.ICreateProductResponse CreateProduct { get; }
+        public global::CoolStore.WebUI.Host.ICatalogProductDto1 CreateProduct { get; }
     }
 }

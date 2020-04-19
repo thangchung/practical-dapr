@@ -6,8 +6,10 @@ using StrawberryShake;
 namespace CoolStore.WebUI.Host
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial interface ICreateProductResponse
+    public partial interface ICategoryDto
     {
-        global::CoolStore.WebUI.Host.ICatalogProductDto1 Product { get; }
+        System.Guid Id { get; }
+
+        string Name { get; }
     }
 }

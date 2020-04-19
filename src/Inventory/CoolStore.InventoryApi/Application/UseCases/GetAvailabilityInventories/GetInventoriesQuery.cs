@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using CoolStore.Protobuf.Inventory.V1;
+using System.Linq;
+using CoolStore.InventoryApi.Dtos;
 using MediatR;
 
 namespace CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories

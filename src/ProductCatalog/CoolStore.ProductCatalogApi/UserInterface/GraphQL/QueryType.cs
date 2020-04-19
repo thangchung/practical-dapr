@@ -1,6 +1,6 @@
+using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Sorts;
-using CoolStore.Protobuf.ProductCatalog.V1;
 using HotChocolate.Types;
 using N8T.Infrastructure.GraphQL.OffsetPaging;
 

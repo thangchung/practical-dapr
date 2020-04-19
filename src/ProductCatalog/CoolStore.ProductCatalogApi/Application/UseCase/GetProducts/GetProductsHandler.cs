@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
+using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
-using CoolStore.Protobuf.ProductCatalog.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,14 +24,13 @@ namespace CoolStore.ProductCatalogApi.Application.UseCase.GetProducts
                 .Where(x => !x.IsDeleted)
                 .Select(x => new CatalogProductDto
                 {
-                    Id = x.Id.ToString(),
+                    Id = x.Id,
                     Name = x.Name,
                     Price = x.Price,
                     Description = x.Description,
                     ImageUrl = x.ImageUrl,
-                    CategoryId = x.Category.Id.ToString(),
-                    CategoryName = x.Category.Name,
-                    InventoryId = x.InventoryId.ToString()
+                    Category = new CategoryDto {Id = x.Category.Id, Name = x.Category.Name},
+                    InventoryId = x.InventoryId
                 });
         }
     }

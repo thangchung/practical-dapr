@@ -30,7 +30,7 @@ namespace CoolStore.IdentityServer
         public static IEnumerable<Client> Clients(IConfiguration config)
         {
             var webUiUrl = config.GetTyeAppUrl("webui");
-            if (config.GetValue<bool>("IsStandAloneMode"))
+            if (config.GetValue<bool>("IsDev"))
             {
                 webUiUrl = config.GetValue<string>("WebUIUrl");
             }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.ProductCatalogApi.Domain;
+using CoolStore.ProductCatalogApi.Dtos;
 using Microsoft.Extensions.Configuration;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Dapr;
 
-namespace CoolStore.ProductCatalogApi.Infrastructure.Gateways
+namespace CoolStore.ProductCatalogApi.UserInterface.Gateways
 {
     public class InventoryGateway : IInventoryGateway
     {
@@ -25,10 +26,10 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Gateways
         {
             var daprClient = _config.GetDaprClient("inventory-api");
 
-            var request = new GetInventoriesByIds();
+            var request = new InventoriesByIdsDto();
             request.Ids.AddRange(invIds.Select(x => x.ToString()));
 
-            var inventories = await daprClient.InvokeMethodAsync<GetInventoriesByIds, List<InventoryDto>>(
+            var inventories = await daprClient.InvokeMethodAsync<InventoriesByIdsDto, List<InventoryDto>>(
                 "inventory-api",
                 "GetInventoriesByIds",
                 request,

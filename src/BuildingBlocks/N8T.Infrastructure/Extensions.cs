@@ -94,5 +94,11 @@ namespace N8T.Infrastructure
                 });
             return models;
         }
+
+        [DebuggerStepThrough]
+        public static string SerializeObject(this object obj)
+        {
+            return JsonSerializer.Serialize(obj);
+        }
     }
 }

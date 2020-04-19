@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CoolStore.InventoryApi.Domain;
-using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.InventoryApi.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;

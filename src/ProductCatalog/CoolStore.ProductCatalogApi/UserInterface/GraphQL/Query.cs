@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoolStore.ProductCatalogApi.Application.UseCase.GetProducts;
-using CoolStore.Protobuf.ProductCatalog.V1;
+using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL

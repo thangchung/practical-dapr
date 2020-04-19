@@ -10,6 +10,7 @@ namespace CoolStore.WebUI.Host
         : IInputSerializer
     {
         private bool _needsInitialization = true;
+        private IValueSerializer _uuidSerializer;
         private IValueSerializer _stringSerializer;
         private IValueSerializer _floatSerializer;
 
@@ -27,6 +28,7 @@ namespace CoolStore.WebUI.Host
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
+            _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
             _floatSerializer = serializerResolver.Get("Float");
             _needsInitialization = false;
@@ -50,7 +52,7 @@ namespace CoolStore.WebUI.Host
 
             if (input.CategoryId.HasValue)
             {
-                map.Add("categoryId", SerializeNullableString(input.CategoryId.Value));
+                map.Add("categoryId", SerializeNullableUuid(input.CategoryId.Value));
             }
 
             if (input.Description.HasValue)
@@ -65,7 +67,7 @@ namespace CoolStore.WebUI.Host
 
             if (input.InventoryId.HasValue)
             {
-                map.Add("inventoryId", SerializeNullableString(input.InventoryId.Value));
+                map.Add("inventoryId", SerializeNullableUuid(input.InventoryId.Value));
             }
 
             if (input.Name.HasValue)
@@ -81,6 +83,10 @@ namespace CoolStore.WebUI.Host
             return map;
         }
 
+        private object SerializeNullableUuid(object value)
+        {
+            return _uuidSerializer.Serialize(value);
+        }
         private object SerializeNullableString(object value)
         {
             if (value is null)

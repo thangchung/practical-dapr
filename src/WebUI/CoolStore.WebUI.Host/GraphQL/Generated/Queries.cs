@@ -21,38 +21,38 @@ namespace CoolStore.WebUI.Host
         };
         private readonly byte[] _hash = new byte[]
         {
-            50,
-            54,
+            51,
             56,
-            56,
-            98,
-            102,
-            99,
-            51,
-            49,
-            99,
-            55,
-            99,
-            57,
-            52,
-            102,
-            53,
-            102,
-            48,
-            99,
-            51,
-            102,
-            54,
-            99,
-            51,
-            54,
-            51,
-            53,
-            52,
-            49,
             100,
+            52,
             98,
-            48
+            101,
+            56,
+            57,
+            100,
+            52,
+            102,
+            53,
+            101,
+            102,
+            98,
+            56,
+            48,
+            56,
+            102,
+            53,
+            50,
+            53,
+            54,
+            53,
+            50,
+            101,
+            52,
+            57,
+            53,
+            102,
+            52,
+            54
         };
         private readonly byte[] _content = new byte[]
         {
@@ -277,16 +277,17 @@ namespace CoolStore.WebUI.Host
             99,
             101,
             32,
-            99,
-            97,
-            116,
-            101,
-            103,
-            111,
-            114,
-            121,
-            73,
             100,
+            101,
+            115,
+            99,
+            114,
+            105,
+            112,
+            116,
+            105,
+            111,
+            110,
             32,
             99,
             97,
@@ -296,10 +297,29 @@ namespace CoolStore.WebUI.Host
             111,
             114,
             121,
-            78,
+            32,
+            123,
+            32,
+            95,
+            95,
+            116,
+            121,
+            112,
+            101,
+            110,
             97,
             109,
             101,
+            32,
+            105,
+            100,
+            32,
+            110,
+            97,
+            109,
+            101,
+            32,
+            125,
             32,
             105,
             110,
@@ -518,27 +538,6 @@ namespace CoolStore.WebUI.Host
             109,
             101,
             32,
-            112,
-            114,
-            111,
-            100,
-            117,
-            99,
-            116,
-            32,
-            123,
-            32,
-            95,
-            95,
-            116,
-            121,
-            112,
-            101,
-            110,
-            97,
-            109,
-            101,
-            32,
             105,
             100,
             32,
@@ -546,8 +545,6 @@ namespace CoolStore.WebUI.Host
             97,
             109,
             101,
-            32,
-            125,
             32,
             125,
             32,
@@ -570,8 +567,11 @@ namespace CoolStore.WebUI.Host
                   name
                   imageUrl
                   price
-                  categoryId
-                  categoryName
+                  description
+                  category {
+                    id
+                    name
+                  }
                   inventory {
                     id
                     website
@@ -585,10 +585,8 @@ namespace CoolStore.WebUI.Host
             
             mutation createProductMutation($createProductInput: CreateProductInput!) {
               createProduct(createProductInput: $createProductInput) {
-                product {
-                  id
-                  name
-                }
+                id
+                name
               }
             }";
     }

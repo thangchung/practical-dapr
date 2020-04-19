@@ -1,13 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.ProductCatalogApi.Dtos;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
     public interface IInventoryGateway
     {
-        Task<InventoryDto> GetInventoryAsync(Guid inventoryId);
-        Task<IEnumerable<InventoryDto>> GetAvailabilityInventories();
+        Task<IReadOnlyDictionary<Guid, InventoryDto>> GetInventoriesAsync(
+            IReadOnlyCollection<Guid> invIds,
+            CancellationToken cancellationToken);
     }
 }

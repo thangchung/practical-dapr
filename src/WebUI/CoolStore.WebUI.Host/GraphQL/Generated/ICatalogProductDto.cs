@@ -16,9 +16,9 @@ namespace CoolStore.WebUI.Host
 
         double Price { get; }
 
-        System.Guid CategoryId { get; }
+        string Description { get; }
 
-        string CategoryName { get; }
+        global::CoolStore.WebUI.Host.ICategoryDto Category { get; }
 
         global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
     }

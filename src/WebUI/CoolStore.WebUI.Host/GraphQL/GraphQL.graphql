@@ -1,11 +1,10 @@
 type CatalogProductDto {
-  categoryId: Uuid!
-  categoryName: String
+  category: CategoryDto!
   description: String
   id: Uuid!
-  imageUrl: String
+  imageUrl: String!
   inventory: InventoryDto!
-  name: String
+  name: String!
   price: Float!
 }
 
@@ -24,28 +23,29 @@ input CatalogProductDtoSort {
   price: SortOperationKind
 }
 
-input CreateProductInput {
-  categoryId: String
-  description: String
-  imageUrl: String
-  inventoryId: String
-  name: String
-  price: Float!
+type CategoryDto {
+  id: Uuid!
+  name: String!
 }
 
-type CreateProductResponse {
-  product: CatalogProductDto
+input CreateProductInput {
+  categoryId: Uuid!
+  description: String
+  imageUrl: String!
+  inventoryId: Uuid!
+  name: String!
+  price: Float!
 }
 
 type InventoryDto {
   description: String
   id: Uuid!
-  location: String
-  website: String
+  location: String!
+  website: String!
 }
 
 type Mutation {
-  createProduct(createProductInput: CreateProductInput!): CreateProductResponse!
+  createProduct(createProductInput: CreateProductInput!): CatalogProductDto!
 }
 
 type OffsetPagingOfCatalogProductDto {

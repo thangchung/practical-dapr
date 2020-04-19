@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using CoolStore.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using N8T.Infrastructure;
 using StrawberryShake;
 
 namespace CoolStore.WebUI.Host.Controllers
@@ -31,15 +30,27 @@ namespace CoolStore.WebUI.Host.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ICatalogProductDto> GetProduct(Guid id)
+        public async Task<ProductItemDetailModel> GetProduct(Guid id)
         {
             var result = await _client.GetProductsAsync(1, int.MaxValue);
-            return result.Data?.Products?.Edges?.FirstOrDefault(x=>x.Id.ConvertTo<Guid>() == id);
+            var product = result.Data?.Products?.Edges?.FirstOrDefault(x => x.Id == id);
+            return new ProductItemDetailModel
+            {
+                ProductId = product.Id,
+                Name = product.Name,
+                InventoryId = product.Inventory.Id,
+                InventoryLocation = product.Inventory.Location,
+                CategoryId = product.Category.Id,
+                CategoryName = product.Category.Name,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Description = product.Description
+            };
         }
 
         [Authorize]
         [HttpGet("{page}/{pageSize}/{filter}")]
-        public async Task<IOffsetPagingOfCatalogProductDto> GetProducts(int page = 1, int pageSize = 20, string filter = "")
+        public async Task<ProductModel> GetProducts(int page = 1, int pageSize = 20, string filter = "")
         {
             filter = filter.Replace("&", "").Trim();
             var filterObject = new CatalogProductDtoFilter();
@@ -48,12 +59,40 @@ namespace CoolStore.WebUI.Host.Controllers
                 filterObject.NameContains = filter;
                 var filterObjectOptional = new Optional<CatalogProductDtoFilter>(filterObject);
                 var result = await _client.GetProductsAsync(page, pageSize, filterObjectOptional);
-                return result.Data?.Products;
+
+                var model = new ProductModel {TotalCount = result.Data.Products.TotalCount};
+                model.Items.AddRange(result.Data.Products.Edges.Select(x=>new ProductItemModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    CategoryId = x.Category.Id,
+                    CategoryName = x.Category.Name,
+                    InventoryId = x.Inventory.Id,
+                    InventoryLocation = x.Inventory.Location
+                }));
+
+                return model;
             }
             else
             {
                 var result = await _client.GetProductsAsync(page, pageSize);
-                return result.Data?.Products;
+
+                var model = new ProductModel {TotalCount = result.Data.Products.TotalCount};
+                model.Items.AddRange(result.Data.Products.Edges.Select(x=>new ProductItemModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    CategoryId = x.Category.Id,
+                    CategoryName = x.Category.Name,
+                    InventoryId = x.Inventory.Id,
+                    InventoryLocation = x.Inventory.Location
+                }));
+
+                return model;
             }
         }
 
@@ -71,9 +110,9 @@ namespace CoolStore.WebUI.Host.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ICreateProductResponse> CreateProduct([FromBody] CreateProductModel model)
+        public async Task CreateProduct([FromBody] CreateProductModel model)
         {
-            var result = await _client.CreateProductMutationAsync(new Optional<CreateProductInput>(new CreateProductInput
+            await _client.CreateProductMutationAsync(new Optional<CreateProductInput>(new CreateProductInput
             {
                 Name = model.Name,
                 Price = model.Price,
@@ -82,13 +121,11 @@ namespace CoolStore.WebUI.Host.Controllers
                 ImageUrl = model.ImageUrl,
                 Description = model.Description
             }));
-
-            return result.Data.CreateProduct;
         }
 
         [Authorize]
         [HttpPut]
-        public async Task<ICreateProductResponse> EditProduct([FromBody] EditProductModel model)
+        public async Task EditProduct([FromBody] EditProductModel model)
         {
             throw new NotImplementedException();
         }

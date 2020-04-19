@@ -1,8 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Infrastructure.Gateways;
+using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.ProductCatalogApi.UserInterface.Gateways;
 using CoolStore.ProductCatalogApi.UserInterface.GraphQL;
 using HotChocolate;
 using HotChocolate.AspNetCore;
