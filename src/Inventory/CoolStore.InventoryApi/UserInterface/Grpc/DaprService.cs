@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
 using CoolStore.InventoryApi.Application.UseCases.GetInventory;
@@ -38,7 +37,6 @@ namespace CoolStore.InventoryApi.UserInterface.Grpc
                 case "GetInventories":
                 {
                     var result = await _mediator.Send(new GetInventoriesQuery());
-                    _logger.LogInformation($"Got {result.ToList().Count} items.");
                     var inventories = new List<InventoryDto>();
                     inventories.AddRange(result);
                     responseEnvelope.Data = inventories.ConvertToAnyTypeAsync();

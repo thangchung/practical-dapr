@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct
+namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
     public class CreateProductValidator : AbstractValidator<CreateProductRequest>
     {

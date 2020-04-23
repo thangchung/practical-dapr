@@ -5,7 +5,7 @@ using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoolStore.ProductCatalogApi.Application.UseCase.GetProducts
+namespace CoolStore.ProductCatalogApi.Application.UseCases.GetProducts
 {
     public class GetProductsHandler : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
     {

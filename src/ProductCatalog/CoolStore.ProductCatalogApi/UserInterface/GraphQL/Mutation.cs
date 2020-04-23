@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct;
+using CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 

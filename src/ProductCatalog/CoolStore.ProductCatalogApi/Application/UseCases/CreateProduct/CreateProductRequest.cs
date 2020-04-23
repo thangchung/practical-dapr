@@ -2,7 +2,7 @@ using System;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
-namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct
+namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
     public class CreateProductRequest : IRequest<CatalogProductDto>
     {

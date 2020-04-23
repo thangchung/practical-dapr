@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
 
-namespace CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct
+namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
     public class ProductCreatedHandler : IRequestHandler<CreateProductRequest, CatalogProductDto>
     {

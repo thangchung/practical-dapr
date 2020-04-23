@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Application.UseCase.GetProducts;
+using CoolStore.ProductCatalogApi.Application.UseCases.GetProducts;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 

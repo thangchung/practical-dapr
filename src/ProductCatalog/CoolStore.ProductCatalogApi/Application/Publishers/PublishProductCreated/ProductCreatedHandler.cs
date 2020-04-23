@@ -6,7 +6,7 @@ using CoolStore.ProductCatalogApi.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CoolStore.ProductCatalogApi.Application.Process.PublishProductCreated
+namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreated
 {
     public class PublishProductCreatedHandler : INotificationHandler<ProductCreated>
     {

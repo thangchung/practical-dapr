@@ -1,4 +1,4 @@
-using CoolStore.ProductCatalogApi.Application.UseCase.CreateProduct;
+using CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct;
 using HotChocolate.Types;
 
 namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
