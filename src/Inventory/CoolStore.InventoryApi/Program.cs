@@ -63,6 +63,11 @@ namespace CoolStore.InventoryApi
                     endpoints.MapControllers();
                     endpoints.MapSubscribeHandler();
                     endpoints.MapGrpcService<DaprService>();
+                    endpoints.MapGet("/", context =>
+                    {
+                        context.Response.Redirect("/status");
+                        return Task.CompletedTask;
+                    });
                 });
 
             await app.RunAsync();

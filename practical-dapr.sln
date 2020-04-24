@@ -18,7 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{9DCADFAA-8ECD-
 		LICENSE = LICENSE
 		nuget.config = nuget.config
 		README.md = README.md
-		services.json = services.json
 		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject

@@ -1,4 +1,8 @@
-- Install Sql Server
+
+# Install helm charts
+
+## Install Sql Server
+
 ```bash
 $ helm install sqlserver stable/mssql-linux --debug --namespace dev --values sqlserver/values.dev.yaml
 ```
@@ -16,8 +20,14 @@ SELECT name FROM sys.databases
 GO
 ```
 
-- Test your charts
+## Install Zipkin
+
 ```bash
-$ helm upgrade --debug --namespace dev --install --wait product-catalog-api product-catalog-api --dry-run
-$ helm upgrade --debug --namespace dev --install --wait inventory-api inventory-api --dry-run
+$ helm upgrade --namespace dev --install --wait zipkin zipkin
+```
+
+## Install Seq
+
+```bash
+$ helm install seq stable/seq --debug --namespace dev --values sqlserver/values.dev.yaml
 ```

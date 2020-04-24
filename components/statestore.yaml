@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore
+  name: default
 spec:
   type: state.redis
   metadata:
@@ -10,4 +10,4 @@ spec:
   - name: redisPassword
     value: ""
   - name: actorStateStore
-    value: "true"
+    value: "false"

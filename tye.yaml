@@ -8,6 +8,7 @@ name: practical-dapr
 extensions:
 - name: dapr
   log-level: debug
+  config: appconfig
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 services:
@@ -20,10 +21,28 @@ services:
       value: "Y"
   bindings:
     - port: 1433
-# - name: redis
-#   image: redis
-#   bindings:
-#     - port: 6973
+- name: redis
+  image: redis
+  bindings:
+    - port: 6379
+- name: zipkin
+  image: openzipkin/zipkin
+  bindings:
+    - port: 9411
+      containerPort: 9411
+      protocol: http
+- name: seq
+  image: datalust/seq
+  env:
+    - name: "ACCEPT_EULA"
+      value: "Y"
+  bindings:
+    - name: ui
+      port: 5340
+      protocol: http
+      containerPort: 80
+    - name: internal
+      port: 5341
 - name: graph-api
   project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
 - name: identity-api
