@@ -4,7 +4,7 @@ using CoolStore.ProductCatalogApi.Application.UseCases.GetProducts;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class Query
     {

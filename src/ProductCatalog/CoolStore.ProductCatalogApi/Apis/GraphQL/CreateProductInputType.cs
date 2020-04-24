@@ -1,7 +1,7 @@
 using CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct;
 using HotChocolate.Types;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class CreateProductInputType : InputObjectType<CreateProductRequest>
     {

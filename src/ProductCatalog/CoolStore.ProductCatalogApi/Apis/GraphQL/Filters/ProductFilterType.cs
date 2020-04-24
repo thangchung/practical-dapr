@@ -1,7 +1,7 @@
 using CoolStore.ProductCatalogApi.Dtos;
 using HotChocolate.Types.Filters;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL.Filters
 {
     public class ProductFilterType : FilterInputType<CatalogProductDto>
     {

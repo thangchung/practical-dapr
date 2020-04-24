@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -29,7 +29,7 @@ namespace N8T.Infrastructure.Grpc
                     context.Status.StatusCode,
                     ex.ValidationResultModel.ToString());
 
-                throw new RpcException(new Status(StatusCode.Internal, ex.ValidationResultModel.ToString()));
+                throw new RpcException(new global::Grpc.Core.Status(StatusCode.Internal, ex.ValidationResultModel.ToString()));
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace N8T.Infrastructure.Grpc
                     context.Status.StatusCode,
                     ex.Message);
 
-                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+                throw new RpcException(new global::Grpc.Core.Status(StatusCode.Internal, ex.Message));
             }
         }
     }

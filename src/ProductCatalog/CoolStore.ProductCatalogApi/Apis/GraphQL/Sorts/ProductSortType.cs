@@ -1,7 +1,7 @@
 using CoolStore.ProductCatalogApi.Dtos;
 using HotChocolate.Types.Sorting;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL.Sorts
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL.Sorts
 {
     public class ProductSortType : SortInputType<CatalogProductDto>
     {

@@ -1,10 +1,10 @@
+using CoolStore.ProductCatalogApi.Apis.GraphQL.Filters;
+using CoolStore.ProductCatalogApi.Apis.GraphQL.Sorts;
 using CoolStore.ProductCatalogApi.Dtos;
-using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Filters;
-using CoolStore.ProductCatalogApi.UserInterface.GraphQL.Sorts;
 using HotChocolate.Types;
 using N8T.Infrastructure.GraphQL.OffsetPaging;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public sealed class QueryType : ObjectType<Query>
     {

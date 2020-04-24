@@ -1,11 +1,11 @@
 using CoolStore.ProductCatalogApi.Dtos;
 using HotChocolate.Types;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class InventoryType : ObjectType<InventoryDto>
+    public class CategoryType : ObjectType<CategoryDto>
     {
-        protected override void Configure(IObjectTypeDescriptor<InventoryDto> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<CategoryDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
 

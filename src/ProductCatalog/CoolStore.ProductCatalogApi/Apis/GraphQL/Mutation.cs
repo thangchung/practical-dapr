@@ -3,7 +3,7 @@ using CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class Mutation
     {

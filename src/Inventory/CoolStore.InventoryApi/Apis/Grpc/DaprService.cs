@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using N8T.Infrastructure.Grpc;
 using CoolStoreDapr = CoolStore.Dapr.Client.Autogen.Grpc;
 
-namespace CoolStore.InventoryApi.UserInterface.Grpc
+namespace CoolStore.InventoryApi.Apis.Grpc
 {
     public class DaprService : CoolStoreDapr.Dapr.DaprBase
     {

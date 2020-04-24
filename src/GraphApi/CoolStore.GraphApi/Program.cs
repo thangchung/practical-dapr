@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Tye;
-using Serilog;
 
 namespace CoolStore.GraphApi
 {
@@ -26,14 +25,6 @@ namespace CoolStore.GraphApi
 
             var config = configBuilder.Build();
 
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            builder.Host
-                .UseSerilog();
-
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddHttpClient("productCatalog",
@@ -42,11 +33,12 @@ namespace CoolStore.GraphApi
                     client.BaseAddress = new Uri($"{config.GetTyeAppUrl("product-catalog-api")}/graphql");
                 });
 
-            // builder.Services.AddHttpClient("inventory",
-            //     (sp, client) =>
-            //     {
-            //         client.BaseAddress = new Uri($"{serviceOptions.InventoryService.RestUri}/graphql");
-            //     });
+            builder.Services.AddHttpClient("inventory",
+                (sp, client) =>
+                {
+                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("inventory-api")}/graphql");
+                });
+
             // builder.Services.AddHttpClient("shopping_cart",
             //     (sp, client) =>
             //     {
@@ -58,7 +50,7 @@ namespace CoolStore.GraphApi
                 .AddGraphQLSubscriptions()
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
                     .AddSchemaFromHttp("productCatalog")
-                    //.AddSchemaFromHttp("inventory")
+                    .AddSchemaFromHttp("inventory")
                     //.AddSchemaFromHttp("shopping_cart")
                 );
 

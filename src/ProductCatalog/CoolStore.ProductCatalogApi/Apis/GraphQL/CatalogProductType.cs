@@ -6,7 +6,7 @@ using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using N8T.Infrastructure;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class CatalogProductType : ObjectType<CatalogProductDto>
     {

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Dapr;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.Gateways
+namespace CoolStore.ProductCatalogApi.Apis.Gateways
 {
     public class InventoryGateway : IInventoryGateway
     {

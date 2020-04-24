@@ -1,6 +1,6 @@
 using HotChocolate.Types;
 
-namespace CoolStore.ProductCatalogApi.UserInterface.GraphQL
+namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public sealed class MutationType : ObjectType<Mutation>
     {
