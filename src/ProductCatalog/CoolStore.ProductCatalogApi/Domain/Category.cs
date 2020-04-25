@@ -6,7 +6,7 @@ namespace CoolStore.ProductCatalogApi.Domain
     public class Category : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; private set; } = default!;
 
         private Category()
         {
@@ -19,7 +19,7 @@ namespace CoolStore.ProductCatalogApi.Domain
 
         public static Category Empty()
         {
-            return new Category {Id = Guid.Empty, Name = string.Empty};
+            return new Category {Id = default!, Name = default!};
         }
     }
 }

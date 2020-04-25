@@ -20,7 +20,9 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 
 ![](docs/assets/high_level_architecture.png)
 
-# **Don't believe it, check yourself at [Developer Guidance](/docs/developer_guide.md)**.
+# [Developer Guidance](/docs/developer_guide.md)
+
+# [Deployment Guidance](/docs/deployment_guide.md)
 
 ## Contributing
 

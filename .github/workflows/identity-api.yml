@@ -20,7 +20,7 @@ jobs:
     - run: echo ${{ github.event.path }}
     - run: |
           git fetch --unshallow
-    
+
     - uses: aarnott/nbgv@v0.3
       with:
         setAllVars: true
@@ -28,7 +28,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101 
+        dotnet-version: 3.1.201
 
     - name: Build with dotnet
       run: dotnet build src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj --configuration Release

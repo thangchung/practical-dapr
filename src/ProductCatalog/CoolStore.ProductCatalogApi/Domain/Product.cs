@@ -7,7 +7,7 @@ namespace CoolStore.ProductCatalogApi.Domain
     public class Product : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; private set; } = default!;
         public string? Description { get; private set; }
         public double Price { get; private set; }
         public string ImageUrl { get; private set; } = "https://picsum.photos/1200/900?image=1";

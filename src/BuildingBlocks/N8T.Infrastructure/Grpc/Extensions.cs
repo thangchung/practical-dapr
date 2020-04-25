@@ -54,8 +54,6 @@ namespace N8T.Infrastructure.Grpc
         public static IServiceCollection AddCustomGrpcClient(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
-            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
             services.AddSingleton<ClientLoggerInterceptor>();
 
             doMoreActions?.Invoke(services);

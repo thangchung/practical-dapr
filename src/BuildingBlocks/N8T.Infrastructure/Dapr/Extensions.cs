@@ -15,7 +15,7 @@ namespace N8T.Infrastructure.Dapr
             string appId,
             ILogger logger = null)
         {
-            var url = config.GetTyeAppUrl(appId);
+            var url = config.GetTyeGrpcAppUrl(appId);
             logger?.LogInformation($"Dapr Client Url: {url}");
 
             var client = new DaprClientBuilder()

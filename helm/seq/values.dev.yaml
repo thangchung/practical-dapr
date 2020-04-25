@@ -1,0 +1,7 @@
+fullnameOverride: seq
+image:
+  tag: 5.1.3200
+persistence:
+  enabled: false
+auth:
+  enabled: false

@@ -37,6 +37,10 @@ input CreateProductInput {
   price: Float!
 }
 
+input DeleteProductInput {
+  id: Uuid!
+}
+
 type InventoryDto {
   description: String
   id: Uuid!
@@ -46,6 +50,8 @@ type InventoryDto {
 
 type Mutation {
   createProduct(createProductInput: CreateProductInput!): CatalogProductDto!
+  deleteProduct(deleteProductInput: DeleteProductInput!): Boolean!
+  updateProduct(updateProductInput: UpdateProductInput!): CatalogProductDto!
 }
 
 type OffsetPagingOfCatalogProductDto {
@@ -55,6 +61,8 @@ type OffsetPagingOfCatalogProductDto {
 }
 
 type Query {
+  categories: [CategoryDto!]!
+  inventories: [InventoryDto!]!
   products(
     order_by: CatalogProductDtoSort
     page: Int
@@ -66,4 +74,14 @@ type Query {
 enum SortOperationKind {
   ASC
   DESC
+}
+
+input UpdateProductInput {
+  categoryId: Uuid!
+  description: String
+  id: Uuid!
+  imageUrl: String!
+  inventoryId: Uuid!
+  name: String!
+  price: Float!
 }
