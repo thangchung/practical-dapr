@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CoolStore.InventoryApi.Dtos;
+using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
 namespace CoolStore.InventoryApi.Application.UseCases.GetInventory

@@ -69,7 +69,7 @@ namespace CoolStore.InventoryApi
                 {
                     endpoints.MapControllers();
                     endpoints.MapSubscribeHandler();
-                    endpoints.MapGrpcService<DaprService>();
+                    endpoints.MapGrpcService<InventoryService>();
                     endpoints.MapGet("/", context =>
                     {
                         context.Response.Redirect("/playground");

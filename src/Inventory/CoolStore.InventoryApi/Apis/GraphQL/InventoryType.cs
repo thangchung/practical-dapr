@@ -1,4 +1,4 @@
-using CoolStore.InventoryApi.Dtos;
+using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.Types;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL

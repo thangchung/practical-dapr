@@ -20,7 +20,7 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
             {
                 var inventoryGateway = ctx.Service<IInventoryGateway>();
 
-                var dataLoader = ctx.BatchDataLoader<Guid, InventoryDto>(
+                var dataLoader = ctx.BatchDataLoader<Guid, Protobuf.Inventory.V1.InventoryDto>(
                     "InventoryById",
                     inventoryGateway.GetInventoriesAsync);
 

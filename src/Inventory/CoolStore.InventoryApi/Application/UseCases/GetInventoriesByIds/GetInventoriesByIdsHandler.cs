@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Dtos;
 using CoolStore.InventoryApi.Infrastructure.Persistence;
+using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,7 @@ namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
 
         public GetInventoriesByIdsHandler(InventoryDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<InventoryDto>> Handle(GetInventoriesByIdsQuery request,
@@ -34,7 +34,7 @@ namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
 
             return inventories.Select(x => new InventoryDto
             {
-                Id = x.Id, Location = x.Location, Description = x.Description, Website = x.Website
+                Id = x.Id.ToString(), Location = x.Location, Description = x.Description, Website = x.Website
             });
         }
     }

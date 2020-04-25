@@ -5,6 +5,7 @@ using CoolStore.ProductCatalogApi.Apis.Gateways;
 using CoolStore.ProductCatalogApi.Apis.GraphQL;
 using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
+using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 
@@ -45,6 +47,14 @@ namespace CoolStore.ProductCatalogApi
                     c.RegisterMutationType<MutationType>();
                     c.RegisterObjectTypes(typeof(Program).Assembly);
                     c.RegisterExtendedScalarTypes();
+                })
+                .AddCustomGrpcClient(svc =>
+                {
+                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
+                        {
+                            o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
+                        });
+                        //.AddInterceptor<ClientLoggerInterceptor>();
                 })
                 .AddScoped<IInventoryGateway, InventoryGateway>();
 

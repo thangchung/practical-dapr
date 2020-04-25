@@ -41,8 +41,8 @@ namespace N8T.Infrastructure.Grpc
         {
             services.AddGrpc(options =>
             {
-                options.Interceptors.Add<RequestLoggerInterceptor>();
-                options.Interceptors.Add<ExceptionHandleInterceptor>();
+                //options.Interceptors.Add<RequestLoggerInterceptor>();
+                //options.Interceptors.Add<ExceptionHandleInterceptor>();
                 options.EnableDetailedErrors = true;
             });
 

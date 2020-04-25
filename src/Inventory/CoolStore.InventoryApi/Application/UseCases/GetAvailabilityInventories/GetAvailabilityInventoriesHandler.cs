@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using CoolStore.InventoryApi.Dtos;
 using CoolStore.InventoryApi.Infrastructure.Persistence;
+using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +22,7 @@ namespace CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories
                 .AsNoTracking()
                 .Select(x => new InventoryDto
                 {
-                    Id = x.Id, Location = x.Location, Description = x.Description, Website = x.Website
+                    Id = x.Id.ToString(), Location = x.Location, Description = x.Description, Website = x.Website
                 });
         }
     }

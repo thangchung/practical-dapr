@@ -4,39 +4,29 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.ProductCatalogApi.Domain;
-using CoolStore.ProductCatalogApi.Dtos;
-using Microsoft.Extensions.Configuration;
+using CoolStore.Protobuf.Inventory.V1;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Dapr;
 
 namespace CoolStore.ProductCatalogApi.Apis.Gateways
 {
     public class InventoryGateway : IInventoryGateway
     {
-        private readonly IConfiguration _config;
+        private readonly InventoryApi.InventoryApiClient _client;
 
-        public InventoryGateway(IConfiguration config)
+        public InventoryGateway(InventoryApi.InventoryApiClient client)
         {
-            _config = config;
+            _client = client;
         }
 
         public async Task<IReadOnlyDictionary<Guid, InventoryDto>> GetInventoriesAsync(
             IReadOnlyCollection<Guid> invIds,
             CancellationToken cancellationToken)
         {
-            var daprClient = _config.GetDaprClient("inventory-api");
-
-            var request = new InventoriesByIdsDto();
+            var request = new GetInventoriesByIdsRequest();
             request.Ids.AddRange(invIds.Select(x => x.ToString()));
 
-            var inventories = await daprClient.InvokeMethodAsync<InventoriesByIdsDto, List<InventoryDto>>(
-                "inventory-api",
-                "GetInventoriesByIds",
-                request,
-                null,
-                cancellationToken);
-
-            return inventories.ToDictionary(x => x.Id.ConvertTo<Guid>());
+            var response = await _client.GetInventoriesByIdsAsync(request);
+            return response.Inventories.ToDictionary(x => x.Id.ConvertTo<Guid>());
         }
     }
 }
