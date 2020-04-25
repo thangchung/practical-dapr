@@ -7,10 +7,12 @@
   <div class="card-header">
     Create a New Product
   </div>
+
   <div class="card-body">
     <EditForm Model="@_productModel" OnValidSubmit="HandleValidSubmit">
       <DataAnnotationsValidator/>
       <ValidationSummary/>
+
       <p class="form-group">
         <label class="control-label">
           Name

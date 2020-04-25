@@ -1,11 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using CoolStore.WebUI.Components;
 using CoolStore.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using N8T.Infrastructure;
 using StrawberryShake;
 
 namespace CoolStore.WebUI.Host.Controllers
@@ -61,7 +62,7 @@ namespace CoolStore.WebUI.Host.Controllers
                 var result = await _client.GetProductsAsync(page, pageSize, filterObjectOptional);
 
                 var model = new ProductModel {TotalCount = result.Data.Products.TotalCount};
-                model.Items.AddRange(result.Data.Products.Edges.Select(x=>new ProductItemModel
+                model.Items.AddRange(result.Data.Products.Edges.Select(x => new ProductItemModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -80,7 +81,7 @@ namespace CoolStore.WebUI.Host.Controllers
                 var result = await _client.GetProductsAsync(page, pageSize);
 
                 var model = new ProductModel {TotalCount = result.Data.Products.TotalCount};
-                model.Items.AddRange(result.Data.Products.Edges.Select(x=>new ProductItemModel
+                model.Items.AddRange(result.Data.Products.Edges.Select(x => new ProductItemModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -98,14 +99,12 @@ namespace CoolStore.WebUI.Host.Controllers
 
         [Authorize]
         [HttpGet("categories")]
-        public Task<ImmutableList<KeyValueModel>> GetCategories()
+        public async Task<ImmutableList<KeyValueModel>> GetCategories()
         {
-            var result = new List<KeyValueModel>
-            {
-                new KeyValueModel {Key = new Guid("77666AA8-682C-4047-B075-04839281630A"), Value = "Beverage products"}
-            };
-
-            return Task.FromResult(result.ToImmutableList());
+            var response = await _client.GetCategoriesAsync();
+            return response.Data.Categories
+                .Select(x => new KeyValueModel {Key = x.Id.ToString(), Value = x.Name})
+                .ToImmutableList();
         }
 
         [Authorize]
@@ -116,8 +115,8 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 Name = model.Name,
                 Price = model.Price,
-                InventoryId = model.InventoryId,
-                CategoryId = model.CategoryId,
+                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
                 Description = model.Description
             }));
@@ -127,7 +126,25 @@ namespace CoolStore.WebUI.Host.Controllers
         [HttpPut]
         public async Task EditProduct([FromBody] EditProductModel model)
         {
-            throw new NotImplementedException();
+            await _client.UpdateProductMutationAsync(new Optional<UpdateProductInput>(new UpdateProductInput
+            {
+                Name = model.Name,
+                Price = model.Price,
+                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                CategoryId = model.CategoryId.ConvertTo<Guid>(),
+                ImageUrl = model.ImageUrl,
+                Description = model.Description
+            }));
+        }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task DeleteProduct(string id)
+        {
+            await _client.DeleteProductMutationAsync(new Optional<DeleteProductInput>(new DeleteProductInput
+            {
+                Id = id.ConvertTo<Guid>()
+            }));
         }
     }
 }

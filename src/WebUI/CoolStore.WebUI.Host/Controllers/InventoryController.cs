@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
-using CoolStore.WebUI.Models;
+using CoolStore.WebUI.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,14 +20,12 @@ namespace CoolStore.WebUI.Host.Controllers
 
         [Authorize]
         [HttpGet]
-        public Task<ImmutableList<KeyValueModel>> GetInventories()
+        public async Task<ImmutableList<KeyValueModel>> GetInventories()
         {
-            var result = new List<KeyValueModel>
-            {
-                new KeyValueModel {Key = new Guid("90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD"), Value = "Vietnam"}
-            };
-
-            return Task.FromResult(result.ToImmutableList());
+            var response = await _client.GetInventoriesAsync();
+            return response.Data.Inventories
+                .Select(x => new KeyValueModel {Key = x.Id.ToString(), Value = x.Location})
+                .ToImmutableList();
         }
     }
 }

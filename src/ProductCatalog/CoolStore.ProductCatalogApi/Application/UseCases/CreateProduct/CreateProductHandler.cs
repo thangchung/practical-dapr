@@ -6,32 +6,30 @@ using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
-    public class ProductCreatedHandler : IRequestHandler<CreateProductRequest, CatalogProductDto>
+    public class ProductCreatedHandler : IRequestHandler<CreateProductCommand, CatalogProductDto>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
         public ProductCreatedHandler(ProductCatalogDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
 
         [TransactionScope]
-        public async Task<CatalogProductDto> Handle(CreateProductRequest request, CancellationToken cancellationToken)
+        public async Task<CatalogProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var product = Product.Of(Guid.NewGuid(), request.Name, request!.Description, request.Price,
                 request.ImageUrl, request.InventoryId, request.CategoryId);
 
             var cats = await _dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
             var category = await _dbContext.Categories
-                .FirstOrDefaultAsync(x => x.Id == request.CategoryId.ConvertTo<Guid>(),
-                    cancellationToken: cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken: cancellationToken);
 
-            if (category == null) throw new NullReferenceException("Couldn't find out {Category}");
+            if (category == null) throw new NullReferenceException($"Couldn't find out any Category # {request.CategoryId}");
             product.AssignCategory(category);
 
             var entityCreated = await _dbContext.Products.AddAsync(product, cancellationToken);

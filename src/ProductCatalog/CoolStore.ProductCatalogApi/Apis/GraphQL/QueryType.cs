@@ -16,6 +16,10 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
                 .UseOffsetPaging<CatalogProductType, CatalogProductDto>()
                 .UseFiltering<ProductFilterType>()
                 .UseSorting<ProductSortType>();
+
+            descriptor
+                .Field(x => x.GetCategories())
+                .Name("categories");
         }
     }
 }

@@ -3,9 +3,9 @@ using HotChocolate.Types;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class CreateProductInputType : InputObjectType<CreateProductRequest>
+    public class CreateProductInputType : InputObjectType<CreateProductCommand>
     {
-        protected override void Configure(IInputObjectTypeDescriptor<CreateProductRequest> descriptor)
+        protected override void Configure(IInputObjectTypeDescriptor<CreateProductCommand> descriptor)
         {
             descriptor.Name("CreateProductInput");
         }

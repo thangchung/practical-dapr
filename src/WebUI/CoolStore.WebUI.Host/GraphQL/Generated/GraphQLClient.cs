@@ -49,6 +49,48 @@ namespace CoolStore.WebUI.Host
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetCategories>> GetCategoriesAsync(
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+
+            return _executor.ExecuteAsync(
+                new GetCategoriesOperation(),
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetCategories>> GetCategoriesAsync(
+            GetCategoriesOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+
+            return _executor.ExecuteAsync(
+                new GetInventoriesOperation(),
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
+            GetInventoriesOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
         public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
             global::StrawberryShake.Optional<global::CoolStore.WebUI.Host.CreateProductInput> createProductInput = default,
             global::System.Threading.CancellationToken cancellationToken = default)
@@ -65,6 +107,58 @@ namespace CoolStore.WebUI.Host
 
         public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(
             CreateProductMutationOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IUpdateProductMutation>> UpdateProductMutationAsync(
+            global::StrawberryShake.Optional<global::CoolStore.WebUI.Host.UpdateProductInput> updateProductInput = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (updateProductInput.HasValue && updateProductInput.Value is null)
+            {
+                throw new ArgumentNullException(nameof(updateProductInput));
+            }
+
+            return _executor.ExecuteAsync(
+                new UpdateProductMutationOperation { UpdateProductInput = updateProductInput },
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IUpdateProductMutation>> UpdateProductMutationAsync(
+            UpdateProductMutationOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IDeleteProductMutation>> DeleteProductMutationAsync(
+            global::StrawberryShake.Optional<global::CoolStore.WebUI.Host.DeleteProductInput> deleteProductInput = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (deleteProductInput.HasValue && deleteProductInput.Value is null)
+            {
+                throw new ArgumentNullException(nameof(deleteProductInput));
+            }
+
+            return _executor.ExecuteAsync(
+                new DeleteProductMutationOperation { DeleteProductInput = deleteProductInput },
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IDeleteProductMutation>> DeleteProductMutationAsync(
+            DeleteProductMutationOperation operation,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
