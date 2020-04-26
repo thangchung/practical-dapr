@@ -50,6 +50,19 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services,
+            Type markedType,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            var mvcBuilder = services.AddControllers();
+            mvcBuilder.AddApplicationPart(markedType.Assembly);
+
+            doMoreActions?.Invoke(services);
+
+            return services;
+        }
+
+        [DebuggerStepThrough]
         public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
         {
             var model = new TModel();

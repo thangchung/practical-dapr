@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.ProductCatalogApi.Domain;
@@ -28,28 +26,19 @@ namespace CoolStore.ProductCatalogApi.Apis.Gateways
             IReadOnlyCollection<Guid> invIds,
             CancellationToken cancellationToken)
         {
-            var activity = new Activity("call to inventory-api").Start();
-
             var headers = _httpContext.HttpContext.Request.Headers;
+            var metadata = new Metadata();
+            // todo: will propagate headers to grpc headers
 
-            try
-            {
-                var request = new GetInventoriesByIdsRequest();
-                request.Ids.AddRange(invIds.Select(x => x.ToString()));
+            var request = new GetInventoriesByIdsRequest();
+            request.Ids.AddRange(invIds.Select(x => x.ToString()));
 
-                var metadata = new Metadata();
-                if (headers.TryGetValue("traceparent", out var traceparent))
-                {
-                    metadata.Add("traceparent", traceparent);
-                }
+            var response = await _client.GetInventoriesByIdsAsync(
+                request,
+                metadata,
+                DateTime.UtcNow + TimeSpan.FromSeconds(10));
 
-                var response = await _client.GetInventoriesByIdsAsync(request, metadata);
-                return response.Inventories.ToDictionary(x => x.Id.ConvertTo<Guid>());
-            }
-            finally
-            {
-                activity.Stop();
-            }
+            return response.Inventories.ToDictionary(x => x.Id.ConvertTo<Guid>());
         }
     }
 }

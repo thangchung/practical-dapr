@@ -59,7 +59,7 @@ namespace CoolStore.WebUI.Host
             services.AddHttpClient("GraphQLClient")
                 .ConfigureHttpClient(client =>
                 {
-                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, "graph-api")}/graphql");
+                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, "graph-api").TrimEnd('/')}/graphql");
                 });
 
             services.AddGraphQLClient();

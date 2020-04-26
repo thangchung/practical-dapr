@@ -43,16 +43,16 @@ namespace CoolStore.InventoryApi
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomValidators(typeof(Program))
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program), connString)
+                .AddCustomMvc(typeof(Program))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
-                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterObjectTypes(typeof(Program));
                     c.RegisterExtendedScalarTypes();
                 })
-                .AddCustomGrpc()
-                .AddControllers();
+                .AddCustomGrpc();
 
             var app = builder.Build();
 

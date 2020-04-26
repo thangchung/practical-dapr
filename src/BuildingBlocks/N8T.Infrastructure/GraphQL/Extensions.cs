@@ -35,9 +35,10 @@ namespace N8T.Infrastructure.GraphQL
             return services;
         }
 
-        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration, Assembly graphTypeAssembly)
+        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration, Type marker)
         {
-            var objectTypes = graphTypeAssembly
+            var objectTypes = marker
+                .Assembly
                 .GetTypes()
                 .Where(type => typeof(ObjectType).IsAssignableFrom(type));
 

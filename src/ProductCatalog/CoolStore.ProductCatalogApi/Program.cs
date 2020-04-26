@@ -33,26 +33,23 @@ namespace CoolStore.ProductCatalogApi
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly)
+                .AddCustomValidators(typeof(Program))
                 .AddCustomDbContext<ProductCatalogDbContext>(
-                    typeof(Program).Assembly,
+                    typeof(Program),
                     config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb"))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
                     c.RegisterMutationType<MutationType>();
-                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterObjectTypes(typeof(Program));
                     c.RegisterExtendedScalarTypes();
                 })
                 .AddCustomGrpcClient(svc =>
                 {
                     svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                        {
-                            o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
-                        })
-                        .EnableCallContextPropagation()
-                        //.AddInterceptor<ClientLoggerInterceptor>()
-                        ;
+                    {
+                        o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
+                    });
                 })
                 .AddScoped<IInventoryGateway, InventoryGateway>();
 
