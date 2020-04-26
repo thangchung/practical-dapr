@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
@@ -39,6 +40,8 @@ namespace CoolStore.InventoryApi.Apis.Grpc
             GetInventoriesByIdsRequest request,
             ServerCallContext context)
         {
+            var httpContext = context.GetHttpContext();
+
             var result = await _mediator.Send(
                 new GetInventoriesByIdsQuery {Ids = request.Ids.Select(x => x.ConvertTo<Guid>())});
             var response = new GetInventoriesByIdsResponse();

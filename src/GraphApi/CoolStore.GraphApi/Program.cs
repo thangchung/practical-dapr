@@ -20,10 +20,8 @@ namespace CoolStore.GraphApi
         {
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+            var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
-
-            var config = configBuilder.Build();
 
             builder.Services.AddHttpContextAccessor();
 

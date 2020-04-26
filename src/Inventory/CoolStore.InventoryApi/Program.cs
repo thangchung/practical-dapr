@@ -28,12 +28,8 @@ namespace CoolStore.InventoryApi
         {
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+            var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
-
-            configBuilder.AddTyeBindingSecrets();
-
-            var config = configBuilder.Build();
 
             builder.Host
                 .ConfigureWebHostDefaults(webBuilder =>

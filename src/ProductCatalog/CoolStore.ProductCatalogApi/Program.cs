@@ -27,20 +27,16 @@ namespace CoolStore.ProductCatalogApi
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
-            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+            var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
-
-            configBuilder.AddTyeBindingSecrets();
-
-            var config = configBuilder.Build();
-
-            var connString = config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb");
 
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomDbContext<ProductCatalogDbContext>(
+                    typeof(Program).Assembly,
+                    config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb"))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
@@ -53,8 +49,10 @@ namespace CoolStore.ProductCatalogApi
                     svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
                         {
                             o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
-                        });
-                        //.AddInterceptor<ClientLoggerInterceptor>();
+                        })
+                        .EnableCallContextPropagation()
+                        //.AddInterceptor<ClientLoggerInterceptor>()
+                        ;
                 })
                 .AddScoped<IInventoryGateway, InventoryGateway>();
 
