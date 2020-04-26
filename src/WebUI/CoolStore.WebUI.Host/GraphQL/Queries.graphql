@@ -16,7 +16,7 @@ query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
         location
         description
       }
-    }
+    } 
     totalCount
   }
 }

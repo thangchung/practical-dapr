@@ -6,7 +6,6 @@ using CoolStore.WebUI.Components;
 using CoolStore.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using N8T.Infrastructure;
 using StrawberryShake;
 
 namespace CoolStore.WebUI.Host.Controllers

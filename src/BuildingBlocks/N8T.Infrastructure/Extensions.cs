@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Logging;
+using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 using Path = System.IO.Path;
 
@@ -17,7 +18,8 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
+        [DebuggerStepThrough]
+        public static (WebApplicationBuilder, IConfiguration) AddCustomConfiguration(
             this WebApplicationBuilder builder)
         {
             var env = builder.Environment;
@@ -27,7 +29,9 @@ namespace N8T.Infrastructure
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
-            return (builder, configBuilder);
+            configBuilder.AddTyeBindingSecrets();
+
+            return (builder, configBuilder.Build());
         }
 
         [DebuggerStepThrough]
@@ -39,6 +43,19 @@ namespace N8T.Infrastructure
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
+
+            doMoreActions?.Invoke(services);
+
+            return services;
+        }
+
+        [DebuggerStepThrough]
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services,
+            Type markedType,
+            Action<IServiceCollection> doMoreActions = null)
+        {
+            var mvcBuilder = services.AddControllers();
+            mvcBuilder.AddApplicationPart(markedType.Assembly);
 
             doMoreActions?.Invoke(services);
 

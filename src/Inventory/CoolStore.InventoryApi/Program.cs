@@ -28,12 +28,8 @@ namespace CoolStore.InventoryApi
         {
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+            var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
-
-            configBuilder.AddTyeBindingSecrets();
-
-            var config = configBuilder.Build();
 
             builder.Host
                 .ConfigureWebHostDefaults(webBuilder =>
@@ -47,16 +43,16 @@ namespace CoolStore.InventoryApi
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomValidators(typeof(Program))
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program), connString)
+                .AddCustomMvc(typeof(Program))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
-                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterObjectTypes(typeof(Program));
                     c.RegisterExtendedScalarTypes();
                 })
-                .AddCustomGrpc()
-                .AddControllers();
+                .AddCustomGrpc();
 
             var app = builder.Build();
 
@@ -69,7 +65,7 @@ namespace CoolStore.InventoryApi
                 {
                     endpoints.MapControllers();
                     endpoints.MapSubscribeHandler();
-                    endpoints.MapGrpcService<DaprService>();
+                    endpoints.MapGrpcService<InventoryService>();
                     endpoints.MapGet("/", context =>
                     {
                         context.Response.Redirect("/playground");

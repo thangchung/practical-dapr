@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
-using CoolStore.InventoryApi.Dtos;
+using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL

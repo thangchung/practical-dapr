@@ -16,7 +16,7 @@ input CatalogProductDtoFilter {
   price: Float
   price_gte: Float
   price_lte: Float
-}
+} 
 
 input CatalogProductDtoSort {
   name: SortOperationKind

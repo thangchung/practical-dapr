@@ -7,10 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.Tools" Version="2.28.0-pre2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory.proto" Link="Infrastructure\Protobuf\inventory.proto" AdditionalImportDirs="..\..\_schema\proto\" />
+    <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory_api.proto" Link="Infrastructure\Protobuf\inventory_api.proto" AdditionalImportDirs="..\..\_schema\proto\" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
