@@ -8,40 +8,42 @@ on:
     paths:
       - "src/ProductCatalog/**"
       - "src/BuildingBlocks/**"
-      - ".helm/product-catalog-api/**"
       - ".github/workflows/product-catalog-api.yml"
   pull_request:
     branches: [ master ]
 
 jobs:
-  # build-dotnet:
+  build-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+
+    - name: Build with dotnet
+      run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
+
+  # build-docker:
   #   runs-on: ubuntu-latest
   #   steps:
   #   - uses: actions/checkout@v2
-  #   - name: Setup .NET Core
-  #     uses: actions/setup-dotnet@v1
+  #   - uses: aarnott/nbgv@v0.3
   #     with:
-  #       dotnet-version: 3.1.101
-  #   - name: Build with dotnet
-  #     run: dotnet build src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj --configuration Release
-
-  build-docker:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: aarnott/nbgv@v0.3
-      with:
-        setAllVars: true
-    - name: Build docker image
-      run: docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile --tag image
-    - name: Log into registry
-      run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-    - name: Push image
-      run: |
-        VERSION=$NBGV_GitCommitIdShort
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
-        docker tag image $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+  #       setAllVars: true
+  #   - name: Build docker image
+  #     run: docker build . --file ./src/ProductCatalog/CoolStore.ProductCatalogApi/Dockerfile --tag image
+  #   - name: Log into registry
+  #     run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+  #   - name: Push image
+  #     run: |
+  #       VERSION=$NBGV_GitCommitIdShort
+  #       IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/dapr-product-catalog-api
+  #       docker tag image $IMAGE_ID:$VERSION
+  #       docker push $IMAGE_ID:$VERSION
 
   # build-publish-aks:
   #   runs-on: ubuntu-latest

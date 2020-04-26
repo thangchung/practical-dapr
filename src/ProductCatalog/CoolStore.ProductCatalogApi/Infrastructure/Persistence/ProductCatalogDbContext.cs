@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CoolStore.ProductCatalogApi.Domain;
-using CoolStore.Protobuf.ProductCatalog.V1;
+using CoolStore.ProductCatalogApi.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -24,9 +24,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().ToTable("Product");
-            modelBuilder.Entity<Category>().ToTable("Category");
-            modelBuilder.Entity<Rating>().ToTable("Rating");
+            modelBuilder.Entity<Product>().ToTable("Product", "product");
+            modelBuilder.Entity<Category>().ToTable("Category", "product");
+            modelBuilder.Entity<Rating>().ToTable("Rating", "product");
 
             modelBuilder.Entity<Product>().HasKey(x => x.Id);
             modelBuilder.Entity<Category>().HasKey(x => x.Id);
@@ -55,22 +55,19 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                 );
             }
 
-            var productModels = "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductDto>>(AppContext.BaseDirectory);
+            var productModels = "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductSeedData>>(AppContext.BaseDirectory);
             //Console.WriteLine(productModels.SerializeObject());
             foreach (var prod in productModels)
             {
                 modelBuilder.Entity<Product>().HasData(
                     Product.Of(
-                        prod.Id.ConvertTo<Guid>(),
-                        new CreateProductRequest
-                        {
-                            Name = prod.Name,
-                            Description = prod.Description,
-                            ImageUrl = prod.ImageUrl,
-                            Price = prod.Price,
-                            InventoryId = prod.InventoryId,
-                            CategoryId = prod.CategoryId
-                        }
+                        prod.Id,
+                        prod.Name,
+                        prod.Description,
+                        prod.Price,
+                        prod.ImageUrl,
+                        prod.InventoryId,
+                        prod.CategoryId
                     )
                 );
             }
@@ -83,6 +80,7 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
         {
             var connString = ConfigurationHelper.GetConfiguration(AppContext.BaseDirectory)
                 ?.GetConnectionString("MainDb");
+
             var optionsBuilder = new DbContextOptionsBuilder<ProductCatalogDbContext>()
                 .UseSqlServer(
                     connString ?? throw new InvalidOperationException(),

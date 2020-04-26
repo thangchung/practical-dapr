@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
@@ -7,11 +8,9 @@ using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using N8T.Infrastructure.Dapr;
-using Serilog;
+using N8T.Infrastructure;
+using N8T.Infrastructure.Tye;
 
 namespace CoolStore.GraphApi
 {
@@ -19,42 +18,27 @@ namespace CoolStore.GraphApi
     {
         private static async Task Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
-            var builder = WebApplication.CreateBuilder(args);
+            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+                .AddCustomConfiguration();
 
-            var configurationBuilder = builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
-
-            var env = builder.Environment;
-            configurationBuilder.AddJsonFile("services.json", optional: true);
-            if (env.IsDevelopment())
-            {
-                var servicesJson = System.IO.Path.Combine(env.ContentRootPath, "..", "..", "..", "services.json");
-                configurationBuilder.AddJsonFile(servicesJson, optional: true);
-            }
-
-            var config = configurationBuilder.Build();
-
-            builder.Host
-                .UseSerilog();
+            var config = configBuilder.Build();
 
             builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddHttpClient("product_catalog",
+            builder.Services.AddHttpClient("productCatalog",
                 (sp, client) =>
                 {
-                    client.BaseAddress = new Uri($"{config.GetDaprClientUrl("product-catalog-api")}/graphql");
+                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("product-catalog-api")}/graphql");
                 });
 
-            // builder.Services.AddHttpClient("inventory",
-            //     (sp, client) =>
-            //     {
-            //         client.BaseAddress = new Uri($"{serviceOptions.InventoryService.RestUri}/graphql");
-            //     });
+            builder.Services.AddHttpClient("inventory",
+                (sp, client) =>
+                {
+                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("inventory-api")}/graphql");
+                });
+
             // builder.Services.AddHttpClient("shopping_cart",
             //     (sp, client) =>
             //     {
@@ -65,8 +49,8 @@ namespace CoolStore.GraphApi
             builder.Services
                 .AddGraphQLSubscriptions()
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
-                    .AddSchemaFromHttp("product_catalog")
-                    //.AddSchemaFromHttp("inventory")
+                    .AddSchemaFromHttp("productCatalog")
+                    .AddSchemaFromHttp("inventory")
                     //.AddSchemaFromHttp("shopping_cart")
                 );
 

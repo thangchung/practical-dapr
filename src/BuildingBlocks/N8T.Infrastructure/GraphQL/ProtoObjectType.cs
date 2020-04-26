@@ -1,4 +1,4 @@
-﻿using Google.Protobuf;
+using Google.Protobuf;
 using HotChocolate.Types;
 
 namespace N8T.Infrastructure.GraphQL
