@@ -1,6 +1,6 @@
 using HotChocolate.Types;
 
-namespace CoolStore.ProductCatalogApi.Apis.GraphQL
+namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
     public sealed class QueryType : ObjectType<Query>
     {

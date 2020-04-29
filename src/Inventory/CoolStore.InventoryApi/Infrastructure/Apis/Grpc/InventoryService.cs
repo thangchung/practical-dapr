@@ -9,7 +9,7 @@ using Grpc.Core;
 using MediatR;
 using N8T.Infrastructure;
 
-namespace CoolStore.InventoryApi.Apis.Grpc
+namespace CoolStore.InventoryApi.Infrastructure.Apis.Grpc
 {
     public class InventoryService : Protobuf.Inventory.V1.InventoryApi.InventoryApiBase
     {

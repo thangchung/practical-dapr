@@ -52,9 +52,16 @@ namespace N8T.Infrastructure
         [DebuggerStepThrough]
         public static IServiceCollection AddCustomMvc(this IServiceCollection services,
             Type markedType,
+            bool withDapr = false,
             Action<IServiceCollection> doMoreActions = null)
         {
             var mvcBuilder = services.AddControllers();
+
+            if (withDapr)
+            {
+                mvcBuilder.AddDapr();
+            }
+
             mvcBuilder.AddApplicationPart(markedType.Assembly);
 
             doMoreActions?.Invoke(services);

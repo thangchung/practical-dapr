@@ -12,6 +12,7 @@ using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
@@ -51,6 +52,7 @@ namespace CoolStore.ProductCatalogApi
                         o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
                     });
                 })
+                .AddCustomerDaprClient()
                 .AddScoped<IInventoryGateway, InventoryGateway>();
 
             var app = builder.Build();

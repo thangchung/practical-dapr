@@ -3,6 +3,7 @@ using Dapr.Client;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using N8T.Infrastructure.Tye;
 
@@ -28,6 +29,22 @@ namespace N8T.Infrastructure.Dapr
                 .Build();
 
             return client;
+        }
+
+        public static IServiceCollection AddCustomerDaprClient(this IServiceCollection services)
+        {
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            services.AddDaprClient(client =>
+            {
+                client.UseJsonSerializationOptions(options);
+            });
+
+            return services;
         }
     }
 }

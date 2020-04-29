@@ -1,7 +1,7 @@
 using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.Types;
 
-namespace CoolStore.ProductCatalogApi.Apis.GraphQL
+namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
     public class InventoryType : ObjectType<InventoryDto>
     {

@@ -4,7 +4,7 @@ using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
-namespace CoolStore.ProductCatalogApi.Apis.GraphQL
+namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
     public class Query
     {

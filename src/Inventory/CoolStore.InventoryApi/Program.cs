@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Apis.Grpc;
+using CoolStore.InventoryApi.Infrastructure.Apis.GraphQL;
+using CoolStore.InventoryApi.Infrastructure.Apis.Grpc;
 using CoolStore.InventoryApi.Infrastructure.Persistence;
-using CoolStore.ProductCatalogApi.Apis.GraphQL;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
@@ -45,14 +46,15 @@ namespace CoolStore.InventoryApi
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program))
                 .AddCustomDbContext<InventoryDbContext>(typeof(Program), connString)
-                .AddCustomMvc(typeof(Program))
+                .AddCustomMvc(typeof(Program), withDapr: true)
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
                     c.RegisterObjectTypes(typeof(Program));
                     c.RegisterExtendedScalarTypes();
                 })
-                .AddCustomGrpc();
+                .AddCustomGrpc()
+                .AddCustomerDaprClient();
 
             var app = builder.Build();
 
