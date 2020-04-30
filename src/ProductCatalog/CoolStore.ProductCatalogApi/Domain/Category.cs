@@ -3,7 +3,8 @@ using N8T.Domain;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
-    public class Category : EntityBase, IAggregateRoot
+    public class Category
+        : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; } = default!;

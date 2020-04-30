@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
-    public class CreateProductValidator : AbstractValidator<CreateProductCommand>
+    public class CreateProductValidator
+        : AbstractValidator<CreateProductCommand>
     {
         public CreateProductValidator()
         {
@@ -27,10 +28,10 @@ namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
                 .NotEmpty()
                 .WithMessage("${CategoryId} couldn't be null or empty.");
 
-            RuleFor(x => x.InventoryId)
+            RuleFor(x => x.StoreId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("${InventoryId} couldn't be null or empty.");
+                .WithMessage("${StoreId} couldn't be null or empty.");
         }
     }
 }

@@ -11,10 +11,11 @@ using N8T.Infrastructure.Helpers;
 
 namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
 {
-    public class ProductCatalogDbContext : AppDbContextBase
+    public class ProductCatalogDbContext
+        : AppDbContextBase
     {
-        public ProductCatalogDbContext(DbContextOptions options)
-            : base(options)
+        public ProductCatalogDbContext(
+            DbContextOptions options) : base(options)
         {
         }
 
@@ -22,7 +23,8 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().ToTable("Product", "product");
             modelBuilder.Entity<Category>().ToTable("Category", "product");
@@ -66,7 +68,7 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                         prod.Description,
                         prod.Price,
                         prod.ImageUrl,
-                        prod.InventoryId,
+                        prod.StoreId,
                         prod.CategoryId
                     )
                 );
@@ -74,7 +76,8 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
         }
     }
 
-    public class ProductCatalogDbContextDesignFactory : IDesignTimeDbContextFactory<ProductCatalogDbContext>
+    public class ProductCatalogDbContextDesignFactory
+        : IDesignTimeDbContextFactory<ProductCatalogDbContext>
     {
         public ProductCatalogDbContext CreateDbContext(string[] args)
         {

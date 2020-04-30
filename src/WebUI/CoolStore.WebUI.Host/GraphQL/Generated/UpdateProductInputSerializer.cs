@@ -70,11 +70,6 @@ namespace CoolStore.WebUI.Host
                 map.Add("imageUrl", SerializeNullableString(input.ImageUrl.Value));
             }
 
-            if (input.InventoryId.HasValue)
-            {
-                map.Add("inventoryId", SerializeNullableUuid(input.InventoryId.Value));
-            }
-
             if (input.Name.HasValue)
             {
                 map.Add("name", SerializeNullableString(input.Name.Value));
@@ -83,6 +78,11 @@ namespace CoolStore.WebUI.Host
             if (input.Price.HasValue)
             {
                 map.Add("price", SerializeNullableFloat(input.Price.Value));
+            }
+
+            if (input.StoreId.HasValue)
+            {
+                map.Add("storeId", SerializeNullableUuid(input.StoreId.Value));
             }
 
             return map;

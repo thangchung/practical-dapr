@@ -8,28 +8,30 @@ using N8T.Infrastructure;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class CatalogProductType : ObjectType<CatalogProductDto>
+    public class CatalogProductType
+        : ObjectType<CatalogProductDto>
     {
-        protected override void Configure(IObjectTypeDescriptor<CatalogProductDto> descriptor)
+        protected override void Configure(
+            IObjectTypeDescriptor<CatalogProductDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
 
             descriptor.Field(t => t.Category).Type<NonNullType<CategoryType>>();
 
-            descriptor.Field("inventory").Type<NonNullType<InventoryType>>().Resolver(async ctx =>
+            descriptor.Field("store").Type<NonNullType<InventoryType>>().Resolver(async ctx =>
             {
-                var inventoryGateway = ctx.Service<IInventoryGateway>();
+                var inventoryGateway = ctx.Service<IStoreGateway>();
 
-                var dataLoader = ctx.BatchDataLoader<Guid, Protobuf.Inventory.V1.InventoryDto>(
-                    "InventoryById",
-                    inventoryGateway.GetInventoriesAsync);
+                var dataLoader = ctx.BatchDataLoader<Guid, Protobuf.Inventory.V1.StoreDto>(
+                    "StoreById",
+                    inventoryGateway.GetStoresAsync);
 
-                return await dataLoader.LoadAsync(ctx.Parent<CatalogProductDto>().InventoryId.ConvertTo<Guid>());
+                return await dataLoader.LoadAsync(ctx.Parent<CatalogProductDto>().StoreId.ConvertTo<Guid>());
             });
 
             // ignore fields
             base.Configure(descriptor);
-            descriptor.Ignore(t => t.InventoryId);
+            descriptor.Ignore(t => t.StoreId);
         }
     }
 }

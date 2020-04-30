@@ -8,17 +8,21 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.DeleteProduct
 {
-    public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, bool>
+    public class DeleteProductHandler
+        : IRequestHandler<DeleteProductCommand, bool>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public DeleteProductHandler(ProductCatalogDbContext dbContext)
+        public DeleteProductHandler(
+            ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [TransactionScope]
-        public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(
+            DeleteProductCommand request,
+            CancellationToken cancellationToken)
         {
             var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (product == null)

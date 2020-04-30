@@ -16,10 +16,10 @@ namespace CoolStore.WebUI.Host
 
         public Optional<string> ImageUrl { get; set; }
 
-        public Optional<System.Guid> InventoryId { get; set; }
-
         public Optional<string> Name { get; set; }
 
         public Optional<double> Price { get; set; }
+
+        public Optional<System.Guid> StoreId { get; set; }
     }
 }

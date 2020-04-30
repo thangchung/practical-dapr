@@ -14,7 +14,7 @@ namespace CoolStore.WebUI.Models
 
         [Required] public string ImageUrl { get; set; } = "https://picsum.photos/1200/900?image=100";
 
-        [Required] public string InventoryId { get; set; }
+        [Required] public string StoreId { get; set; }
 
         [Required] public double Price { get; set; } = 1000;
     }

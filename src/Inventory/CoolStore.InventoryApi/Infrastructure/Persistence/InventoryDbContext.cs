@@ -11,28 +11,30 @@ using N8T.Infrastructure.Helpers;
 
 namespace CoolStore.InventoryApi.Infrastructure.Persistence
 {
-    public class InventoryDbContext : AppDbContextBase
+    public class InventoryDbContext
+        : AppDbContextBase
     {
-        public InventoryDbContext(DbContextOptions options)
-            : base(options)
+        public InventoryDbContext(
+            DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Store> Stores { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Inventory>().ToTable("Inventory", "inv");
-            modelBuilder.Entity<Inventory>().HasKey(x => x.Id);
-            modelBuilder.Entity<Inventory>().Ignore(x => x.DomainEvents);
+            modelBuilder.Entity<Store>().ToTable("Store", "inv");
+            modelBuilder.Entity<Store>().HasKey(x => x.Id);
+            modelBuilder.Entity<Store>().Ignore(x => x.DomainEvents);
 
             // seed data
-            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<InventoryDto>>(AppContext.BaseDirectory);
+            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<StoreDto>>(AppContext.BaseDirectory);
             //Console.WriteLine(models.SerializeObject());
             foreach (var inv in models)
             {
-                modelBuilder.Entity<Inventory>().HasData(
-                    Inventory.Of(
+                modelBuilder.Entity<Store>().HasData(
+                    Store.Of(
                         inv.Id.ConvertTo<Guid>(),
                         inv.Location,
                         inv.Description,
@@ -43,7 +45,8 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence
         }
     }
 
-    public class InventoryDbContextDesignFactory : IDesignTimeDbContextFactory<InventoryDbContext>
+    public class InventoryDbContextDesignFactory
+        : IDesignTimeDbContextFactory<InventoryDbContext>
     {
         public InventoryDbContext CreateDbContext(string[] args)
         {

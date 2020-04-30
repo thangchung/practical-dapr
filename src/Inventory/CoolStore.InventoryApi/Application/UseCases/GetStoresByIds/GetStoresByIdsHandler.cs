@@ -8,31 +8,33 @@ using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
+namespace CoolStore.InventoryApi.Application.UseCases.GetStoresByIds
 {
-    public class GetInventoriesByIdsHandler : IRequestHandler<GetInventoriesByIdsQuery, IEnumerable<InventoryDto>>
+    public class GetStoresByIdsHandler
+        : IRequestHandler<GetStoresByIdsQuery, IEnumerable<StoreDto>>
     {
         private readonly InventoryDbContext _dbContext;
 
-        public GetInventoriesByIdsHandler(InventoryDbContext dbContext)
+        public GetStoresByIdsHandler(InventoryDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<InventoryDto>> Handle(GetInventoriesByIdsQuery request,
+        public async Task<IEnumerable<StoreDto>> Handle(
+            GetStoresByIdsQuery request,
             CancellationToken cancellationToken)
         {
-            var inventories = await _dbContext.Inventories
+            var stores = await _dbContext.Stores
                 .AsNoTracking()
                 .Where(x => request.Ids.Contains(x.Id))
                 .ToListAsync();
 
-            if (inventories == null)
+            if (stores == null)
             {
                 throw new Exception("Could not get the records from the database.");
             }
 
-            return inventories.Select(x => new InventoryDto
+            return stores.Select(x => new StoreDto
             {
                 Id = x.Id.ToString(), Location = x.Location, Description = x.Description, Website = x.Website
             });

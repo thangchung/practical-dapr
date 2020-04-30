@@ -6,27 +6,19 @@ using StrawberryShake;
 namespace CoolStore.WebUI.Host
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class InventoryDto
-        : IInventoryDto
+    public partial class StoreDto1
+        : IStoreDto1
     {
-        public InventoryDto(
+        public StoreDto1(
             System.Guid id, 
-            string website, 
-            string location, 
-            string description)
+            string location)
         {
             Id = id;
-            Website = website;
             Location = location;
-            Description = description;
         }
 
         public System.Guid Id { get; }
 
-        public string Website { get; }
-
         public string Location { get; }
-
-        public string Description { get; }
     }
 }

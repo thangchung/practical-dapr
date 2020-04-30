@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
-namespace CoolStore.InventoryApi.Application.UseCases.GetInventory
+namespace CoolStore.InventoryApi.Application.UseCases.GetStoresByIds
 {
-    public class GetInventoriesByIdsQuery : IRequest<IEnumerable<InventoryDto>>
+    public class GetStoresByIdsQuery
+        : IRequest<IEnumerable<StoreDto>>
     {
         public IEnumerable<Guid> Ids { get; set; } = new List<Guid>();
     }

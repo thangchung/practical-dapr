@@ -11,13 +11,13 @@ using StrawberryShake.Transport;
 namespace CoolStore.WebUI.Host
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class GetInventoriesResultParser
-        : JsonResultParserBase<IGetInventories>
+    public partial class GetStoresResultParser
+        : JsonResultParserBase<IGetStores>
     {
         private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
 
-        public GetInventoriesResultParser(IValueSerializerCollection serializerResolver)
+        public GetStoresResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -27,30 +27,30 @@ namespace CoolStore.WebUI.Host
             _stringSerializer = serializerResolver.Get("String");
         }
 
-        protected override IGetInventories ParserData(JsonElement data)
+        protected override IGetStores ParserData(JsonElement data)
         {
-            return new GetInventories
+            return new GetStores
             (
-                ParseGetInventoriesInventories(data, "inventories")
+                ParseGetStoresStores(data, "stores")
             );
 
         }
 
-        private global::System.Collections.Generic.IReadOnlyList<global::CoolStore.WebUI.Host.IInventoryDto1> ParseGetInventoriesInventories(
+        private global::System.Collections.Generic.IReadOnlyList<global::CoolStore.WebUI.Host.IStoreDto1> ParseGetStoresStores(
             JsonElement parent,
             string field)
         {
             JsonElement obj = parent.GetProperty(field);
 
             int objLength = obj.GetArrayLength();
-            var list = new global::CoolStore.WebUI.Host.IInventoryDto1[objLength];
+            var list = new global::CoolStore.WebUI.Host.IStoreDto1[objLength];
             for (int objIndex = 0; objIndex < objLength; objIndex++)
             {
                 JsonElement element = obj[objIndex];
-                list[objIndex] = new InventoryDto1
+                list[objIndex] = new StoreDto1
                 (
                     DeserializeUuid(element, "id"),
-                    DeserializeString(element, "location")
+                    DeserializeNullableString(element, "location")
                 );
 
             }
@@ -64,9 +64,18 @@ namespace CoolStore.WebUI.Host
             return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
-        private string DeserializeString(JsonElement obj, string fieldName)
+        private string DeserializeNullableString(JsonElement obj, string fieldName)
         {
-            JsonElement value = obj.GetProperty(fieldName);
+            if (!obj.TryGetProperty(fieldName, out JsonElement value))
+            {
+                return null;
+            }
+
+            if (value.ValueKind == JsonValueKind.Null)
+            {
+                return null;
+            }
+
             return (string)_stringSerializer.Deserialize(value.GetString());
         }
     }

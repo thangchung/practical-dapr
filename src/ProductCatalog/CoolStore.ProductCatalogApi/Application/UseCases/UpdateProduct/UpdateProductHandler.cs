@@ -9,17 +9,21 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.UpdateProduct
 {
-    public class UpdateCreatedHandler : IRequestHandler<UpdateProductCommand, CatalogProductDto>
+    public class UpdateCreatedHandler
+        : IRequestHandler<UpdateProductCommand, CatalogProductDto>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public UpdateCreatedHandler(ProductCatalogDbContext dbContext)
+        public UpdateCreatedHandler(
+            ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [TransactionScope]
-        public async Task<CatalogProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<CatalogProductDto> Handle(
+            UpdateProductCommand request,
+            CancellationToken cancellationToken)
         {
             var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (product == null)
@@ -32,7 +36,7 @@ namespace CoolStore.ProductCatalogApi.Application.UseCases.UpdateProduct
                 request.Description,
                 request.Price,
                 request.ImageUrl,
-                request.InventoryId);
+                request.StoreId);
 
             var cats = await _dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
             var category = await _dbContext.Categories

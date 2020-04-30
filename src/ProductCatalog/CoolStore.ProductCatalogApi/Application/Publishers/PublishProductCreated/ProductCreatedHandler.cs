@@ -8,7 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreated
 {
-    public class PublishProductCreatedHandler : INotificationHandler<ProductCreated>
+    public class PublishProductCreatedHandler
+        : INotificationHandler<ProductCreated>
     {
         private readonly DaprClient _daprClient;
         private readonly ILogger<PublishProductCreatedHandler> _logger;
@@ -21,7 +22,9 @@ namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreat
             _logger = logger;
         }
 
-        public async Task Handle(ProductCreated notification, CancellationToken cancellationToken)
+        public async Task Handle(
+            ProductCreated notification,
+            CancellationToken cancellationToken)
         {
             _logger.LogInformation($"We got {JsonSerializer.Serialize(notification)}");
 

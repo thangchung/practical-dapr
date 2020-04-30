@@ -6,16 +6,16 @@ using StrawberryShake;
 namespace CoolStore.WebUI.Host
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class GetInventoriesOperation
-        : IOperation<IGetInventories>
+    public partial class GetStoresOperation
+        : IOperation<IGetStores>
     {
-        public string Name => "getInventories";
+        public string Name => "getStores";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Query;
 
-        public Type ResultType => typeof(IGetInventories);
+        public Type ResultType => typeof(IGetStores);
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {

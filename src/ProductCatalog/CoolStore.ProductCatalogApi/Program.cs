@@ -53,7 +53,7 @@ namespace CoolStore.ProductCatalogApi
                     });
                 })
                 .AddCustomerDaprClient()
-                .AddScoped<IInventoryGateway, InventoryGateway>();
+                .AddScoped<IStoreGateway, StoreGateway>();
 
             var app = builder.Build();
 

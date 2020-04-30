@@ -38,8 +38,8 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 ProductId = product.Id,
                 Name = product.Name,
-                InventoryId = product.Inventory.Id,
-                InventoryLocation = product.Inventory.Location,
+                StoreId = product.Store.Id,
+                StoreLocation = product.Store.Location,
                 CategoryId = product.Category.Id,
                 CategoryName = product.Category.Name,
                 ImageUrl = product.ImageUrl,
@@ -69,8 +69,8 @@ namespace CoolStore.WebUI.Host.Controllers
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id,
                     CategoryName = x.Category.Name,
-                    InventoryId = x.Inventory.Id,
-                    InventoryLocation = x.Inventory.Location
+                    StoreId = x.Store.Id,
+                    StoreLocation = x.Store.Location
                 }));
 
                 return model;
@@ -88,8 +88,8 @@ namespace CoolStore.WebUI.Host.Controllers
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id,
                     CategoryName = x.Category.Name,
-                    InventoryId = x.Inventory.Id,
-                    InventoryLocation = x.Inventory.Location
+                    StoreId = x.Store.Id,
+                    StoreLocation = x.Store.Location
                 }));
 
                 return model;
@@ -114,7 +114,7 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 Name = model.Name,
                 Price = model.Price,
-                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
                 Description = model.Description
@@ -129,7 +129,7 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 Name = model.Name,
                 Price = model.Price,
-                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
                 Description = model.Description

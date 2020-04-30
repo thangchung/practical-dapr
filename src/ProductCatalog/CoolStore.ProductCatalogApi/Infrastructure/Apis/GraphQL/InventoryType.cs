@@ -1,11 +1,13 @@
+using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.Types;
 using N8T.Infrastructure.GraphQL;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class InventoryType : ProtoObjectType<Protobuf.Inventory.V1.InventoryDto>
+    public class InventoryType
+        : ProtoObjectType<StoreDto>
     {
-        protected override void Configure(IObjectTypeDescriptor<Protobuf.Inventory.V1.InventoryDto> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<StoreDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
 

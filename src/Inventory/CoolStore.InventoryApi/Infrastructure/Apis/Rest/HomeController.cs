@@ -10,17 +10,21 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Rest
 {
     [ApiController]
     [Route("")]
-    public class HomeController : ControllerBase
+    public class HomeController
+        : ControllerBase
     {
         [HttpGet("/status")]
-        public IActionResult Status([FromServices] IConfiguration config)
+        public IActionResult Status(
+            [FromServices] IConfiguration config)
         {
             return Content(config.BuildAppStatus());
         }
 
         [Topic("productCreated")]
         [HttpPost("productCreated")]
-        public Task SubcribeProductCreated(ProductCreated product, [FromServices] DaprClient daprClient)
+        public Task SubcribeProductCreated(
+            ProductCreated product,
+            [FromServices] DaprClient daprClient)
         {
             return Task.CompletedTask;
         }

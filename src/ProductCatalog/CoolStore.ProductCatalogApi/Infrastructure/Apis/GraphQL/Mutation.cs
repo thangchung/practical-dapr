@@ -16,17 +16,20 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
             _mediator = mediator;
         }
 
-        public async Task<CatalogProductDto> CreateProduct(CreateProductCommand createProductInput)
+        public async Task<CatalogProductDto> CreateProduct(
+            CreateProductCommand createProductInput)
         {
             return await _mediator.Send(createProductInput);
         }
 
-        public async Task<CatalogProductDto> UpdateProduct(UpdateProductCommand updateProductInput)
+        public async Task<CatalogProductDto> UpdateProduct(
+            UpdateProductCommand updateProductInput)
         {
             return await _mediator.Send(updateProductInput);
         }
 
-        public async Task<bool> DeleteProduct(DeleteProductCommand deleteProductInput)
+        public async Task<bool> DeleteProduct(
+            DeleteProductCommand deleteProductInput)
         {
             return await _mediator.Send(deleteProductInput);
         }

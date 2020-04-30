@@ -2,7 +2,8 @@ using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.GetCategories
 {
-    public class GetCategoriesValidator : AbstractValidator<GetCategoriesQuery>
+    public class GetCategoriesValidator
+        : AbstractValidator<GetCategoriesQuery>
     {
     }
 }

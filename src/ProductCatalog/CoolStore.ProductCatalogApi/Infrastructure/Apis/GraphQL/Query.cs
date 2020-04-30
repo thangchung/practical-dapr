@@ -11,7 +11,8 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
     {
         private readonly IMediator _mediator;
 
-        public Query(IMediator mediator)
+        public Query(
+            IMediator mediator)
         {
             _mediator = mediator;
         }

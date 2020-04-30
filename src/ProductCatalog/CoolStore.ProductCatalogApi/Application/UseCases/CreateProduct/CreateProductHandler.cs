@@ -10,20 +10,30 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct
 {
-    public class ProductCreatedHandler : IRequestHandler<CreateProductCommand, CatalogProductDto>
+    public class ProductCreatedHandler
+        : IRequestHandler<CreateProductCommand, CatalogProductDto>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public ProductCreatedHandler(ProductCatalogDbContext dbContext)
+        public ProductCreatedHandler(
+            ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [TransactionScope]
-        public async Task<CatalogProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<CatalogProductDto> Handle(
+            CreateProductCommand request,
+            CancellationToken cancellationToken)
         {
-            var product = Product.Of(Guid.NewGuid(), request.Name, request!.Description, request.Price,
-                request.ImageUrl, request.InventoryId, request.CategoryId);
+            var product = Product.Of(
+                Guid.NewGuid(),
+                request.Name,
+                request!.Description,
+                request.Price,
+                request.ImageUrl,
+                request.StoreId,
+                request.CategoryId);
 
             var cats = await _dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
             var category = await _dbContext.Categories

@@ -10,18 +10,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoolStore.InventoryApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20200419072957_InitInventoryDb")]
+    [Migration("20200430042454_InitInventoryDb")]
     partial class InitInventoryDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CoolStore.InventoryApi.Domain.Inventory", b =>
+            modelBuilder.Entity("CoolStore.InventoryApi.Domain.Store", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Inventory","inv");
+                    b.ToTable("Store","inv");
 
                     b.HasData(
                         new

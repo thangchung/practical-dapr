@@ -4,14 +4,15 @@ using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
-    public class Product : EntityBase, IAggregateRoot
+    public class Product
+        : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; } = default!;
         public string? Description { get; private set; }
         public double Price { get; private set; }
         public string ImageUrl { get; private set; } = "https://picsum.photos/1200/900?image=1";
-        public Guid InventoryId { get; private set; }
+        public Guid StoreId { get; private set; }
         public bool IsDeleted { get; private set; }
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; }
@@ -20,8 +21,14 @@ namespace CoolStore.ProductCatalogApi.Domain
         {
         }
 
-        public static Product Of(Guid productId, string name, string? description, double price, string imageUrl,
-            Guid inventoryId, Guid categoryId)
+        public static Product Of(
+            Guid productId,
+            string name,
+            string? description,
+            double price,
+            string imageUrl,
+            Guid storeId,
+            Guid categoryId)
         {
             var newProduct = new Product
             {
@@ -30,7 +37,7 @@ namespace CoolStore.ProductCatalogApi.Domain
                 Description = description,
                 Price = price,
                 ImageUrl = imageUrl,
-                InventoryId = inventoryId,
+                StoreId = storeId,
                 CategoryId = categoryId,
                 Created = NewDateTime(),
                 IsDeleted = false
@@ -48,27 +55,33 @@ namespace CoolStore.ProductCatalogApi.Domain
             return newProduct;
         }
 
-        public Product AssignCategory(Category cat)
+        public Product AssignCategory(
+            Category cat)
         {
             CategoryId = cat.Id;
             Category = cat;
             return this;
         }
 
-        public Product UpdateProduct(string name, string? description, double price, string imageUrl, Guid inventoryId)
+        public Product UpdateProduct(
+            string name,
+            string? description,
+            double price,
+            string imageUrl,
+            Guid storeId)
         {
             Name = name;
             Description = description;
             Price = price;
             ImageUrl = imageUrl;
 
-            if (inventoryId == Guid.Empty)
+            if (storeId == Guid.Empty)
             {
-                throw new InventoryNullException();
+                throw new StoreNullException();
             }
             else
             {
-                InventoryId = inventoryId;
+                StoreId = storeId;
             }
 
             Updated = NewDateTime();

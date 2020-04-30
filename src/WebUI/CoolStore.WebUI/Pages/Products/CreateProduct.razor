@@ -44,11 +44,11 @@
         <label class="control-label">
           Inventory
         </label>
-        <InputSelect id="inventoryId" @bind-Value="_productModel.InventoryId" class="form-control">
+        <InputSelect id="storeId" @bind-Value="_productModel.StoreId" class="form-control">
           <option value="">Select...</option>
-          @foreach (var inv in _inventories)
+          @foreach (var store in _stores)
           {
-            <option value="@inv.Key">@inv.Value</option>
+            <option value="@store.Key">@store.Value</option>
           }
         </InputSelect>
       </p>
@@ -76,12 +76,12 @@
 
   private readonly CreateProductModel _productModel = new CreateProductModel();
   IList<KeyValueModel> _categories = new List<KeyValueModel>();
-  IList<KeyValueModel> _inventories = new List<KeyValueModel>();
+  IList<KeyValueModel> _stores = new List<KeyValueModel>();
 
   protected override async Task OnInitializedAsync()
   {
     _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
-    _inventories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories");
+    _stores = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories/stores");
   }
 
   private async Task HandleValidSubmit()

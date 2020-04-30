@@ -6,10 +6,10 @@ using CoolStore.Protobuf.Inventory.V1;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
-    public interface IInventoryGateway
+    public interface IStoreGateway
     {
-        Task<IReadOnlyDictionary<Guid, InventoryDto>> GetInventoriesAsync(
-            IReadOnlyCollection<Guid> invIds,
+        Task<IReadOnlyDictionary<Guid, StoreDto>> GetStoresAsync(
+            IReadOnlyCollection<Guid> storeIds,
             CancellationToken cancellationToken);
     }
 }

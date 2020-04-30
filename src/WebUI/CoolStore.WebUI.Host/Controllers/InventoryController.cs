@@ -19,11 +19,11 @@ namespace CoolStore.WebUI.Host.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<ImmutableList<KeyValueModel>> GetInventories()
+        [HttpGet("stores")]
+        public async Task<ImmutableList<KeyValueModel>> GetStores()
         {
-            var response = await _client.GetInventoriesAsync();
-            return response.Data.Inventories
+            var response = await _client.GetStoresAsync();
+            return response.Data.Stores
                 .Select(x => new KeyValueModel {Key = x.Id.ToString(), Value = x.Location})
                 .ToImmutableList();
         }

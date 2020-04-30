@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
@@ -7,16 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoolStore.ProductCatalogApi.Application.UseCases.GetProducts
 {
-    public class GetProductsHandler : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
+    public class GetProductsHandler
+        : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public GetProductsHandler(ProductCatalogDbContext dbContext)
+        public GetProductsHandler(
+            ProductCatalogDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
 
-        protected override IQueryable<CatalogProductDto> Handle(GetProductsQuery request)
+        protected override IQueryable<CatalogProductDto> Handle(
+            GetProductsQuery request)
         {
             return _dbContext.Products
                 .AsNoTracking()
@@ -30,7 +32,7 @@ namespace CoolStore.ProductCatalogApi.Application.UseCases.GetProducts
                     Description = x.Description,
                     ImageUrl = x.ImageUrl,
                     Category = new CategoryDto {Id = x.Category.Id, Name = x.Category.Name},
-                    InventoryId = x.InventoryId
+                    StoreId = x.StoreId
                 });
         }
     }

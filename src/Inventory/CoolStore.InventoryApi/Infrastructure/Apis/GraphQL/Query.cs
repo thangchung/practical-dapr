@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
+using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityStores;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 
@@ -10,14 +10,15 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
     {
         private readonly IMediator _mediator;
 
-        public Query(IMediator mediator)
+        public Query(
+            IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        public async Task<IEnumerable<InventoryDto>> GetInventories()
+        public async Task<IEnumerable<StoreDto>> GetStores()
         {
-            return await _mediator.Send(new GetInventoriesQuery());
+            return await _mediator.Send(new GetStoresQuery());
         }
     }
 }

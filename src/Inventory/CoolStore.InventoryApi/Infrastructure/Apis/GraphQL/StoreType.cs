@@ -3,9 +3,11 @@ using HotChocolate.Types;
 
 namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
-    public class InventoryType : ObjectType<InventoryDto>
+    public class StoreType
+        : ObjectType<StoreDto>
     {
-        protected override void Configure(IObjectTypeDescriptor<InventoryDto> descriptor)
+        protected override void Configure(
+            IObjectTypeDescriptor<StoreDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
 

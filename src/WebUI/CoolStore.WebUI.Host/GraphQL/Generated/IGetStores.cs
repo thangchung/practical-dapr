@@ -6,8 +6,8 @@ using StrawberryShake;
 namespace CoolStore.WebUI.Host
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial interface IGetInventories
+    public partial interface IGetStores
     {
-        global::System.Collections.Generic.IReadOnlyList<global::CoolStore.WebUI.Host.IInventoryDto1> Inventories { get; }
+        global::System.Collections.Generic.IReadOnlyList<global::CoolStore.WebUI.Host.IStoreDto1> Stores { get; }
     }
 }

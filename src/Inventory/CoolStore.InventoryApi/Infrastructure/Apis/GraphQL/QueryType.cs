@@ -2,13 +2,15 @@ using HotChocolate.Types;
 
 namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
-    public sealed class QueryType : ObjectType<Query>
+    public sealed class QueryType
+        : ObjectType<Query>
     {
-        protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
+        protected override void Configure(
+            IObjectTypeDescriptor<Query> descriptor)
         {
             descriptor
-                .Field(x => x.GetInventories())
-                .Name("inventories");
+                .Field(x => x.GetStores())
+                .Name("stores");
         }
     }
 }
