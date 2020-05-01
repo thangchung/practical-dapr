@@ -17,5 +17,7 @@ namespace CoolStore.WebUI.Models
         [Required] public string StoreId { get; set; }
 
         [Required] public double Price { get; set; } = 1000;
+        [Required] public int Rop { get; set; } = 5;
+        [Required] public int Eoq { get; set; } = 10;
     }
 }

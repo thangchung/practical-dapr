@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityStores;
-using CoolStore.InventoryApi.Application.UseCases.GetStoresByIds;
+using CoolStore.InventoryApi.Application.GetAvailabilityStores;
+using CoolStore.InventoryApi.Application.GetStoresByIds;
 using CoolStore.Protobuf.Inventory.V1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -44,7 +44,7 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Grpc
             ServerCallContext context)
         {
             var result = await _mediator.Send(
-                new GetStoresByIdsQuery {Ids = request.Ids.Select(x => x.ConvertTo<Guid>())});
+                new GetStoresByIdsQuery { Ids = request.Ids.Select(x => x.ConvertTo<Guid>()) });
             var response = new GetStoresByIdsResponse();
             response.Stores.AddRange(result.ToList());
             return response;

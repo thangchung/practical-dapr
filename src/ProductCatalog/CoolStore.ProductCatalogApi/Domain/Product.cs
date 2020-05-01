@@ -28,7 +28,9 @@ namespace CoolStore.ProductCatalogApi.Domain
             double price,
             string imageUrl,
             Guid storeId,
-            Guid categoryId)
+            Guid categoryId,
+            int rop = 5,
+            int eoq = 10)
         {
             var newProduct = new Product
             {
@@ -48,8 +50,9 @@ namespace CoolStore.ProductCatalogApi.Domain
                 ProductId = productId,
                 Name = name,
                 Price = price,
-                ImageUrl = imageUrl,
-                Description = description
+                StoreId = storeId,
+                Rop = rop,
+                Eoq = eoq
             });
 
             return newProduct;
@@ -68,7 +71,9 @@ namespace CoolStore.ProductCatalogApi.Domain
             string? description,
             double price,
             string imageUrl,
-            Guid storeId)
+            Guid storeId,
+            int rop = 5,
+            int eoq = 10)
         {
             Name = name;
             Description = description;
@@ -91,8 +96,9 @@ namespace CoolStore.ProductCatalogApi.Domain
                 ProductId = Id,
                 Name = Name,
                 Price = Price,
-                ImageUrl = ImageUrl,
-                Description = Description
+                StoreId = storeId,
+                Rop = rop,
+                Eoq = eoq
             });
 
             return this;

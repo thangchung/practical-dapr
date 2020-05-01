@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Application.UseCases.CreateProduct;
-using CoolStore.ProductCatalogApi.Application.UseCases.DeleteProduct;
-using CoolStore.ProductCatalogApi.Application.UseCases.UpdateProduct;
+using CoolStore.ProductCatalogApi.Application.CreateProduct;
+using CoolStore.ProductCatalogApi.Application.DeleteProduct;
+using CoolStore.ProductCatalogApi.Application.UpdateProduct;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
 

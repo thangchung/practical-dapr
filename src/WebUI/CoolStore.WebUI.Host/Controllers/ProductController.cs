@@ -117,7 +117,9 @@ namespace CoolStore.WebUI.Host.Controllers
                 StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
-                Description = model.Description
+                Description = model.Description,
+                Rop = model.Rop,
+                Eoq = model.Eoq
             }));
         }
 
@@ -132,7 +134,9 @@ namespace CoolStore.WebUI.Host.Controllers
                 StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
-                Description = model.Description
+                Description = model.Description,
+                Rop = model.Rop,
+                Eoq = model.Eoq
             }));
         }
 

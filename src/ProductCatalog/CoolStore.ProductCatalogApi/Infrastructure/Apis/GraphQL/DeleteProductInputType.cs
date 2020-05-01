@@ -1,4 +1,4 @@
-using CoolStore.ProductCatalogApi.Application.UseCases.DeleteProduct;
+using CoolStore.ProductCatalogApi.Application.DeleteProduct;
 using HotChocolate.Types;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL

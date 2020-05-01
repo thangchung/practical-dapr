@@ -1,0 +1,226 @@
+[
+  {
+    "id": "785ec0d4-cdb2-480b-b8b3-2f65950ef048",
+    "storeId": "90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD",
+    "productId": "ba16da71-c7dd-4eac-9ead-5c2c2244e69f",
+    "price": 900,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "ce8014b6-e8ed-49e6-a1bf-4a73c62fcbf6",
+    "storeId": "90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD",
+    "productId": "13d02035-2286-4055-ad2d-6855a60efbbb",
+    "price": 1000,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "55434919-47da-411b-a11d-c664650e9565",
+    "storeId": "90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD",
+    "productId": "b8f0a771-339f-4602-a862-f7a51afd5b79",
+    "price": 4000,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "776d9751-2fc3-4aa6-94e5-83ac8c30c0e5",
+    "storeId": "90C9479E-A11C-4D6D-AAAA-0405B6C0EFCD",
+    "productId": "ffd60654-1802-48bd-b4c3-d49831a8ab2c",
+    "price": 500,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "a38c9b35-6b4e-46c1-8864-ea03310e9bb1",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "a4811778-5070-4d70-8a9c-e6cb70dfcca4",
+    "price": 253,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "37f5b3a2-557e-4fe8-b5e3-8d581a237583",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "6a0e6d20-8bcc-450f-bc5c-b8f727083dcd",
+    "price": 2809,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "ba26b27c-1419-4e5c-a0ed-c98c4ec2a1d9",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "fee1fc67-7469-4490-b418-47f4732de53f",
+    "price": 2147,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "f643880d-7153-4ee2-b66b-9bd1e466043c",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "2d2245e4-213a-49de-93d3-79e9439400f5",
+    "price": 2200,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "93c6ba3e-e4cb-40a2-89bc-c8550c672237",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "386b04c6-303a-4840-8a51-d92b1ea2d339",
+    "price": 2441,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "3f4db00c-67c7-43d6-9ffc-736877a7413e",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "297c5959-4808-4f40-8d6a-4a899505e1f7",
+    "price": 1731,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "56a082ac-3e9b-4702-848c-2ba75400ff3a",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "3a0a0a89-9b3a-4046-bf2b-deee64a764d2",
+    "price": 975,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "d8dda9ba-ae9f-4c14-8980-9b6bdf12d66d",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "71c46659-9560-4d6a-ac18-893477ed6662",
+    "price": 3453,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "325436f9-f674-4fbb-bbf5-f2a7c813be2d",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "f92bfa6a-2522-4234-a7f1-9004596a4a85",
+    "price": 2067,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "9e3a2db9-6345-49e6-b22b-3e0aaeec0923",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "cbe43158-2010-4cb1-a8de-f00da16a7362",
+    "price": 1769,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "13dd993e-d979-4e22-a159-f577dffb8062",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "85b9767c-1a09-4c33-8e77-faa25f1d69e1",
+    "price": 642,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "58436d6f-9c16-445f-b70d-b4159ba0fa56",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "22112bb2-c324-4860-8eb9-9c78853a52a5",
+    "price": 967,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "9ba82d65-0830-49e9-8d7d-f309ed42457b",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "97ad5bf4-d153-41c5-a6e0-6d0bfbbb4f67",
+    "price": 1124,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "08eb6d70-b4f7-4eac-8cd5-f4856cc751f3",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "cfc5cff8-ab2a-4c70-994d-5ab8ccb7cb0d",
+    "price": 1665,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "ba855106-3eb1-4be9-a565-ccf2ad5270a1",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "fac2ccc6-2c3f-4c1e-acbd-5354ba0873fb",
+    "price": 3305,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "79292e85-43e2-40a0-969a-da8a9987de8a",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "1adbc55a-4354-4205-b96d-c95e2dc806f4",
+    "price": 3310,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "3dbe06af-c15d-4cfa-9f43-590c001063a6",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "c3770b10-dd0f-4b1c-83aa-d424c175c087",
+    "price": 3196,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "df0db461-720b-4b4d-958e-e1178fdd4fa9",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "6b8d0110-e3e8-4727-a51e-06f38864e464",
+    "price": 2236,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "c294478a-e537-4cf9-b36d-acc3458e5df1",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "3b69e116-9dd6-400f-96ce-9911f4f6ac8b",
+    "price": 232,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "585e4160-ce70-4e78-b1e6-e4a9aa9d91b0",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "89b46ea8-b9a6-40e5-8df3-dba1095695f7",
+    "price": 3318,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "bb9d2a1f-f17d-40a4-b66b-128ec29fff6c",
+    "storeId": "EC186DDF-F430-44EC-84E5-205C93D84F14",
+    "productId": "e88e07f8-358d-48f7-b17c-8a16458f9c0a",
+    "price": 1504,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "d00b6019-5c1d-4317-8102-9482bc90e3bd",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "b243a35d-120a-4db3-ad12-7b3fa80e6391",
+    "price": 3294,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "832587a7-a37f-4efd-b99f-a89451397d96",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "6e3ac253-517d-48e5-96ad-800451f8591c",
+    "price": 3639,
+    "rop": 5,
+    "eoq": 10
+  },
+  {
+    "id": "726eb225-a323-479c-82b6-4165532d1be4",
+    "storeId": "B8B62196-6369-409D-B709-11C112DD023F",
+    "productId": "4693520a-2b14-4d90-8b64-541575511382",
+    "price": 1191,
+    "rop": 5,
+    "eoq": 10
+  }
+]

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
-using N8T.Infrastructure.Helpers;
 
 namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
 {
+    public class ProductCatalogDbContextDesignFactory
+        : DbContextDesignFactoryBase<ProductCatalogDbContext>
+    {
+    }
+
     public class ProductCatalogDbContext
         : AppDbContextBase
     {
@@ -73,29 +75,6 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                     )
                 );
             }
-        }
-    }
-
-    public class ProductCatalogDbContextDesignFactory
-        : IDesignTimeDbContextFactory<ProductCatalogDbContext>
-    {
-        public ProductCatalogDbContext CreateDbContext(string[] args)
-        {
-            var connString = ConfigurationHelper.GetConfiguration(AppContext.BaseDirectory)
-                ?.GetConnectionString("MainDb");
-
-            var optionsBuilder = new DbContextOptionsBuilder<ProductCatalogDbContext>()
-                .UseSqlServer(
-                    connString ?? throw new InvalidOperationException(),
-                    sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(GetType().Assembly.FullName);
-                        sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                    }
-                );
-
-            Console.WriteLine(connString);
-            return new ProductCatalogDbContext(optionsBuilder.Options);
         }
     }
 }

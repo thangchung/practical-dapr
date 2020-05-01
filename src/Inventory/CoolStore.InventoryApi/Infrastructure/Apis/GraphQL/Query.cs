@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityStores;
+using CoolStore.InventoryApi.Application.GetAvailabilityStores;
 using CoolStore.Protobuf.Inventory.V1;
 using MediatR;
 

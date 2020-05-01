@@ -1,4 +1,4 @@
-using CoolStore.ProductCatalogApi.Application.UseCases.UpdateProduct;
+using CoolStore.ProductCatalogApi.Application.UpdateProduct;
 using HotChocolate.Types;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL

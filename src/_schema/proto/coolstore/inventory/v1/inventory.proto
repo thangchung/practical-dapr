@@ -12,3 +12,12 @@ message StoreDto {
   google.protobuf.StringValue description = 3;
   string website = 4;
 }
+
+message StoreProductPriceDto {
+  string id = 1;
+  string store_id = 2;
+  string product_id = 3;
+  double price = 4;
+  int32 rop = 5;
+  int32 eoq = 6;
+}

@@ -31,9 +31,11 @@ type CategoryDto {
 input CreateProductInput {
   categoryId: Uuid!
   description: String
+  eoq: Int!
   imageUrl: String!
   name: String!
   price: Float!
+  rop: Int!
   storeId: Uuid!
 }
 
@@ -88,9 +90,11 @@ type StoreDto {
 input UpdateProductInput {
   categoryId: Uuid!
   description: String
+  eoq: Int!
   id: Uuid!
   imageUrl: String!
   name: String!
   price: Float!
+  rop: Int!
   storeId: Uuid!
 }
