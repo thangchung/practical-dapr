@@ -110,6 +110,7 @@ namespace CoolStore.ProductCatalogApi.Domain
 
             AddDomainEvent(new ProductDeleted
             {
+                StoreId = StoreId,
                 ProductId = Id
             });
 

@@ -9,20 +9,20 @@
   </div>
   <div class="card-body">
     <EditForm Model="@_productModel" OnValidSubmit="HandleValidSubmit">
-      <DataAnnotationsValidator />
-      <ValidationSummary />
+      <DataAnnotationsValidator/>
+      <ValidationSummary/>
       <p class="form-group">
         <label class="control-label">
           Name
         </label>
-        <InputText id="name" @bind-Value="_productModel.Name" class="form-control" />
+        <InputText id="name" @bind-Value="_productModel.Name" class="form-control"/>
       </p>
 
       <p class="form-group">
         <label class="control-label">
           Price
         </label>
-        <InputNumber id="price" @bind-Value="_productModel.Price" class="form-control" />
+        <InputNumber id="price" @bind-Value="_productModel.Price" class="form-control"/>
       </p>
 
       <p class="form-group">
@@ -32,32 +32,36 @@
         <InputSelect id="categoryId" @bind-Value="_productModel.CategoryId" class="form-control">
           <option value="">Select...</option>
           @foreach (var cat in _categories)
-  {
-    if (cat.Key.ToString() == _productModel.CategoryId)
-    {
-    <option value="@cat.Key" selected>@cat.Value</option> }
-                else
-                {
-    <option value="@cat.Key">@cat.Value</option>            }
-              }
+          {
+            if (cat.Key == _productModel.CategoryId)
+            {
+              <option value="@cat.Key" selected>@cat.Value</option>
+            }
+            else
+            {
+              <option value="@cat.Key">@cat.Value</option>
+            }
+          }
         </InputSelect>
       </p>
 
       <p class="form-group">
         <label class="control-label">
-          Inventory
+          Store
         </label>
-        <InputSelect id="storeId" @bind-Value="_productModel.StoreId" class="form-control">
+        <InputSelect id="storeId" @bind-Value="_productModel.StoreId" class="form-control disabled">
           <option value="">Select...</option>
           @foreach (var store in _stores)
-  {
-    if (store.Key.ToString() == _productModel.StoreId)
-    {
-    <option value="@store.Key" selected>@store.Value</option> }
-                else
-                {
-    <option value="@store.Key">@store.Value</option>            }
-              }
+          {
+            if (store.Key == _productModel.StoreId)
+            {
+              <option value="@store.Key" selected>@store.Value</option>
+            }
+            else
+            {
+              <option value="@store.Key">@store.Value</option>
+            }
+          }
         </InputSelect>
       </p>
 
@@ -65,28 +69,28 @@
         <label class="control-label">
           Image
         </label>
-        <InputText id="imageUrl" @bind-Value="_productModel.ImageUrl" class="form-control" />
+        <InputText id="imageUrl" @bind-Value="_productModel.ImageUrl" class="form-control"/>
       </p>
 
       <p class="form-group">
         <label class="control-label">
           Description
         </label>
-        <InputText id="description" @bind-Value="_productModel.Description" class="form-control" />
+        <InputText id="description" @bind-Value="_productModel.Description" class="form-control"/>
       </p>
 
       <p class="form-group">
         <label class="control-label">
           ROP (Re-order Point)
         </label>
-        <InputNumber id="rop" @bind-Value="_productModel.Rop" class="form-control" />
+        <InputNumber id="rop" @bind-Value="_productModel.Rop" class="form-control"/>
       </p>
 
       <p class="form-group">
         <label class="control-label">
           EOQ (Economic Order Quantity)
         </label>
-        <InputNumber id="eoq" @bind-Value="_productModel.Eoq" class="form-control" />
+        <InputNumber id="eoq" @bind-Value="_productModel.Eoq" class="form-control"/>
       </p>
 
       <button type="submit" class="btn btn-outline-primary">Save</button>

@@ -19,5 +19,23 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Subscribers
         {
             await mediator.Send(command);
         }
+
+        [Topic("product-updated")]
+        [HttpPost("product-updated")]
+        public async Task SubcribeProductUpdated(
+            AddStoreProductPriceCommand command,
+            [FromServices] IMediator mediator)
+        {
+            await mediator.Send(command);
+        }
+
+        [Topic("product-deleted")]
+        [HttpPost("product-deleted")]
+        public async Task SubcribeProductDeleted(
+            AddStoreProductPriceCommand command,
+            [FromServices] IMediator mediator)
+        {
+            await mediator.Send(command);
+        }
     }
 }

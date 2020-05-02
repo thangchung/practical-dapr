@@ -34,24 +34,5 @@ namespace CoolStore.InventoryApi.Domain
                 StoreProductPrices = new HashSet<StoreProductPrice>()
             };
         }
-
-        public Store AddStoreProductPrice(StoreProductPrice entity)
-        {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (StoreProductPrices == null)
-            {
-                StoreProductPrices = new HashSet<StoreProductPrice>();
-            }
-
-            entity.LinkWithStore(this);
-            StoreProductPrices.Add(entity);
-            Updated = NewDateTime();
-
-            return this;
-        }
     }
 }

@@ -60,10 +60,11 @@ namespace CoolStore.InventoryApi.Domain
             };
         }
 
-        public StoreProductPrice LinkWithStore(Store store)
+        public StoreProductPrice UpdateStoreProductPrice(double price, int rop, int eoq)
         {
-            StoreId = store.Id;
-            Store = store ?? throw new ArgumentNullException(nameof(store));
+            Price = price;
+            Rop = rop;
+            Eoq = eoq;
             return this;
         }
     }
