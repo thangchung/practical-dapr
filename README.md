@@ -8,23 +8,28 @@ A lightweight low ceremony microservices without Docker, Docker-compose and Helm
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
+# High level architecture
+
+![](docs/assets/high_level_architecture.png)
+
 # Dapr building blocks
 
 ## Service to service
 
 - Dapr client to calling to another service (`product-catalog-api` to `inventory-api`)
+- HTTP/gRPC invocation
 
 ## State store
 
-- Using it for storing the shopping cart and its items
+- Using state management to store the shopping cart data and its items
 - Redis for state management
 
 ## Pub/sub message
 
 - Create, update and delete a project at `product-catalog-api`, and subsequently publish an event to `inventory-api` to create `price`, `rop`, and `eoq`
-- Redis pub/sub
+- Redis for pub/sub
 
-## Input/Output binding
+## Input/output binding
 
 TODO
 
@@ -43,10 +48,6 @@ $ tye run --dtrace zipkin=http://localhost:9411 --logs seq=http://localhost:5340
 - Distributed Tracing with Zipkin dashboard (OpenTelemetry)
 
 ![](docs/assets/zipkin_dashboard.png)
-
-# High level architecture
-
-![](docs/assets/high_level_architecture.png)
 
 # Technical Stack
 
