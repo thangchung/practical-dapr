@@ -9,13 +9,11 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.InventoryApi.Application.AddStoreProductPrice
 {
-    public class AddStoreProductPriceHandler
-        : IRequestHandler<AddStoreProductPriceCommand, bool>
+    public class AddStoreProductPriceHandler : IRequestHandler<AddStoreProductPriceCommand, bool>
     {
         private readonly InventoryDbContext _dbContext;
 
-        public AddStoreProductPriceHandler(
-            InventoryDbContext dbContext)
+        public AddStoreProductPriceHandler(InventoryDbContext dbContext)
         {
             _dbContext = dbContext;
         }

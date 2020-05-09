@@ -4,8 +4,7 @@ using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Application.UpdateProduct
 {
-    public class UpdateProductCommand
-        : IRequest<CatalogProductDto>
+    public class UpdateProductCommand : IRequest<CatalogProductDto>
     {
         public Guid Id { get; set; } = default!;
         public string Name { get; set; } = default!;

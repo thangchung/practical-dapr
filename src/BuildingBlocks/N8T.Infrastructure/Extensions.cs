@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -70,14 +69,6 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
-        {
-            var model = new TModel();
-            configuration.GetSection(section).Bind(model);
-            return model;
-        }
-
-        [DebuggerStepThrough]
         public static T ConvertTo<T>(this object input)
         {
             return ConvertTo<T>(input.ToString());
@@ -98,12 +89,6 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static int GetPortOfUrl(this string url)
-        {
-            return url.Split(":").Last().ConvertTo<int>();
-        }
-
-        [DebuggerStepThrough]
         public static TData ReadData<TData>(this string fileName, string rootFolder)
         {
             var seedData = Path.GetFullPath(fileName, rootFolder);
@@ -117,12 +102,6 @@ namespace N8T.Infrastructure
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 });
             return models;
-        }
-
-        [DebuggerStepThrough]
-        public static string SerializeObject(this object obj)
-        {
-            return JsonSerializer.Serialize(obj);
         }
     }
 }

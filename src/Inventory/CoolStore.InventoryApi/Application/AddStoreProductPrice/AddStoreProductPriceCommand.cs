@@ -3,8 +3,7 @@ using MediatR;
 
 namespace CoolStore.InventoryApi.Application.AddStoreProductPrice
 {
-    public class AddStoreProductPriceCommand
-        : IRequest<bool>
+    public class AddStoreProductPriceCommand : IRequest<bool>
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; } = string.Empty;

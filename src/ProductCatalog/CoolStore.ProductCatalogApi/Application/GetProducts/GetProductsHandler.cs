@@ -6,19 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoolStore.ProductCatalogApi.Application.GetProducts
 {
-    public class GetProductsHandler
-        : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
+    public class GetProductsHandler : RequestHandler<GetProductsQuery, IQueryable<CatalogProductDto>>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public GetProductsHandler(
-            ProductCatalogDbContext dbContext)
+        public GetProductsHandler(ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        protected override IQueryable<CatalogProductDto> Handle(
-            GetProductsQuery request)
+        protected override IQueryable<CatalogProductDto> Handle(GetProductsQuery request)
         {
             if (request is null)
             {

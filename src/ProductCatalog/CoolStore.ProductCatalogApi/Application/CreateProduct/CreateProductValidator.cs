@@ -2,8 +2,7 @@ using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.Application.CreateProduct
 {
-    public class CreateProductValidator
-        : AbstractValidator<CreateProductCommand>
+    public class CreateProductValidator : AbstractValidator<CreateProductCommand>
     {
         public CreateProductValidator()
         {

@@ -4,8 +4,7 @@ using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
 namespace CoolStore.InventoryApi.Domain
 {
-    public class StoreProductPrice
-        : EntityBase
+    public class StoreProductPrice : EntityBase
     {
         public Guid Id { get; private set; }
         public Guid StoreId { get; private set; }

@@ -6,13 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoolStore.InventoryApi.Application.GetAvailabilityStores
 {
-    public class GetAvailabilityStoresHandler
-        : RequestHandler<GetStoresQuery, IQueryable<StoreDto>>
+    public class GetAvailabilityStoresHandler : RequestHandler<GetStoresQuery, IQueryable<StoreDto>>
     {
         private readonly InventoryDbContext _dbContext;
 
-        public GetAvailabilityStoresHandler(
-            InventoryDbContext dbContext)
+        public GetAvailabilityStoresHandler(InventoryDbContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -10,8 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoolStore.InventoryApi.Application.GetStoresByIds
 {
-    public class GetStoresByIdsHandler
-        : IRequestHandler<GetStoresByIdsQuery, IEnumerable<StoreDto>>
+    public class GetStoresByIdsHandler : IRequestHandler<GetStoresByIdsQuery, IEnumerable<StoreDto>>
     {
         private readonly InventoryDbContext _dbContext;
 

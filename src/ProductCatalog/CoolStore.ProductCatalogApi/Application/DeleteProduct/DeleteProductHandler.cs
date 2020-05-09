@@ -8,13 +8,11 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.DeleteProduct
 {
-    public class DeleteProductHandler
-        : IRequestHandler<DeleteProductCommand, bool>
+    public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, bool>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public DeleteProductHandler(
-            ProductCatalogDbContext dbContext)
+        public DeleteProductHandler(ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }

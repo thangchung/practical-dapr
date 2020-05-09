@@ -3,11 +3,9 @@ using HotChocolate.Types.Sorting;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL.Sorts
 {
-    public class ProductSortType
-        : SortInputType<CatalogProductDto>
+    public class ProductSortType : SortInputType<CatalogProductDto>
     {
-        protected override void Configure(
-            ISortInputTypeDescriptor<CatalogProductDto> descriptor)
+        protected override void Configure(ISortInputTypeDescriptor<CatalogProductDto> descriptor)
         {
             descriptor
                 .BindFieldsExplicitly()

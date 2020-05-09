@@ -2,23 +2,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.GetAvailabilityStores;
 using CoolStore.Protobuf.Inventory.V1;
+using HotChocolate;
 using MediatR;
 
 namespace CoolStore.InventoryApi.Infrastructure.Apis.GraphQL
 {
     public class Query
     {
-        private readonly IMediator _mediator;
-
-        public Query(
-            IMediator mediator)
+        public async Task<IEnumerable<StoreDto>> GetStores([Service] IMediator mediator)
         {
-            _mediator = mediator;
-        }
-
-        public async Task<IEnumerable<StoreDto>> GetStores()
-        {
-            return await _mediator.Send(new GetStoresQuery());
+            return await mediator.Send(new GetStoresQuery());
         }
     }
 }

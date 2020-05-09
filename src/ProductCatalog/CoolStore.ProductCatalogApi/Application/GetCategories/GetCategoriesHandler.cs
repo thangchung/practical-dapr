@@ -6,19 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoolStore.ProductCatalogApi.Application.GetCategories
 {
-    public class GetCategoriesHandler
-        : RequestHandler<GetCategoriesQuery, IQueryable<CategoryDto>>
+    public class GetCategoriesHandler : RequestHandler<GetCategoriesQuery, IQueryable<CategoryDto>>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public GetCategoriesHandler(
-            ProductCatalogDbContext dbContext)
+        public GetCategoriesHandler(ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        protected override IQueryable<CategoryDto> Handle(
-            GetCategoriesQuery request)
+        protected override IQueryable<CategoryDto> Handle(GetCategoriesQuery request)
         {
             if (request is null)
             {

@@ -8,11 +8,9 @@ using N8T.Infrastructure;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class CatalogProductType
-        : ObjectType<CatalogProductDto>
+    public class CatalogProductType : ObjectType<CatalogProductDto>
     {
-        protected override void Configure(
-            IObjectTypeDescriptor<CatalogProductDto> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<CatalogProductDto> descriptor)
         {
             descriptor.Field(t => t.Id).Type<NonNullType<UuidType>>();
 

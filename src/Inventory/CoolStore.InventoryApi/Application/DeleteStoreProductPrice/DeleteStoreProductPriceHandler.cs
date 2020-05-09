@@ -8,13 +8,11 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.InventoryApi.Application.DeleteStoreProductPrice
 {
-    public class DeleteStoreProductPriceHandler
-        : IRequestHandler<DeleteStoreProductPriceCommand, bool>
+    public class DeleteStoreProductPriceHandler : IRequestHandler<DeleteStoreProductPriceCommand, bool>
     {
         private readonly InventoryDbContext _dbContext;
 
-        public DeleteStoreProductPriceHandler(
-            InventoryDbContext dbContext)
+        public DeleteStoreProductPriceHandler(InventoryDbContext dbContext)
         {
             _dbContext = dbContext;
         }

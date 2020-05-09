@@ -8,16 +8,13 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
 {
-    public class ProductCatalogDbContextDesignFactory
-        : DbContextDesignFactoryBase<ProductCatalogDbContext>
+    public class ProductCatalogDbContextDesignFactory : DbContextDesignFactoryBase<ProductCatalogDbContext>
     {
     }
 
-    public class ProductCatalogDbContext
-        : AppDbContextBase
+    public class ProductCatalogDbContext : AppDbContextBase
     {
-        public ProductCatalogDbContext(
-            DbContextOptions options) : base(options)
+        public ProductCatalogDbContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -25,8 +22,7 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
-        protected override void OnModelCreating(
-            ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().ToTable("Product", "product");
             modelBuilder.Entity<Category>().ToTable("Category", "product");
@@ -47,7 +43,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                 .IsRequired();
 
             // seed data
-            var categoryModels = "Infrastructure/Persistence/SeedData/categories.json".ReadData<List<CategoryDto>>(AppContext.BaseDirectory);
+            var categoryModels =
+                "Infrastructure/Persistence/SeedData/categories.json".ReadData<List<CategoryDto>>(
+                    AppContext.BaseDirectory);
             //Console.WriteLine(categoryModels.SerializeObject());
             foreach (var cat in categoryModels)
             {
@@ -59,7 +57,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                 );
             }
 
-            var productModels = "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductSeedData>>(AppContext.BaseDirectory);
+            var productModels =
+                "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductSeedData>>(
+                    AppContext.BaseDirectory);
             //Console.WriteLine(productModels.SerializeObject());
             foreach (var prod in productModels)
             {

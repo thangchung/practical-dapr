@@ -4,8 +4,7 @@ using N8T.Infrastructure.GraphQL;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public class InventoryType
-        : ProtoObjectType<StoreDto>
+    public class InventoryType : ProtoObjectType<StoreDto>
     {
         protected override void Configure(IObjectTypeDescriptor<StoreDto> descriptor)
         {

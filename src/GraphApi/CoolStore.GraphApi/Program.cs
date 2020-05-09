@@ -8,9 +8,9 @@ using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
-using N8T.Infrastructure.Tye;
 
 namespace CoolStore.GraphApi
 {
@@ -23,33 +23,25 @@ namespace CoolStore.GraphApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            builder.Services.AddHttpClient(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT,
+                (sp, client) =>
+                {
+                    client.BaseAddress = new Uri($"{config.GetServiceUri(Consts.PRODUCT_CATALOG_API_ID)?.ToString().TrimEnd('/')}/graphql");
+                });
+
+            builder.Services.AddHttpClient(Consts.INVENTORY_GRAPHQL_CLIENT,
+                (sp, client) =>
+                {
+                    client.BaseAddress = new Uri($"{config.GetServiceUri(Consts.INVENTORY_API_ID)?.ToString().TrimEnd('/')}/graphql");
+                });
+
             builder.Services.AddHttpContextAccessor();
-
-            builder.Services.AddHttpClient("productCatalog",
-                (sp, client) =>
-                {
-                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("product-catalog-api")}/graphql");
-                });
-
-            builder.Services.AddHttpClient("inventory",
-                (sp, client) =>
-                {
-                    client.BaseAddress = new Uri($"{config.GetTyeAppUrl("inventory-api")}/graphql");
-                });
-
-            // builder.Services.AddHttpClient("shopping_cart",
-            //     (sp, client) =>
-            //     {
-            //         client.BaseAddress = new Uri($"{serviceOptions.ShoppingCartService.RestUri}/graphql");
-            //     });
-
             builder.Services.AddSingleton<IQueryResultSerializer, JsonQueryResultSerializer>();
             builder.Services
                 .AddGraphQLSubscriptions()
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
-                    .AddSchemaFromHttp("productCatalog")
-                    .AddSchemaFromHttp("inventory")
-                    //.AddSchemaFromHttp("shopping_cart")
+                    .AddSchemaFromHttp(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT)
+                    .AddSchemaFromHttp(Consts.INVENTORY_GRAPHQL_CLIENT)
                 );
 
             var app = builder.Build();

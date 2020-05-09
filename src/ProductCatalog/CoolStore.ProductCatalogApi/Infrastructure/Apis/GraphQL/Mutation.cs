@@ -3,35 +3,32 @@ using CoolStore.ProductCatalogApi.Application.CreateProduct;
 using CoolStore.ProductCatalogApi.Application.DeleteProduct;
 using CoolStore.ProductCatalogApi.Application.UpdateProduct;
 using CoolStore.ProductCatalogApi.Dtos;
+using HotChocolate;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class Mutation
     {
-        private readonly IMediator _mediator;
-
-        public Mutation(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         public async Task<CatalogProductDto> CreateProduct(
-            CreateProductCommand createProductInput)
+            CreateProductCommand createProductInput,
+            [Service] IMediator mediator)
         {
-            return await _mediator.Send(createProductInput);
+            return await mediator.Send(createProductInput);
         }
 
         public async Task<CatalogProductDto> UpdateProduct(
-            UpdateProductCommand updateProductInput)
+            UpdateProductCommand updateProductInput,
+            [Service] IMediator mediator)
         {
-            return await _mediator.Send(updateProductInput);
+            return await mediator.Send(updateProductInput);
         }
 
         public async Task<bool> DeleteProduct(
-            DeleteProductCommand deleteProductInput)
+            DeleteProductCommand deleteProductInput,
+            [Service] IMediator mediator)
         {
-            return await _mediator.Send(deleteProductInput);
+            return await mediator.Send(deleteProductInput);
         }
     }
 }

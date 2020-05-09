@@ -4,8 +4,7 @@ using MediatR;
 
 namespace CoolStore.InventoryApi.Application.GetAvailabilityStores
 {
-    public class GetStoresQuery
-        : IRequest<IQueryable<StoreDto>>
+    public class GetStoresQuery : IRequest<IQueryable<StoreDto>>
     {
     }
 }

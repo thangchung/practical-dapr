@@ -9,13 +9,11 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UpdateProduct
 {
-    public class UpdateCreatedHandler
-        : IRequestHandler<UpdateProductCommand, CatalogProductDto>
+    public class UpdateCreatedHandler : IRequestHandler<UpdateProductCommand, CatalogProductDto>
     {
         private readonly ProductCatalogDbContext _dbContext;
 
-        public UpdateCreatedHandler(
-            ProductCatalogDbContext dbContext)
+        public UpdateCreatedHandler(ProductCatalogDbContext dbContext)
         {
             _dbContext = dbContext;
         }

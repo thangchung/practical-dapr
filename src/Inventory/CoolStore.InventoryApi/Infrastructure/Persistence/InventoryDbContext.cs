@@ -8,16 +8,13 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.InventoryApi.Infrastructure.Persistence
 {
-    public class InventoryDbContextDesignFactory
-        : DbContextDesignFactoryBase<InventoryDbContext>
+    public class InventoryDbContextDesignFactory : DbContextDesignFactoryBase<InventoryDbContext>
     {
     }
 
-    public class InventoryDbContext
-        : AppDbContextBase
+    public class InventoryDbContext : AppDbContextBase
     {
-        public InventoryDbContext(
-            DbContextOptions options) : base(options)
+        public InventoryDbContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -42,7 +39,8 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence
                 .IsRequired();
 
             // seed data
-            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<StoreDto>>(AppContext.BaseDirectory);
+            var models = "Infrastructure/Persistence/SeedData/inventories.json".ReadData<List<StoreDto>>(
+                AppContext.BaseDirectory);
             //Console.WriteLine(models.SerializeObject());
             foreach (var inv in models)
             {
@@ -56,7 +54,9 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence
                 );
             }
 
-            var storeProducts = "Infrastructure/Persistence/SeedData/store-product-price.json".ReadData<List<StoreProductPriceDto>>(AppContext.BaseDirectory);
+            var storeProducts = "Infrastructure/Persistence/SeedData/store-product-price.json"
+                .ReadData<List<StoreProductPriceDto>>(
+                    AppContext.BaseDirectory);
             //Console.WriteLine(storeProducts.SerializeObject());
             foreach (var sp in storeProducts)
             {

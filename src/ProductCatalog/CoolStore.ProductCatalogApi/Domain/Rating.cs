@@ -4,8 +4,7 @@ using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
-    public class Rating
-        : EntityBase, IAggregateRoot
+    public class Rating : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
         public Guid ProductId { get; private set; }

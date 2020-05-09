@@ -8,8 +8,7 @@ using N8T.Infrastructure.Data;
 
 namespace CoolStore.InventoryApi.Application.UpdateStoreProductPrice
 {
-    public class UpdateStoreProductPriceHandler
-        : IRequestHandler<UpdateStoreProductPriceCommand, bool>
+    public class UpdateStoreProductPriceHandler : IRequestHandler<UpdateStoreProductPriceCommand, bool>
     {
         private readonly InventoryDbContext _dbContext;
 

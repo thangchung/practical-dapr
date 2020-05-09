@@ -6,21 +6,19 @@ using N8T.Infrastructure.GraphQL.OffsetPaging;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
-    public sealed class QueryType
-        : ObjectType<Query>
+    public sealed class QueryType : ObjectType<Query>
     {
-        protected override void Configure(
-            IObjectTypeDescriptor<Query> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
         {
             descriptor
-                .Field(x => x.GetProducts())
+                .Field(x => x.GetProducts(default!))
                 .Name("products")
                 .UseOffsetPaging<CatalogProductType, CatalogProductDto>()
                 .UseFiltering<ProductFilterType>()
                 .UseSorting<ProductSortType>();
 
             descriptor
-                .Field(x => x.GetCategories())
+                .Field(x => x.GetCategories(default!))
                 .Name("categories");
         }
     }

@@ -3,28 +3,21 @@ using System.Threading.Tasks;
 using CoolStore.ProductCatalogApi.Application.GetCategories;
 using CoolStore.ProductCatalogApi.Application.GetProducts;
 using CoolStore.ProductCatalogApi.Dtos;
+using HotChocolate;
 using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class Query
     {
-        private readonly IMediator _mediator;
-
-        public Query(
-            IMediator mediator)
+        public async Task<IEnumerable<CatalogProductDto>> GetProducts([Service] IMediator mediator)
         {
-            _mediator = mediator;
+            return await mediator.Send(new GetProductsQuery());
         }
 
-        public async Task<IEnumerable<CatalogProductDto>> GetProducts()
+        public async Task<IEnumerable<CategoryDto>> GetCategories([Service] IMediator mediator)
         {
-            return await _mediator.Send(new GetProductsQuery());
-        }
-
-        public async Task<IEnumerable<CategoryDto>> GetCategories()
-        {
-            return await _mediator.Send(new GetCategoriesQuery());
+            return await mediator.Send(new GetCategoriesQuery());
         }
     }
 }

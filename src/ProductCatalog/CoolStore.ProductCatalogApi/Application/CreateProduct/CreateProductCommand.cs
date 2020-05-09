@@ -4,8 +4,7 @@ using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Application.CreateProduct
 {
-    public class CreateProductCommand
-        : IRequest<CatalogProductDto>
+    public class CreateProductCommand : IRequest<CatalogProductDto>
     {
         public string Name { get; set; } = default!;
         public string? Description { get; set; }

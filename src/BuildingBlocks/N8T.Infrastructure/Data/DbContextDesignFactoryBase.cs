@@ -6,8 +6,7 @@ using N8T.Infrastructure.Helpers;
 
 namespace N8T.Infrastructure.Data
 {
-    public abstract class DbContextDesignFactoryBase<TDbContext>
-        : IDesignTimeDbContextFactory<TDbContext>
+    public abstract class DbContextDesignFactoryBase<TDbContext> : IDesignTimeDbContextFactory<TDbContext>
         where TDbContext : DbContext
     {
         public TDbContext CreateDbContext(string[] args)

@@ -5,8 +5,7 @@ using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
 namespace CoolStore.InventoryApi.Domain
 {
-    public class Store
-        : EntityBase, IAggregateRoot
+    public class Store : EntityBase, IAggregateRoot
     {
         public Guid Id { get; private set; }
         public string Location { get; private set; } = default!;

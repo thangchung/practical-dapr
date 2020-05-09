@@ -4,8 +4,7 @@ using MediatR;
 
 namespace CoolStore.ProductCatalogApi.Application.GetCategories
 {
-    public class GetCategoriesQuery
-        : IRequest<IQueryable<CategoryDto>>
+    public class GetCategoriesQuery : IRequest<IQueryable<CategoryDto>>
     {
     }
 }

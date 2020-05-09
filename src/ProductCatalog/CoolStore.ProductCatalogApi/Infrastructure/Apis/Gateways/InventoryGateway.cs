@@ -11,8 +11,7 @@ using N8T.Infrastructure;
 
 namespace CoolStore.ProductCatalogApi.Apis.Gateways
 {
-    public class StoreGateway
-        : IStoreGateway
+    public class StoreGateway : IStoreGateway
     {
         private readonly InventoryApi.InventoryApiClient _client;
         private readonly IHttpContextAccessor _httpContext;

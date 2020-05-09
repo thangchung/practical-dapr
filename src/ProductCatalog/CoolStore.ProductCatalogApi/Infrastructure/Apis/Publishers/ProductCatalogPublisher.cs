@@ -40,7 +40,9 @@ namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreat
             await _daprClient.PublishEventAsync("product-updated", notification);
         }
 
-        public async Task Handle(ProductDeleted notification, CancellationToken cancellationToken)
+        public async Task Handle(
+            ProductDeleted notification,
+            CancellationToken cancellationToken)
         {
             _logger.LogInformation($"We publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
             await _daprClient.PublishEventAsync("product-deleted", notification);

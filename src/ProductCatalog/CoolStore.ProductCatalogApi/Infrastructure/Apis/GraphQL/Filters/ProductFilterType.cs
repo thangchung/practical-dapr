@@ -3,11 +3,9 @@ using HotChocolate.Types.Filters;
 
 namespace CoolStore.ProductCatalogApi.Apis.GraphQL.Filters
 {
-    public class ProductFilterType
-        : FilterInputType<CatalogProductDto>
+    public class ProductFilterType : FilterInputType<CatalogProductDto>
     {
-        protected override void Configure(
-            IFilterInputTypeDescriptor<CatalogProductDto> descriptor)
+        protected override void Configure(IFilterInputTypeDescriptor<CatalogProductDto> descriptor)
         {
             descriptor
                 .BindFieldsExplicitly()

@@ -3,8 +3,7 @@ using N8T.Domain;
 
 namespace CoolStore.ProductCatalogApi.Domain
 {
-    public class ProductUpdated
-        : DomainEventBase
+    public class ProductUpdated : DomainEventBase
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; } = string.Empty;

@@ -8,8 +8,7 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Subscribers
 {
     [ApiController]
     [Route("")]
-    public class SubscribeController
-        : ControllerBase
+    public class SubscribeController : ControllerBase
     {
         [Topic("product-created")]
         [HttpPost("product-created")]

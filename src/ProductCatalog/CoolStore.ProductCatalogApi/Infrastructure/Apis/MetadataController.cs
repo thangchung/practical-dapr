@@ -6,12 +6,10 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Apis
 {
     [ApiController]
     [Route("")]
-    public class MetadataController
-        : ControllerBase
+    public class MetadataController : ControllerBase
     {
         [HttpGet("/status")]
-        public IActionResult Status(
-            [FromServices] IConfiguration config)
+        public IActionResult Status([FromServices] IConfiguration config)
         {
             return Content(config.BuildAppStatus());
         }

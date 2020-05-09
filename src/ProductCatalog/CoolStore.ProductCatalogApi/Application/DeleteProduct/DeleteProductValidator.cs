@@ -2,8 +2,7 @@ using FluentValidation;
 
 namespace CoolStore.ProductCatalogApi.Application.DeleteProduct
 {
-    public class DeleteProductValidator
-        : AbstractValidator<DeleteProductCommand>
+    public class DeleteProductValidator : AbstractValidator<DeleteProductCommand>
     {
         public DeleteProductValidator()
         {

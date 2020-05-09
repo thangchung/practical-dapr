@@ -11,13 +11,11 @@ using N8T.Infrastructure;
 
 namespace CoolStore.InventoryApi.Infrastructure.Apis.Grpc
 {
-    public class InventoryService
-        : Protobuf.Inventory.V1.InventoryApi.InventoryApiBase
+    public class InventoryService : Protobuf.Inventory.V1.InventoryApi.InventoryApiBase
     {
         private readonly IMediator _mediator;
 
-        public InventoryService(
-            IMediator mediator)
+        public InventoryService(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -44,7 +42,7 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Grpc
             ServerCallContext context)
         {
             var result = await _mediator.Send(
-                new GetStoresByIdsQuery { Ids = request.Ids.Select(x => x.ConvertTo<Guid>()) });
+                new GetStoresByIdsQuery {Ids = request.Ids.Select(x => x.ConvertTo<Guid>())});
             var response = new GetStoresByIdsResponse();
             response.Stores.AddRange(result.ToList());
             return response;
