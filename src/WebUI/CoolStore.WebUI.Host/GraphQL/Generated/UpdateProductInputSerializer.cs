@@ -12,6 +12,7 @@ namespace CoolStore.WebUI.Host
         private bool _needsInitialization = true;
         private IValueSerializer _uuidSerializer;
         private IValueSerializer _stringSerializer;
+        private IValueSerializer _intSerializer;
         private IValueSerializer _floatSerializer;
 
         public string Name { get; } = "UpdateProductInput";
@@ -30,6 +31,7 @@ namespace CoolStore.WebUI.Host
             }
             _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
+            _intSerializer = serializerResolver.Get("Int");
             _floatSerializer = serializerResolver.Get("Float");
             _needsInitialization = false;
         }
@@ -60,6 +62,11 @@ namespace CoolStore.WebUI.Host
                 map.Add("description", SerializeNullableString(input.Description.Value));
             }
 
+            if (input.Eoq.HasValue)
+            {
+                map.Add("eoq", SerializeNullableInt(input.Eoq.Value));
+            }
+
             if (input.Id.HasValue)
             {
                 map.Add("id", SerializeNullableUuid(input.Id.Value));
@@ -70,11 +77,6 @@ namespace CoolStore.WebUI.Host
                 map.Add("imageUrl", SerializeNullableString(input.ImageUrl.Value));
             }
 
-            if (input.InventoryId.HasValue)
-            {
-                map.Add("inventoryId", SerializeNullableUuid(input.InventoryId.Value));
-            }
-
             if (input.Name.HasValue)
             {
                 map.Add("name", SerializeNullableString(input.Name.Value));
@@ -83,6 +85,16 @@ namespace CoolStore.WebUI.Host
             if (input.Price.HasValue)
             {
                 map.Add("price", SerializeNullableFloat(input.Price.Value));
+            }
+
+            if (input.Rop.HasValue)
+            {
+                map.Add("rop", SerializeNullableInt(input.Rop.Value));
+            }
+
+            if (input.StoreId.HasValue)
+            {
+                map.Add("storeId", SerializeNullableUuid(input.StoreId.Value));
             }
 
             return map;
@@ -101,6 +113,10 @@ namespace CoolStore.WebUI.Host
 
 
             return _stringSerializer.Serialize(value);
+        }
+        private object SerializeNullableInt(object value)
+        {
+            return _intSerializer.Serialize(value);
         }
         private object SerializeNullableFloat(object value)
         {

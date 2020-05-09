@@ -16,7 +16,7 @@ namespace CoolStore.WebUI.Host
             double price, 
             string description, 
             global::CoolStore.WebUI.Host.ICategoryDto category, 
-            global::CoolStore.WebUI.Host.IInventoryDto inventory)
+            global::CoolStore.WebUI.Host.IStoreDto store)
         {
             Id = id;
             Name = name;
@@ -24,7 +24,7 @@ namespace CoolStore.WebUI.Host
             Price = price;
             Description = description;
             Category = category;
-            Inventory = inventory;
+            Store = store;
         }
 
         public System.Guid Id { get; }
@@ -39,6 +39,6 @@ namespace CoolStore.WebUI.Host
 
         public global::CoolStore.WebUI.Host.ICategoryDto Category { get; }
 
-        public global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
+        public global::CoolStore.WebUI.Host.IStoreDto Store { get; }
     }
 }

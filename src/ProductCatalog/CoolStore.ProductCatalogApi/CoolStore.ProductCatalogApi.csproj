@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\BuildingBlocks\N8T.Infrastructure\N8T.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

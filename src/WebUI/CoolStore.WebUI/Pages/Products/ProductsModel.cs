@@ -15,17 +15,9 @@ namespace CoolStore.WebUI.Models
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public double Price { get; set; }
-        public Guid InventoryId { get; set; }
-        public string InventoryLocation { get; set; }
+        public Guid StoreId { get; set; }
+        public string StoreLocation { get; set; }
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
-
-        //public InventoryModel Inventory { get; set; } = new InventoryModel();
-    }
-
-    public class InventoryModel
-    {
-        public Guid Id { get; set; }
-        public string Location { get; set; }
     }
 }

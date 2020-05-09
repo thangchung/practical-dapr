@@ -42,13 +42,13 @@
 
       <p class="form-group">
         <label class="control-label">
-          Inventory
+          Store
         </label>
-        <InputSelect id="inventoryId" @bind-Value="_productModel.InventoryId" class="form-control">
+        <InputSelect id="storeId" @bind-Value="_productModel.StoreId" class="form-control">
           <option value="">Select...</option>
-          @foreach (var inv in _inventories)
+          @foreach (var store in _stores)
           {
-            <option value="@inv.Key">@inv.Value</option>
+            <option value="@store.Key">@store.Value</option>
           }
         </InputSelect>
       </p>
@@ -67,6 +67,20 @@
         <InputText id="description" @bind-Value="_productModel.Description" class="form-control"/>
       </p>
 
+      <p class="form-group">
+        <label class="control-label">
+          ROP (Re-order Point)
+        </label>
+        <InputNumber id="rop" @bind-Value="_productModel.Rop" class="form-control"/>
+      </p>
+
+      <p class="form-group">
+        <label class="control-label">
+          EOQ (Economic Order Quantity)
+        </label>
+        <InputNumber id="eoq" @bind-Value="_productModel.Eoq" class="form-control"/>
+      </p>
+
       <button type="submit" class="btn btn-outline-primary">Create</button>
     </EditForm>
   </div>
@@ -76,12 +90,12 @@
 
   private readonly CreateProductModel _productModel = new CreateProductModel();
   IList<KeyValueModel> _categories = new List<KeyValueModel>();
-  IList<KeyValueModel> _inventories = new List<KeyValueModel>();
+  IList<KeyValueModel> _stores = new List<KeyValueModel>();
 
   protected override async Task OnInitializedAsync()
   {
     _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
-    _inventories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories");
+    _stores = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories/stores");
   }
 
   private async Task HandleValidSubmit()

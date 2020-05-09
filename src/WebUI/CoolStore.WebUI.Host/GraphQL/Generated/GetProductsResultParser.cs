@@ -88,7 +88,7 @@ namespace CoolStore.WebUI.Host
                     DeserializeFloat(element, "price"),
                     DeserializeNullableString(element, "description"),
                     ParseGetProductsProductsEdgesCategory(element, "category"),
-                    ParseGetProductsProductsEdgesInventory(element, "inventory")
+                    ParseGetProductsProductsEdgesStore(element, "store")
                 );
 
             }
@@ -109,17 +109,17 @@ namespace CoolStore.WebUI.Host
             );
         }
 
-        private global::CoolStore.WebUI.Host.IInventoryDto ParseGetProductsProductsEdgesInventory(
+        private global::CoolStore.WebUI.Host.IStoreDto ParseGetProductsProductsEdgesStore(
             JsonElement parent,
             string field)
         {
             JsonElement obj = parent.GetProperty(field);
 
-            return new InventoryDto
+            return new StoreDto
             (
                 DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "website"),
-                DeserializeString(obj, "location"),
+                DeserializeNullableString(obj, "website"),
+                DeserializeNullableString(obj, "location"),
                 DeserializeNullableString(obj, "description")
             );
         }

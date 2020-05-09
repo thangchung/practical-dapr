@@ -9,20 +9,20 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service InventoryApi {
-  rpc Ping (google.protobuf.Empty) returns (google.protobuf.Empty);
-  rpc GetInventories(GetInventoriesRequest) returns (GetInventoriesResponse) {};
-  rpc GetInventoriesByIds(GetInventoriesByIdsRequest) returns (GetInventoriesByIdsResponse) {};
+  rpc Ping (google.protobuf.Empty) returns (google.protobuf.Empty) {};
+  rpc GetStores(GetStoresRequest) returns (GetStoresResponse) {};
+  rpc GetStoresByIds(GetStoresByIdsRequest) returns (GetStoresByIdsResponse) {};
 }
 
-message GetInventoriesRequest {}
+message GetStoresRequest {}
 
-message GetInventoriesResponse {
-  repeated InventoryDto inventories = 1;
+message GetStoresResponse {
+  repeated StoreDto stores = 1;
 }
 
-message GetInventoriesByIdsRequest {
+message GetStoresByIdsRequest {
   repeated string ids = 1;
 }
-message GetInventoriesByIdsResponse {
-  repeated InventoryDto inventories = 1;
+message GetStoresByIdsResponse {
+  repeated StoreDto stores = 1;
 }

@@ -41,7 +41,6 @@ namespace N8T.Infrastructure.Grpc
         {
             services.AddGrpc(options =>
             {
-                //options.Interceptors.Add<RequestLoggerInterceptor>();
                 options.Interceptors.Add<ExceptionHandleInterceptor>();
                 options.EnableDetailedErrors = true;
             });
@@ -54,8 +53,6 @@ namespace N8T.Infrastructure.Grpc
         public static IServiceCollection AddCustomGrpcClient(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
-            //services.AddSingleton<ClientLoggerInterceptor>();
-
             doMoreActions?.Invoke(services);
 
             return services;

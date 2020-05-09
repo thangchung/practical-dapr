@@ -10,12 +10,13 @@ using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
-using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 
 namespace CoolStore.ProductCatalogApi
@@ -36,7 +37,7 @@ namespace CoolStore.ProductCatalogApi
                 .AddCustomValidators(typeof(Program))
                 .AddCustomDbContext<ProductCatalogDbContext>(
                     typeof(Program),
-                    config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb"))
+                    config.GetConnectionString(Consts.SQLSERVER_DB_ID))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
@@ -48,10 +49,17 @@ namespace CoolStore.ProductCatalogApi
                 {
                     svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
                     {
-                        o.Address = new Uri(config.GetTyeGrpcAppUrl("inventory-api"));
+
+                        var inventoryClientUrl = config
+                            .GetServiceUri(Consts.INVENTORY_API_ID, "https")
+                            ?.ToString()
+                            .Replace("https", "http") /* hack: ssl termination */;
+
+                        o.Address = new Uri($"{inventoryClientUrl}");
                     });
                 })
-                .AddScoped<IInventoryGateway, InventoryGateway>();
+                .AddCustomDaprClient()
+                .AddScoped<IStoreGateway, StoreGateway>();
 
             var app = builder.Build();
 

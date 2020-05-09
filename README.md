@@ -8,14 +8,6 @@ A lightweight low ceremony microservices without Docker, Docker-compose and Helm
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
-## Show your support
-
-If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
-
-# CoolStore application
-
-![](docs/assets/webui-products.png)
-
 # High level architecture
 
 ![](docs/assets/high_level_architecture.png)
@@ -50,6 +42,51 @@ If you liked `practical-dapr` project or if it helped you, please give a star :s
 - **[`Blazor`](https://github.com/dotnet/aspnetcore/tree/master/src/Components)** - Client web apps with C#
 - **[`StrawberryShake`](https://github.com/ChilliCream/hotchocolate)** - The Strawberry Shake GraphQL client for .NET
 
+# Dapr building blocks
+
+## Service to service
+
+- Dapr client to calling to another service (`product-catalog-api` to `inventory-api`)
+- HTTP/gRPC invocation
+
+## State store
+
+- Using state management to store the shopping cart data and its items
+- Redis for state management
+
+## Pub/sub message
+
+- Create, update and delete a project at `product-catalog-api`, and subsequently publish an event to `inventory-api` to create `price`, `rop`, and `eoq`
+- Redis for pub/sub
+
+## Input/output binding
+
+TODO
+
+## Observability
+
+- Run `tye` command as following
+
+```bash
+$ tye run --dtrace zipkin=http://localhost:9411 --logs seq=http://localhost:5340
+```
+
+- Log management with Seq dashboard
+
+![](docs/assets/seq_dashboard.png)
+
+- Distributed Tracing with Zipkin dashboard (OpenTelemetry)
+
+![](docs/assets/zipkin_dashboard.png)
+
+> Dapr: CLI version: 0.5.0, Runtime version: 0.7.0
+>
+> Tye CLI: 0.2.0-alpha.20224.3+943b60d39155cdd44bee76daaf47dbc54d55f9e7
+
+# CoolStore application
+
+![](docs/assets/webui-products.png)
+
 # Get starting
 
 One command to rule them all
@@ -61,6 +98,10 @@ $ tye run
 Want to develop this application? Reference at [Developer Guidance](/docs/developer_guide.md)
 
 Want to deployment this application? Reference at [Deployment Guidance](/docs/deployment_guide.md)
+
+## Show your support
+
+If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
 
 ## Contributing
 
