@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CoolStore.InventoryApi.Application.UseCases.GetAvailabilityInventories;
-using CoolStore.InventoryApi.Application.UseCases.GetInventory;
+using CoolStore.InventoryApi.Application.GetAvailabilityStores;
+using CoolStore.InventoryApi.Application.GetStoresByIds;
 using CoolStore.Protobuf.Inventory.V1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -25,24 +25,24 @@ namespace CoolStore.InventoryApi.Apis.Grpc
             return Task.FromResult(new Empty());
         }
 
-        public override async Task<GetInventoriesResponse> GetInventories(
-            GetInventoriesRequest request,
+        public override async Task<GetStoresResponse> GetStores(
+            GetStoresRequest request,
             ServerCallContext context)
         {
-            var result = await _mediator.Send(new GetInventoriesQuery());
-            var response = new GetInventoriesResponse();
-            response.Inventories.AddRange(result.ToList());
+            var result = await _mediator.Send(new GetStoresQuery());
+            var response = new GetStoresResponse();
+            response.Stores.AddRange(result.ToList());
             return response;
         }
 
-        public override async Task<GetInventoriesByIdsResponse> GetInventoriesByIds(
-            GetInventoriesByIdsRequest request,
+        public override async Task<GetStoresByIdsResponse> GetStoresByIds(
+            GetStoresByIdsRequest request,
             ServerCallContext context)
         {
             var result = await _mediator.Send(
-                new GetInventoriesByIdsQuery {Ids = request.Ids.Select(x => x.ConvertTo<Guid>())});
-            var response = new GetInventoriesByIdsResponse();
-            response.Inventories.AddRange(result.ToList());
+                new GetStoresByIdsQuery {Ids = request.Ids.Select(x => x.ConvertTo<Guid>())});
+            var response = new GetStoresByIdsResponse();
+            response.Stores.AddRange(result.ToList());
             return response;
         }
     }
