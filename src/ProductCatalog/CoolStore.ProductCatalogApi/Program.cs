@@ -5,15 +5,18 @@ using CoolStore.ProductCatalogApi.Apis.Gateways;
 using CoolStore.ProductCatalogApi.Apis.GraphQL;
 using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
+using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
-using N8T.Infrastructure.Tye;
+using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.ValidationModel;
 
 namespace CoolStore.ProductCatalogApi
@@ -25,28 +28,38 @@ namespace CoolStore.ProductCatalogApi
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
-            var (builder, configBuilder) = WebApplication.CreateBuilder(args)
+            var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
-
-            configBuilder.AddTyeBindingSecrets();
-
-            var config = configBuilder.Build();
-
-            var connString = config.GetTyeSqlServerConnString("sqlserver", "productcatalogdb");
 
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
-                .AddCustomValidators(typeof(Program).Assembly)
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Program).Assembly, connString)
+                .AddCustomValidators(typeof(Program))
+                .AddCustomDbContext<ProductCatalogDbContext>(
+                    typeof(Program),
+                    config.GetConnectionString(Consts.SQLSERVER_DB_ID))
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
                     c.RegisterMutationType<MutationType>();
-                    c.RegisterObjectTypes(typeof(Program).Assembly);
+                    c.RegisterObjectTypes(typeof(Program));
                     c.RegisterExtendedScalarTypes();
                 })
-                .AddScoped<IInventoryGateway, InventoryGateway>();
+                .AddCustomGrpcClient(svc =>
+                {
+                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
+                    {
+
+                        var inventoryClientUrl = config
+                            .GetServiceUri(Consts.INVENTORY_API_ID, "https")
+                            ?.ToString()
+                            .Replace("https", "http") /* hack: ssl termination */;
+
+                        o.Address = new Uri($"{inventoryClientUrl}");
+                    });
+                })
+                .AddCustomDaprClient()
+                .AddScoped<IStoreGateway, StoreGateway>();
 
             var app = builder.Build();
 

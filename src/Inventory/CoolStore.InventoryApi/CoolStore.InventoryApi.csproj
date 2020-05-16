@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\_schema\proto\coolstore\dapr.proto" Link="Infrastructure\Protobuf\dapr.proto" AdditionalImportDirs="..\..\_schema\proto\" GrpcServices="Server" />
+    <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory.proto" Link="Infrastructure\Protobuf\inventory.proto" AdditionalImportDirs="..\..\_schema\proto\" />
+    <Protobuf Include="..\..\_schema\proto\coolstore\inventory\v1\inventory_api.proto" Link="Infrastructure\Protobuf\inventory_api.proto" AdditionalImportDirs="..\..\_schema\proto\" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

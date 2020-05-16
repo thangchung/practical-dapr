@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.ProductCatalogApi.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Data;
-using N8T.Infrastructure.Helpers;
 
 namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
 {
+    public class ProductCatalogDbContextDesignFactory : DbContextDesignFactoryBase<ProductCatalogDbContext>
+    {
+    }
+
     public class ProductCatalogDbContext : AppDbContextBase
     {
-        public ProductCatalogDbContext(DbContextOptions options)
-            : base(options)
+        public ProductCatalogDbContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -43,7 +43,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                 .IsRequired();
 
             // seed data
-            var categoryModels = "Infrastructure/Persistence/SeedData/categories.json".ReadData<List<CategoryDto>>(AppContext.BaseDirectory);
+            var categoryModels =
+                "Infrastructure/Persistence/SeedData/categories.json".ReadData<List<CategoryDto>>(
+                    AppContext.BaseDirectory);
             //Console.WriteLine(categoryModels.SerializeObject());
             foreach (var cat in categoryModels)
             {
@@ -55,7 +57,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                 );
             }
 
-            var productModels = "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductSeedData>>(AppContext.BaseDirectory);
+            var productModels =
+                "Infrastructure/Persistence/SeedData/products.json".ReadData<List<CatalogProductSeedData>>(
+                    AppContext.BaseDirectory);
             //Console.WriteLine(productModels.SerializeObject());
             foreach (var prod in productModels)
             {
@@ -66,33 +70,11 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
                         prod.Description,
                         prod.Price,
                         prod.ImageUrl,
-                        prod.InventoryId,
+                        prod.StoreId,
                         prod.CategoryId
                     )
                 );
             }
-        }
-    }
-
-    public class ProductCatalogDbContextDesignFactory : IDesignTimeDbContextFactory<ProductCatalogDbContext>
-    {
-        public ProductCatalogDbContext CreateDbContext(string[] args)
-        {
-            var connString = ConfigurationHelper.GetConfiguration(AppContext.BaseDirectory)
-                ?.GetConnectionString("MainDb");
-
-            var optionsBuilder = new DbContextOptionsBuilder<ProductCatalogDbContext>()
-                .UseSqlServer(
-                    connString ?? throw new InvalidOperationException(),
-                    sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(GetType().Assembly.FullName);
-                        sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                    }
-                );
-
-            Console.WriteLine(connString);
-            return new ProductCatalogDbContext(optionsBuilder.Options);
         }
     }
 }

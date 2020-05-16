@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N8T.Domain;
 using static N8T.Infrastructure.Helpers.DateTimeHelper;
 
@@ -15,7 +15,11 @@ namespace CoolStore.ProductCatalogApi.Domain
         {
         }
 
-        public static Rating Of(Guid id, Guid productId, Guid userId, int cost)
+        public static Rating Of(
+            Guid id,
+            Guid productId,
+            Guid userId,
+            int cost)
         {
             return new Rating
             {
@@ -27,7 +31,9 @@ namespace CoolStore.ProductCatalogApi.Domain
             };
         }
 
-        public Rating UpdateRating(Guid userId, int cost)
+        public Rating UpdateRating(
+            Guid userId,
+            int cost)
         {
             UserId = userId;
             Cost = cost;

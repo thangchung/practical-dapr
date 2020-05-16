@@ -1,7 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
-using N8T.Infrastructure.Tye;
 
 namespace N8T.Infrastructure.Kestrel
 {
@@ -12,12 +11,15 @@ namespace N8T.Infrastructure.Kestrel
             IConfiguration config,
             string appId)
         {
+            var serviceHttpUri = config.GetServiceUri(appId);
+            var serviceHttpsUri = config.GetServiceUri(appId, "https");
+
             options.Limits.MinRequestBodyDataRate = null;
 
-            options.Listen(IPAddress.Any, config.GetHttpPort(appId));
+            options.Listen(IPAddress.Any, serviceHttpUri.Port);
 
             options.Listen(IPAddress.Any,
-                config.GetGrpcPort(appId),
+                serviceHttpsUri.Port,
                 listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
 
             return options;

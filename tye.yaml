@@ -21,12 +21,13 @@ services:
       value: "Y"
   bindings:
     - port: 1433
+      connectionString: Data Source=${host},${port};Initial Catalog=coolstoredb;User Id=sa;Password=${env:SA_PASSWORD};MultipleActiveResultSets=True;
 - name: redis
   image: redis
   bindings:
     - port: 6379
 - name: zipkin
-  image: openzipkin/zipkin
+  image: openzipkin/zipkin-slim
   bindings:
     - port: 9411
       containerPort: 9411

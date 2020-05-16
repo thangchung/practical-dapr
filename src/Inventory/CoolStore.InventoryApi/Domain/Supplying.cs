@@ -1,7 +1,6 @@
-﻿namespace CoolStore.InventoryApi.Domain
+namespace CoolStore.InventoryApi.Domain
 {
     public class Supplying
     {
-        
     }
 }

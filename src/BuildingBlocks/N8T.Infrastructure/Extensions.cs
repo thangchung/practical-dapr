@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Logging;
+using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 using Path = System.IO.Path;
 
@@ -17,7 +17,8 @@ namespace N8T.Infrastructure
 {
     public static class Extensions
     {
-        public static (WebApplicationBuilder, IConfigurationBuilder) AddCustomConfiguration(
+        [DebuggerStepThrough]
+        public static (WebApplicationBuilder, IConfiguration) AddCustomConfiguration(
             this WebApplicationBuilder builder)
         {
             var env = builder.Environment;
@@ -27,7 +28,9 @@ namespace N8T.Infrastructure
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
-            return (builder, configBuilder);
+            configBuilder.AddTyeBindingSecrets();
+
+            return (builder, configBuilder.Build());
         }
 
         [DebuggerStepThrough]
@@ -46,11 +49,23 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static TModel GetOptions<TModel>(this IConfiguration configuration, string section) where TModel : new()
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services,
+            Type markedType,
+            bool withDapr = false,
+            Action<IServiceCollection> doMoreActions = null)
         {
-            var model = new TModel();
-            configuration.GetSection(section).Bind(model);
-            return model;
+            var mvcBuilder = services.AddControllers();
+
+            if (withDapr)
+            {
+                mvcBuilder.AddDapr();
+            }
+
+            mvcBuilder.AddApplicationPart(markedType.Assembly);
+
+            doMoreActions?.Invoke(services);
+
+            return services;
         }
 
         [DebuggerStepThrough]
@@ -74,12 +89,6 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static int GetPortOfUrl(this string url)
-        {
-            return url.Split(":").Last().ConvertTo<int>();
-        }
-
-        [DebuggerStepThrough]
         public static TData ReadData<TData>(this string fileName, string rootFolder)
         {
             var seedData = Path.GetFullPath(fileName, rootFolder);
@@ -93,12 +102,6 @@ namespace N8T.Infrastructure
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 });
             return models;
-        }
-
-        [DebuggerStepThrough]
-        public static string SerializeObject(this object obj)
-        {
-            return JsonSerializer.Serialize(obj);
         }
     }
 }

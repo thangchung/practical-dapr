@@ -6,7 +6,6 @@ using CoolStore.WebUI.Components;
 using CoolStore.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using N8T.Infrastructure;
 using StrawberryShake;
 
 namespace CoolStore.WebUI.Host.Controllers
@@ -39,8 +38,8 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 ProductId = product.Id,
                 Name = product.Name,
-                InventoryId = product.Inventory.Id,
-                InventoryLocation = product.Inventory.Location,
+                StoreId = product.Store.Id,
+                StoreLocation = product.Store.Location,
                 CategoryId = product.Category.Id,
                 CategoryName = product.Category.Name,
                 ImageUrl = product.ImageUrl,
@@ -70,8 +69,8 @@ namespace CoolStore.WebUI.Host.Controllers
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id,
                     CategoryName = x.Category.Name,
-                    InventoryId = x.Inventory.Id,
-                    InventoryLocation = x.Inventory.Location
+                    StoreId = x.Store.Id,
+                    StoreLocation = x.Store.Location
                 }));
 
                 return model;
@@ -89,8 +88,8 @@ namespace CoolStore.WebUI.Host.Controllers
                     ImageUrl = x.ImageUrl,
                     CategoryId = x.Category.Id,
                     CategoryName = x.Category.Name,
-                    InventoryId = x.Inventory.Id,
-                    InventoryLocation = x.Inventory.Location
+                    StoreId = x.Store.Id,
+                    StoreLocation = x.Store.Location
                 }));
 
                 return model;
@@ -115,10 +114,12 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 Name = model.Name,
                 Price = model.Price,
-                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
-                Description = model.Description
+                Description = model.Description,
+                Rop = model.Rop,
+                Eoq = model.Eoq
             }));
         }
 
@@ -130,10 +131,12 @@ namespace CoolStore.WebUI.Host.Controllers
             {
                 Name = model.Name,
                 Price = model.Price,
-                InventoryId = model.InventoryId.ConvertTo<Guid>(),
+                StoreId = model.StoreId.ConvertTo<Guid>(),
                 CategoryId = model.CategoryId.ConvertTo<Guid>(),
                 ImageUrl = model.ImageUrl,
-                Description = model.Description
+                Description = model.Description,
+                Rop = model.Rop,
+                Eoq = model.Eoq
             }));
         }
 

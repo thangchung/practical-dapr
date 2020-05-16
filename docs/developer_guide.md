@@ -102,6 +102,10 @@ mutation createProductMutation($createProductInput: CreateProductInput!) {
 
 ## Debugging
 
+```bash
+$ tye run --debug src/ProductCatalog/CoolStore.ProductCatalogApi
+```
+
 Follow steps at [Debugging Dapr application using Tye tool](https://dev.to/thangchung/debugging-dapr-application-using-tye-tool-1djb)
 
 ## Distributed logs and tracing

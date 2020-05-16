@@ -8,21 +8,100 @@ A lightweight low ceremony microservices without Docker, Docker-compose and Helm
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
-## Show your support
+# High level architecture
 
-If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
+![](docs/assets/high_level_architecture.png)
+
+# Technical Stack
+
+## Infrastructure
+
+- **`Windows 10`** - the OS for developing and building this demo application.
+- **[`Windows subsystem Linux - Ubuntu OS`](https://docs.microsoft.com/en-us/windows/wsl/install-win10)** - the subsystem that helps to run easily the bash shell on Windows OS.
+- **[`Docker for desktop (Kubernetes enabled)`](https://www.docker.com/products/docker-desktop)** - the easiest tool to run Docker, Docker Swarm and Kubernetes on Mac and Windows.
+- **[`Kubernetes`](https://kubernetes.io) / [`AKS`](https://docs.microsoft.com/en-us/azure/aks)** - the app is designed to run on Kubernetes (both locally on "Docker for Desktop", as well as on the cloud with AKS).
+- **[`Dapr`](https://github.com/dapr/dapr)** - Portable, event-driven, runtime for building distributed applications across cloud and edge.
+- **[`Tye`](https://github.com/dotnet/tye)** - Tool that makes developing, testing, and deploying microservices and distributed applications easier. Project Tye includes a local orchestrator to make developing microservices easier and the ability to deploy microservices to Kubernetes with minimal configuration.
+  
+## Back-end
+
+- **[`ASP.NET Core`](https://github.com/dotnet/aspnetcore)** - Cross-platform .NET framework for building modern cloud-based web applications on Windows, Mac, or Linux
+- **[`IdentityServer4`](https://github.com/IdentityServer/IdentityServer4)** - OpenID Connect and OAuth 2.0 Framework for ASP.NET Core
+- **[`grpc-dotnet`](https://github.com/grpc/grpc-dotnet)** - High-performance, open-source universal RPC framework
+- **[`featherhttp`](https://github.com/featherhttp/framework)** - Lightweight low ceremony API for web services
+- **[`dapr-dotnet`](https://github.com/dapr/dotnet-sdk)** - Dapr SDK for .NET
+- **[`FluentValidation`](https://github.com/FluentValidation/FluentValidation)** - Popular .NET validation library for building strongly-typed validation rules
+- **[`MediatR`](https://github.com/jbogard/MediatR)** - Simple, unambitious mediator implementation in .NET
+- **[`hotchocolate`](https://github.com/ChilliCream/hotchocolate)** - Hot Chocolate GraphQL server for .NET
+- **[`efcore`](https://github.com/dotnet/efcore)** - Modern object-database mapper for .NET. It supports LINQ queries, change tracking, updates, and schema migrations
+- **[`Scrutor`](https://github.com/khellang/Scrutor)** - Assembly scanning and decoration extensions for Microsoft.Extensions.DependencyInjection
+- **[`serilog`](https://github.com/serilog/serilog)** - Simple .NET logging with fully-structured events
+
+## Front-end
+
+- **[`Blazor`](https://github.com/dotnet/aspnetcore/tree/master/src/Components)** - Client web apps with C#
+- **[`StrawberryShake`](https://github.com/ChilliCream/hotchocolate)** - The Strawberry Shake GraphQL client for .NET
+
+# Dapr building blocks
+
+## Service to service
+
+- Dapr client to calling to another service (`product-catalog-api` to `inventory-api`)
+- HTTP/gRPC invocation
+
+## State store
+
+- Using state management to store the shopping cart data and its items
+- Redis for state management
+
+## Pub/sub message
+
+- Create, update and delete a project at `product-catalog-api`, and subsequently publish an event to `inventory-api` to create `price`, `rop`, and `eoq`
+- Redis for pub/sub
+
+## Input/output binding
+
+TODO
+
+## Observability
+
+- Run `tye` command as following
+
+```bash
+$ tye run --dtrace zipkin=http://localhost:9411 --logs seq=http://localhost:5340
+```
+
+- Log management with Seq dashboard
+
+![](docs/assets/seq_dashboard.png)
+
+- Distributed Tracing with Zipkin dashboard (OpenTelemetry)
+
+![](docs/assets/zipkin_dashboard.png)
+
+> Dapr: CLI version: 0.5.0, Runtime version: 0.7.0
+>
+> Tye CLI: 0.2.0-alpha.20224.3+943b60d39155cdd44bee76daaf47dbc54d55f9e7
 
 # CoolStore application
 
 ![](docs/assets/webui-products.png)
 
-# High level architecture
+# Get starting
 
-![](docs/assets/high_level_architecture.png)
+One command to rule them all
 
-# [Developer Guidance](/docs/developer_guide.md)
+```bash
+$ tye run
+```
 
-# [Deployment Guidance](/docs/deployment_guide.md)
+Want to develop this application? Reference at [Developer Guidance](/docs/developer_guide.md)
+
+Want to deployment this application? Reference at [Deployment Guidance](/docs/deployment_guide.md)
+
+## Show your support
+
+If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
 
 ## Contributing
 
