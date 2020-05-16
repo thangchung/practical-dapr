@@ -36,5 +36,13 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Subscribers
         {
             await mediator.Send(command);
         }
+
+        [HttpPost("sample-topic")]
+        public async Task SubcribeSampleTopic(
+            AddStoreProductPriceCommand command,
+            [FromServices] IMediator mediator)
+        {
+            await mediator.Send(command);
+        }
     }
 }

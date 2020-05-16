@@ -26,6 +26,23 @@ services:
   image: redis
   bindings:
     - port: 6379
+- name: zookeeper
+  image: wurstmeister/zookeeper:latest
+  bindings:
+    - port: 2181
+      containerPort: 2181
+- name: kafka
+  image: wurstmeister/kafka:latest
+  bindings:
+    - port: 9092
+      containerPort: 9092
+  env:
+    - name: KAFKA_ADVERTISED_HOST_NAME
+      value: 127.0.0.1
+    - name: KAFKA_CREATE_TOPICS
+      value: sample:1:1
+    - name: KAFKA_ZOOKEEPER_CONNECT
+      value: zookeeper:2181
 - name: zipkin
   image: openzipkin/zipkin-slim
   bindings:
