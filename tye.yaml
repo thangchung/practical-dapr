@@ -5,13 +5,27 @@
 #    https://aka.ms/AA7q20u
 #
 name: practical-dapr
-extensions:
-- name: dapr
-  log-level: debug
-  config: appconfig
+
+# extensions:
+# - name: dapr
+#   log-level: debug
+#   config: appconfig
+
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
+
 services:
+- name: graphapi
+  project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
+- name: identityserver
+  project: src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj
+- name: productcatalogapi
+  project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
+- name: inventoryapi
+  project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
+- name: webuihost
+  project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
+
 - name: sqlserver
   image: mcr.microsoft.com/mssql/server:2017-latest
   env:
@@ -26,31 +40,3 @@ services:
   image: redis
   bindings:
     - port: 6379
-- name: zipkin
-  image: openzipkin/zipkin-slim
-  bindings:
-    - port: 9411
-      containerPort: 9411
-      protocol: http
-- name: seq
-  image: datalust/seq
-  env:
-    - name: "ACCEPT_EULA"
-      value: "Y"
-  bindings:
-    - name: ui
-      port: 5340
-      protocol: http
-      containerPort: 80
-    - name: internal
-      port: 5341
-- name: graph-api
-  project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
-- name: identity-api
-  project: src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj
-- name: product-catalog-api
-  project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
-- name: inventory-api
-  project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
-- name: webui
-  project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj

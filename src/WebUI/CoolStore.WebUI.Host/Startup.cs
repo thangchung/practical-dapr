@@ -11,6 +11,9 @@ namespace CoolStore.WebUI.Host
 {
     public class Startup
     {
+        public const string GRAPH_API_ID = "graphapi";
+        public const string IDENTITY_API_ID = "identityserver";
+
         private readonly IConfiguration _config;
 
         public Startup(IConfiguration config)
@@ -35,7 +38,7 @@ namespace CoolStore.WebUI.Host
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = GetTyeAppUrl(_config, "identity-api");
+                    options.Authority = GetTyeAppUrl(_config, IDENTITY_API_ID);
                     options.RequireHttpsMetadata = false;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
@@ -59,7 +62,7 @@ namespace CoolStore.WebUI.Host
             services.AddHttpClient("GraphQLClient")
                 .ConfigureHttpClient(client =>
                 {
-                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, "graph-api").TrimEnd('/')}/graphql");
+                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, GRAPH_API_ID).TrimEnd('/')}/graphql");
                 });
 
             services.AddGraphQLClient();
@@ -94,11 +97,11 @@ namespace CoolStore.WebUI.Host
         {
             if (config.GetValue<bool>("IsDev"))
             {
-                if (appId == "identity-api")
+                if (appId == IDENTITY_API_ID)
                 {
                     return config.GetValue<string>("IdentityUrl");
                 }
-                else if (appId == "graph-api")
+                else if (appId == GRAPH_API_ID)
                 {
                     return config.GetValue<string>("GraphQLUrl");
                 }

@@ -33,8 +33,7 @@ namespace CoolStore.InventoryApi
             builder.Host
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureKestrel(options =>
-                        options.ListenHttpAndGrpcProtocols(config, Consts.INVENTORY_API_ID));
+                    webBuilder.ConfigureKestrel(o => o.ListenHttpAndGrpcProtocols(config));
                 });
 
             builder.Services

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="0.6.0-preview01" />
+    <PackageReference Include="Dapr.AspNetCore" Version="0.7.0-preview01" />
     <PackageReference Include="FeatherHttp" Version="0.1.67-alpha.g69b43bed72" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
@@ -41,7 +41,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.6.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.1.0-alpha.20209.5" />
+    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.2.0-alpha.20258.3" />
     <PackageReference Include="Scrutor" Version="3.2.0" />
     <PackageReference Include="Serilog" Version="2.9.1-dev-01154" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />

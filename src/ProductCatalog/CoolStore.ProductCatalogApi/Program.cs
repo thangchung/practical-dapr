@@ -49,7 +49,6 @@ namespace CoolStore.ProductCatalogApi
                 {
                     svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
                     {
-
                         var inventoryClientUrl = config
                             .GetServiceUri(Consts.INVENTORY_API_ID, "https")
                             ?.ToString()
