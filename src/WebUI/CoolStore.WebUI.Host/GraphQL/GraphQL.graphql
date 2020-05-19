@@ -3,9 +3,9 @@ type CatalogProductDto {
   description: String
   id: Uuid!
   imageUrl: String!
-  inventory: InventoryDto!
   name: String!
   price: Float!
+  store: StoreDto!
 }
 
 input CatalogProductDtoFilter {
@@ -31,21 +31,25 @@ type CategoryDto {
 input CreateProductInput {
   categoryId: Uuid!
   description: String
+  eoq: Int!
   imageUrl: String!
-  inventoryId: Uuid!
   name: String!
   price: Float!
+  rop: Int!
+  storeId: Uuid!
 }
 
 input DeleteProductInput {
   id: Uuid!
 }
 
-type InventoryDto {
+type inventory_StoreDto {
+  calculateSize: Int!
+  clone: inventory_StoreDto
   description: String
   id: Uuid!
-  location: String!
-  website: String!
+  location: String
+  website: String
 }
 
 type Mutation {
@@ -62,13 +66,13 @@ type OffsetPagingOfCatalogProductDto {
 
 type Query {
   categories: [CategoryDto!]!
-  inventories: [InventoryDto!]!
   products(
     order_by: CatalogProductDtoSort
     page: Int
     pageSize: Int
     where: CatalogProductDtoFilter
   ): OffsetPagingOfCatalogProductDto
+  stores: [StoreDto!]!
 }
 
 enum SortOperationKind {
@@ -76,12 +80,21 @@ enum SortOperationKind {
   DESC
 }
 
+type StoreDto {
+  description: String
+  id: Uuid!
+  location: String
+  website: String
+}
+
 input UpdateProductInput {
   categoryId: Uuid!
   description: String
+  eoq: Int!
   id: Uuid!
   imageUrl: String!
-  inventoryId: Uuid!
   name: String!
   price: Float!
+  rop: Int!
+  storeId: Uuid!
 }

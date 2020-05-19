@@ -21,6 +21,7 @@ services:
       value: "Y"
   bindings:
     - port: 1433
+      connectionString: Data Source=${host},${port};Initial Catalog=coolstoredb;User Id=sa;Password=${env:SA_PASSWORD};MultipleActiveResultSets=True;
 - name: redis
   image: redis
   bindings:

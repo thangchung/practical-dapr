@@ -27,11 +27,11 @@ namespace CoolStore.WebUI.Host
             GetCategoriesOperation operation,
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
+        Task<IOperationResult<global::CoolStore.WebUI.Host.IGetStores>> GetStoresAsync(
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
-            GetInventoriesOperation operation,
+        Task<IOperationResult<global::CoolStore.WebUI.Host.IGetStores>> GetStoresAsync(
+            GetStoresOperation operation,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<global::CoolStore.WebUI.Host.ICreateProductMutation>> CreateProductMutationAsync(

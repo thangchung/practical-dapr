@@ -44,7 +44,7 @@ namespace CoolStore.WebUI.Host
                 .AddValueSerializer(() => new DeleteProductInputSerializer())
                 .AddResultParser(serializers => new GetProductsResultParser(serializers))
                 .AddResultParser(serializers => new GetCategoriesResultParser(serializers))
-                .AddResultParser(serializers => new GetInventoriesResultParser(serializers))
+                .AddResultParser(serializers => new GetStoresResultParser(serializers))
                 .AddResultParser(serializers => new CreateProductMutationResultParser(serializers))
                 .AddResultParser(serializers => new UpdateProductMutationResultParser(serializers))
                 .AddResultParser(serializers => new DeleteProductMutationResultParser(serializers))

@@ -70,17 +70,17 @@ namespace CoolStore.WebUI.Host
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetStores>> GetStoresAsync(
             global::System.Threading.CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new GetInventoriesOperation(),
+                new GetStoresOperation(),
                 cancellationToken);
         }
 
-        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetInventories>> GetInventoriesAsync(
-            GetInventoriesOperation operation,
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::CoolStore.WebUI.Host.IGetStores>> GetStoresAsync(
+            GetStoresOperation operation,
             global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)

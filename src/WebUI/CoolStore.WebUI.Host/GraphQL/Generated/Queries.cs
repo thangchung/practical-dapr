@@ -21,38 +21,38 @@ namespace CoolStore.WebUI.Host
         };
         private readonly byte[] _hash = new byte[]
         {
-            102,
-            48,
-            98,
-            56,
-            54,
-            56,
-            57,
-            54,
-            97,
-            56,
-            53,
-            102,
             50,
-            52,
             54,
-            54,
-            56,
-            97,
-            56,
-            100,
-            100,
-            49,
+            57,
             101,
             56,
+            52,
+            101,
+            51,
+            54,
+            49,
+            57,
             99,
-            57,
-            55,
-            98,
+            48,
+            50,
             56,
+            101,
+            52,
+            97,
+            56,
+            56,
+            54,
+            99,
+            55,
+            50,
+            99,
+            51,
+            55,
+            97,
             57,
-            100,
-            49
+            48,
+            53,
+            48
         };
         private readonly byte[] _content = new byte[]
         {
@@ -321,15 +321,11 @@ namespace CoolStore.WebUI.Host
             32,
             125,
             32,
-            105,
-            110,
-            118,
-            101,
-            110,
+            115,
             116,
             111,
             114,
-            121,
+            101,
             32,
             123,
             32,
@@ -462,29 +458,19 @@ namespace CoolStore.WebUI.Host
             103,
             101,
             116,
-            73,
-            110,
-            118,
-            101,
-            110,
+            83,
             116,
             111,
             114,
-            105,
             101,
             115,
             32,
             123,
             32,
-            105,
-            110,
-            118,
-            101,
-            110,
+            115,
             116,
             111,
             114,
-            105,
             101,
             115,
             32,
@@ -981,7 +967,7 @@ namespace CoolStore.WebUI.Host
                     id
                     name
                   }
-                  inventory {
+                  store {
                     id
                     website
                     location
@@ -999,8 +985,8 @@ namespace CoolStore.WebUI.Host
               }
             }
             
-            query getInventories {
-              inventories {
+            query getStores {
+              stores {
                 id
                 location
               }

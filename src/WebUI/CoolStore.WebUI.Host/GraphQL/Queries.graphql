@@ -10,7 +10,7 @@ query getProducts($page: Int, $pageSize: Int, $where: CatalogProductDtoFilter) {
         id
         name
       }
-      inventory {
+      store {
         id
         website
         location
@@ -28,8 +28,8 @@ query getCategories {
   }
 }
 
-query getInventories {
-  inventories {
+query getStores {
+  stores {
     id
     location
   }

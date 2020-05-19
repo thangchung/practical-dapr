@@ -20,6 +20,6 @@ namespace CoolStore.WebUI.Host
 
         global::CoolStore.WebUI.Host.ICategoryDto Category { get; }
 
-        global::CoolStore.WebUI.Host.IInventoryDto Inventory { get; }
+        global::CoolStore.WebUI.Host.IStoreDto Store { get; }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 using IdentityServer4;
@@ -29,10 +30,10 @@ namespace CoolStore.IdentityServer
 
         public static IEnumerable<Client> Clients(IConfiguration config)
         {
-            var webUiUrl = config.GetTyeAppUrl("webui");
+            var webUiUri = config.GetServiceUri("webui");
             if (config.GetValue<bool>("IsDev"))
             {
-                webUiUrl = config.GetValue<string>("WebUIUrl");
+                webUiUri = new Uri(config.GetValue<string>("WebUIUrl"));config.GetValue<string>("WebUIUrl");
             }
 
             return new[]
@@ -47,10 +48,10 @@ namespace CoolStore.IdentityServer
                     AllowOfflineAccess = true,
 
                     // where to redirect to after login
-                    RedirectUris = {$"{webUiUrl}/signin-oidc"},
+                    RedirectUris = {$"{webUiUri?.ToString().TrimEnd('/')}/signin-oidc"},
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = {$"{webUiUrl}/signout"},
+                    PostLogoutRedirectUris = {$"{webUiUri?.ToString().TrimEnd('/')}/signout"},
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
