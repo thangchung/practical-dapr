@@ -11,13 +11,13 @@ namespace N8T.Infrastructure.Kestrel
             this KestrelServerOptions options,
             IConfiguration config)
         {
+            options.Limits.MinRequestBodyDataRate = null;
+
             var ports = config.GetValue<string>("PORT").Split(";");
             if (ports.Length != 2)
             {
                 throw new Exception("Wrong binding port and protocols");
             }
-
-            options.Limits.MinRequestBodyDataRate = null;
 
             // rest
             options.Listen(IPAddress.Any, ports[0].ConvertTo<int>());

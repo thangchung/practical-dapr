@@ -17,11 +17,58 @@ namespace N8T.Infrastructure.Tye
             }
         }
 
-        public static string GetTyeSqlServerConnString(this IConfiguration config, string appId, string dbName, string dbPassword = "P@ssw0rd")
+        public static Uri GetGraphQLUriFor(this IConfiguration config, string appId)
         {
-            var connString = config[$"connectionstring:{appId}"] ??
-                             $"Data Source={config["service:" + appId + ":host"]},{config["service:" + appId + ":port"]};Initial Catalog={dbName};User Id=sa;Password={dbPassword};MultipleActiveResultSets=True;";
-            return connString;
+            var appOptions = config.GetOptions<AppOptions>("app");
+
+            string clientUrl;
+            if (!appOptions.NoTye.Enabled)
+            {
+                clientUrl = config.GetServiceUri(appId).ToString();
+            }
+            else
+            {
+                clientUrl = config.GetValue<string>($"app:noTye:services:{appId}:url");
+            }
+
+            return new Uri($"{clientUrl?.ToString().TrimEnd('/')}/graphql");
+        }
+
+        public static Uri GetRestUriFor(this IConfiguration config, string appId)
+        {
+            var appOptions = config.GetOptions<AppOptions>("app");
+
+            string clientUrl;
+            if (!appOptions.NoTye.Enabled)
+            {
+                clientUrl = config.GetServiceUri(appId).ToString();
+            }
+            else
+            {
+                clientUrl = config.GetValue<string>($"app:noTye:services:{appId}:url");
+            }
+
+            return new Uri(clientUrl?.ToString().TrimEnd('/'));
+        }
+
+        public static Uri GetGrpcUriFor(this IConfiguration config, string appId)
+        {
+            var appOptions = config.GetOptions<AppOptions>("app");
+
+            string clientUrl;
+            if (!appOptions.NoTye.Enabled)
+            {
+                clientUrl = config
+                    .GetServiceUri(appId, "https")
+                    ?.ToString()
+                    .Replace("https", "http") /* hack: ssl termination */;
+            }
+            else
+            {
+                clientUrl = config.GetValue<string>($"app:noTye:services:{appId}:grpcUrl");
+            }
+
+            return new Uri(clientUrl);
         }
     }
 }

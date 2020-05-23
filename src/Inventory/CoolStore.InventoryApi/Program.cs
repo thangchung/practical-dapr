@@ -30,11 +30,15 @@ namespace CoolStore.InventoryApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
-            builder.Host
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel(o => o.ListenHttpAndGrpcProtocols(config));
-                });
+            var appOptions = config.GetOptions<AppOptions>("app");
+            if (!appOptions.NoTye.Enabled)
+            {
+                builder.Host
+                    .ConfigureWebHostDefaults(webBuilder =>
+                    {
+                        webBuilder.ConfigureKestrel(o => o.ListenHttpAndGrpcProtocols(config));
+                    });
+            }
 
             builder.Services
                 .AddHttpContextAccessor()
