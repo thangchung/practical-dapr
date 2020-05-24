@@ -3,6 +3,7 @@
 A lightweight low ceremony .NET microservices are lifted and shifted to Kubernetes platform and run on Dapr runtime (with and without Tye options).
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/thangchung/practical-dapr/blob/master/LICENSE)
+![webhost-ui](https://github.com/thangchung/practical-dapr/workflows/webhost-ui-ci/badge.svg?branch=master)
 ![graphql-api](https://github.com/thangchung/practical-dapr/workflows/graphql-ci/badge.svg?branch=master)
 ![identity-api](https://github.com/thangchung/practical-dapr/workflows/identity-ci/badge.svg?branch=master)
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
