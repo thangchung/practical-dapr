@@ -15,7 +15,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="5.0.0-preview.3.20215.14" />
   </ItemGroup>
 
   <ItemGroup>
