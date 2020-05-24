@@ -31,3 +31,7 @@ $ helm upgrade --namespace dev --install --wait zipkin zipkin
 ```bash
 $ helm install seq stable/seq --debug --namespace dev --values sqlserver/values.dev.yaml
 ```
+
+# Setup Azure cloud services
+
+- [Publish docker image to ACR and AKS](https://docs.microsoft.com/en-us/azure/dev-spaces/how-to/github-actions) and [example](https://github.com/Azure/dev-spaces/blob/master/.github/workflows/bikes.yml)

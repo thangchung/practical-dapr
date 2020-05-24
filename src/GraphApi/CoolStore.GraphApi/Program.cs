@@ -23,6 +23,9 @@ namespace CoolStore.GraphApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            var appOptions = config.GetOptions<AppOptions>("app");
+            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+
             builder.Services.AddHttpClient(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT,
                 (sp, client) =>
                 {

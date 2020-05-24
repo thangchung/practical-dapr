@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Infrastructure.Apis.GraphQL;
@@ -39,6 +40,8 @@ namespace CoolStore.InventoryApi
                         webBuilder.ConfigureKestrel(o => o.ListenHttpAndGrpcProtocols(config));
                     });
             }
+
+            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
 
             builder.Services
                 .AddHttpContextAccessor()

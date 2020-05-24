@@ -32,6 +32,9 @@ namespace CoolStore.ProductCatalogApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            var appOptions = config.GetOptions<AppOptions>("app");
+            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+
             builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))

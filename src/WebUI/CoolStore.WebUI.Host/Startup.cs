@@ -11,9 +11,6 @@ namespace CoolStore.WebUI.Host
 {
     public class Startup
     {
-        public const string GRAPH_API_ID = "graphapi";
-        public const string IDENTITY_API_ID = "identityserver";
-
         private readonly IConfiguration _config;
 
         public Startup(IConfiguration config)
@@ -38,7 +35,7 @@ namespace CoolStore.WebUI.Host
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = GetTyeAppUrl(_config, IDENTITY_API_ID);
+                    options.Authority = _config.GetTyeAppUrl(Extensions.IDENTITY_API_ID);
                     options.RequireHttpsMetadata = false;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
@@ -62,7 +59,7 @@ namespace CoolStore.WebUI.Host
             services.AddHttpClient("GraphQLClient")
                 .ConfigureHttpClient(client =>
                 {
-                    client.BaseAddress = new System.Uri($"{GetTyeAppUrl(_config, GRAPH_API_ID).TrimEnd('/')}/graphql");
+                    client.BaseAddress = new System.Uri($"{_config.GetTyeAppUrl(Extensions.GRAPH_API_ID).TrimEnd('/')}/graphql");
                 });
 
             services.AddGraphQLClient();
@@ -91,26 +88,6 @@ namespace CoolStore.WebUI.Host
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToFile("index.html");
             });
-        }
-
-        public string GetTyeAppUrl(IConfiguration config, string appId)
-        {
-            if (config.GetValue<bool>("IsDev"))
-            {
-                if (appId == IDENTITY_API_ID)
-                {
-                    return config.GetValue<string>("IdentityUrl");
-                }
-                else if (appId == GRAPH_API_ID)
-                {
-                    return config.GetValue<string>("GraphQLUrl");
-                }
-            }
-
-            var host = config[$"service:{appId}:host"];
-            var port = config[$"service:{appId}:port"];
-            var url = $"http://{host}:{port}";
-            return url;
         }
     }
 }
