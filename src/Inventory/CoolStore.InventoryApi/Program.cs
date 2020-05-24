@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Infrastructure.Apis.GraphQL;
@@ -30,12 +31,17 @@ namespace CoolStore.InventoryApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
-            builder.Host
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel(options =>
-                        options.ListenHttpAndGrpcProtocols(config, Consts.INVENTORY_API_ID));
-                });
+            var appOptions = config.GetOptions<AppOptions>("app");
+            if (!appOptions.NoTye.Enabled)
+            {
+                builder.Host
+                    .ConfigureWebHostDefaults(webBuilder =>
+                    {
+                        webBuilder.ConfigureKestrel(o => o.ListenHttpAndGrpcProtocols(config));
+                    });
+            }
+
+            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
 
             builder.Services
                 .AddHttpContextAccessor()

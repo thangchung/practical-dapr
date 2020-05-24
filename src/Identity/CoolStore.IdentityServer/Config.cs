@@ -7,7 +7,7 @@ using IdentityServer4.Models;
 using System.Collections.Generic;
 using IdentityServer4;
 using Microsoft.Extensions.Configuration;
-using N8T.Infrastructure.Tye;
+using N8T.Infrastructure;
 
 namespace CoolStore.IdentityServer
 {
@@ -30,10 +30,14 @@ namespace CoolStore.IdentityServer
 
         public static IEnumerable<Client> Clients(IConfiguration config)
         {
-            var webUiUri = config.GetServiceUri("webui");
-            if (config.GetValue<bool>("IsDev"))
+            Uri webUiUri;
+            if (config.GetValue<bool>("noTye"))
             {
-                webUiUri = new Uri(config.GetValue<string>("WebUIUrl"));config.GetValue<string>("WebUIUrl");
+                webUiUri = new Uri(config.GetValue<string>("webUIUrl"));
+            }
+            else
+            {
+                webUiUri = config.GetServiceUri(Consts.WEBUI_ID);
             }
 
             return new[]

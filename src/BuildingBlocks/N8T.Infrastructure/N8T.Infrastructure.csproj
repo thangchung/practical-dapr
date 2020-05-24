@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="0.6.0-preview01" />
+    <PackageReference Include="Dapr.AspNetCore" Version="0.7.0-preview01" />
     <PackageReference Include="FeatherHttp" Version="0.1.67-alpha.g69b43bed72" />
-    <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="Google.Protobuf" Version="3.11.4" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.28.0" />
-    <PackageReference Include="Grpc.Core" Version="2.28.0-pre2" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.28.0-pre1" />
-    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.28.0" />
+    <PackageReference Include="Figgle" Version="0.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.0.0-preview4" />
+    <PackageReference Include="Google.Protobuf" Version="3.12.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.29.0-pre1" />
+    <PackageReference Include="Grpc.Core" Version="2.29.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.29.0-pre1" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.29.0-pre1" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="HotChocolate" Version="10.4.1" />
@@ -23,26 +24,26 @@
     <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.1" />
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.4.1" />
     <PackageReference Include="HotChocolate.Stitching" Version="10.4.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-preview.3.20181.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-preview.3.20181.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.3.20181.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0-preview.3.20215.2" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
-    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.6.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.1.0-alpha.20209.5" />
-    <PackageReference Include="Scrutor" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-preview.3-runtime.20214.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.3.20215.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="5.0.0-preview.3.20215.14" />
+    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.2.0-alpha.20258.3" />
+    <PackageReference Include="Scrutor" Version="3.2.1" />
     <PackageReference Include="Serilog" Version="2.9.1-dev-01154" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
@@ -51,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-preview.3.20181.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
