@@ -6,10 +6,10 @@
 #
 name: practical-dapr
 
-# extensions:
-# - name: dapr
-#   log-level: debug
-#   config: appconfig
+extensions:
+- name: dapr
+  log-level: debug
+  config: appconfig
 
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
