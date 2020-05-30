@@ -42,6 +42,7 @@ namespace CoolStore.ProductCatalogApi
                 .AddCustomDbContext<ProductCatalogDbContext>(
                     typeof(Program),
                     config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+                .AddCustomMvc(typeof(Program), withDapr: false)
                 .AddCustomGraphQL(c =>
                 {
                     c.RegisterQueryType<QueryType>();
@@ -68,12 +69,13 @@ namespace CoolStore.ProductCatalogApi
                 .UseCloudEvents()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapControllers();
+                    endpoints.MapSubscribeHandler();
                     endpoints.MapGet("/", context =>
                     {
                         context.Response.Redirect("/playground");
                         return Task.CompletedTask;
                     });
-                    endpoints.MapSubscribeHandler();
                 });
 
             await app.RunAsync();
