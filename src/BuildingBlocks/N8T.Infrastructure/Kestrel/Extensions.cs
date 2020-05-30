@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -8,18 +9,22 @@ namespace N8T.Infrastructure.Kestrel
     {
         public static KestrelServerOptions ListenHttpAndGrpcProtocols(
             this KestrelServerOptions options,
-            IConfiguration config,
-            string appId)
+            IConfiguration config)
         {
-            var serviceHttpUri = config.GetServiceUri(appId);
-            var serviceHttpsUri = config.GetServiceUri(appId, "https");
-
             options.Limits.MinRequestBodyDataRate = null;
 
-            options.Listen(IPAddress.Any, serviceHttpUri.Port);
+            var ports = config.GetValue<string>("PORT").Split(";");
+            if (ports.Length != 2)
+            {
+                throw new Exception("Wrong binding port and protocols");
+            }
 
+            // rest
+            options.Listen(IPAddress.Any, ports[0].ConvertTo<int>());
+
+            // grpc
             options.Listen(IPAddress.Any,
-                serviceHttpsUri.Port,
+                ports[1].ConvertTo<int>(),
                 listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
 
             return options;

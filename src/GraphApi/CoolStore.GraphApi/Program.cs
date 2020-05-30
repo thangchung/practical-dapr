@@ -8,9 +8,9 @@ using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
+using N8T.Infrastructure.Tye;
 
 namespace CoolStore.GraphApi
 {
@@ -23,16 +23,19 @@ namespace CoolStore.GraphApi
             var (builder, config) = WebApplication.CreateBuilder(args)
                 .AddCustomConfiguration();
 
+            var appOptions = config.GetOptions<AppOptions>("app");
+            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+
             builder.Services.AddHttpClient(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT,
                 (sp, client) =>
                 {
-                    client.BaseAddress = new Uri($"{config.GetServiceUri(Consts.PRODUCT_CATALOG_API_ID)?.ToString().TrimEnd('/')}/graphql");
+                    client.BaseAddress = config.GetGraphQLUriFor(Consts.PRODUCT_CATALOG_API_ID);
                 });
 
             builder.Services.AddHttpClient(Consts.INVENTORY_GRAPHQL_CLIENT,
                 (sp, client) =>
                 {
-                    client.BaseAddress = new Uri($"{config.GetServiceUri(Consts.INVENTORY_API_ID)?.ToString().TrimEnd('/')}/graphql");
+                    client.BaseAddress = config.GetGraphQLUriFor(Consts.INVENTORY_API_ID);
                 });
 
             builder.Services.AddHttpContextAccessor();

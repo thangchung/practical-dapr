@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 .tye/
+
+.devcontainer/certs

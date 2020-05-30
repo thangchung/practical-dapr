@@ -1,0 +1,26 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: practical-dapr
+
+registry: vndg
+
+services:
+
+- name: sqlserver
+  image: mcr.microsoft.com/mssql/server:2017-latest
+  env:
+    - name: SA_PASSWORD
+      value: "P@ssw0rd"
+    - name: ACCEPT_EULA
+      value: "Y"
+  bindings:
+    - port: 1433
+      connectionString: Data Source=${host},${port};Initial Catalog=coolstoredb;User Id=sa;Password=${env:SA_PASSWORD};MultipleActiveResultSets=True;
+- name: redis
+  image: redis
+  bindings:
+    - port: 6379

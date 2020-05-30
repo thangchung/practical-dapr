@@ -1,0 +1,27 @@
+name: webhost-ui-ci
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+    paths:
+      - "src/WebUI/**"
+      - ".github/workflows/webhost-ui.yml"
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100-preview.3.20216.6
+
+    - name: Build with dotnet
+      run: dotnet build src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj --configuration Release
