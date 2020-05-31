@@ -18,8 +18,8 @@ namespace CoolStore.InventoryApi.Infrastructure.Persistence
         {
         }
 
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<StoreProductPrice> StoreProductPrices { get; set; }
+        public DbSet<Store> Stores { get; set; } = default!;
+        public DbSet<StoreProductPrice> StoreProductPrices { get; set; } = default!;
 
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)

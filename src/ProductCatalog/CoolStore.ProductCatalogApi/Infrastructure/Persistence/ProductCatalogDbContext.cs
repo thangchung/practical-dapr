@@ -18,9 +18,9 @@ namespace CoolStore.ProductCatalogApi.Infrastructure.Persistence
         {
         }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Product> Products { get; set; } = default!;
+        public DbSet<Category> Categories { get; set; } = default!;
+        public DbSet<Rating> Ratings { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

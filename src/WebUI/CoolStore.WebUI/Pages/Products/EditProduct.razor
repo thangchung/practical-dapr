@@ -110,10 +110,10 @@
   protected override async Task OnInitializedAsync()
   {
     _productModel.Id = Id.ToString();
-    _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
-    _stores = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories/stores");
+    _categories = await HttpClient.GetFromJsonAsync<List<KeyValueModel>>("api/products/categories");
+    _stores = await HttpClient.GetFromJsonAsync<List<KeyValueModel>>("api/inventories/stores");
 
-    var product = await HttpClient.GetJsonAsync<ProductItemDetailModel>($"api/products/{Id}");
+    var product = await HttpClient.GetFromJsonAsync<ProductItemDetailModel>($"api/products/{Id}");
     if (product != null)
     {
       _productModel.Name = product.Name;
@@ -127,7 +127,7 @@
 
   private async Task HandleValidSubmit()
   {
-    await HttpClient.PutJsonAsync("/api/products", _productModel);
+    await HttpClient.PutAsJsonAsync("/api/products", _productModel);
     NavigationManager.NavigateTo("/products");
   }
 

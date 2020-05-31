@@ -16,11 +16,12 @@ namespace N8T.Infrastructure.Status
 
         public static StatusModel BuildAppStatusModel(this IConfiguration config)
         {
-            var model = new StatusModel();
-
-            model.AppName = PlatformServices.Default.Application.ApplicationName;
-            model.AppVersion = PlatformServices.Default.Application.ApplicationVersion;
-            model.BasePath = PlatformServices.Default.Application.ApplicationBasePath;
+            var model = new StatusModel
+            {
+                AppName = PlatformServices.Default.Application.ApplicationName,
+                AppVersion = PlatformServices.Default.Application.ApplicationVersion,
+                BasePath = PlatformServices.Default.Application.ApplicationBasePath
+            };
 
             foreach (var env in config.GetChildren()) model.Envs.Add(env.Key, env.Value);
 

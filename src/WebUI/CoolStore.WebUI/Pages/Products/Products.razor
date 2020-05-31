@@ -86,12 +86,12 @@ else
 
   protected override async Task OnInitializedAsync()
   {
-    _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(_filter));
+    _productModel = await HttpClient.GetFromJsonAsync<ProductModel>(ProcessUrl(_filter));
   }
 
   protected override async Task OnParametersSetAsync()
   {
-    _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(_filter));
+    _productModel = await HttpClient.GetFromJsonAsync<ProductModel>(ProcessUrl(_filter));
   }
 
   async Task Search(ChangeEventArgs e)
@@ -99,7 +99,7 @@ else
     await Task.Run(async () =>
     {
       NavigationManager.NavigateTo($"/products/{Page = 1}");
-      _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(e.Value.ToString()));
+      _productModel = await HttpClient.GetFromJsonAsync<ProductModel>(ProcessUrl(e.Value.ToString()));
     });
   }
 
@@ -108,7 +108,7 @@ else
     await Task.Run(async () =>
     {
       await HttpClient.DeleteAsync($"api/products/{id}");
-      _productModel = await HttpClient.GetJsonAsync<ProductModel>(ProcessUrl(_filter));
+      _productModel = await HttpClient.GetFromJsonAsync<ProductModel>(ProcessUrl(_filter));
     });
   }
 

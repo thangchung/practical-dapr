@@ -94,13 +94,13 @@
 
   protected override async Task OnInitializedAsync()
   {
-    _categories = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/products/categories");
-    _stores = await HttpClient.GetJsonAsync<List<KeyValueModel>>("api/inventories/stores");
+    _categories = await HttpClient.GetFromJsonAsync<List<KeyValueModel>>("api/products/categories");
+    _stores = await HttpClient.GetFromJsonAsync<List<KeyValueModel>>("api/inventories/stores");
   }
 
   private async Task HandleValidSubmit()
   {
-    await HttpClient.PostJsonAsync("/api/products", _productModel);
+    await HttpClient.PostAsJsonAsync("/api/products", _productModel);
     NavigationManager.NavigateTo("/products");
   }
 

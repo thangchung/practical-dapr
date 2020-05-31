@@ -14,7 +14,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-      productCount = await HttpClient.GetJsonAsync<int>("api/products/count");
+      productCount = await HttpClient.GetFromJsonAsync<int>("api/products/count");
     }
 
 }

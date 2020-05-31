@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -12,12 +14,14 @@ namespace CoolStore.WebUI
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddSingleton(new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
 
             // Add auth services
+            builder.Services.AddApiAuthorization();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddSingleton<AuthenticationStateProvider, ServerAuthStateProvider>();
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             await builder.Build().RunAsync();
         }

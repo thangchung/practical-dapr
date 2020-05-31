@@ -13,6 +13,7 @@ namespace N8T.Infrastructure.Kestrel
         {
             options.Limits.MinRequestBodyDataRate = null;
 
+            // todo: do a better way, instead of based on PORT env variable (Tye generated)
             var ports = config.GetValue<string>("PORT").Split(";");
             if (ports.Length != 2)
             {

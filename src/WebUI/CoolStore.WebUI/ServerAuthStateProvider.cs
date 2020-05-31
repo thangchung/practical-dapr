@@ -1,7 +1,7 @@
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CoolStore.WebUI
@@ -17,7 +17,7 @@ namespace CoolStore.WebUI
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userInfo = await _httpClient.GetJsonAsync<UserInfo>("account/user");
+            var userInfo = await _httpClient.GetFromJsonAsync<UserInfo>("account/user");
 
             var identity = userInfo.IsAuthenticated
                 ? new ClaimsIdentity(
