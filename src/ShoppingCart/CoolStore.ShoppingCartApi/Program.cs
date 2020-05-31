@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Apis.Gateways;
-using CoolStore.ProductCatalogApi.Apis.GraphQL;
-using CoolStore.ProductCatalogApi.Domain;
-using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.ShoppingCartApi.Domain;
+using CoolStore.ShoppingCartApi.Infrastructure.Apis.Gateways;
+using CoolStore.ShoppingCartApi.Infrastructure.Apis.GraphQL;
+using CoolStore.ShoppingCartApi.Infrastructure.Persistence;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
@@ -20,7 +20,7 @@ using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 
-namespace CoolStore.ProductCatalogApi
+namespace CoolStore.ShoppingCartApi
 {
     internal class Program
     {
@@ -39,7 +39,7 @@ namespace CoolStore.ProductCatalogApi
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program))
-                .AddCustomDbContext<ProductCatalogDbContext>(
+                .AddCustomDbContext<ShoppingCartDbContext>(
                     typeof(Program),
                     config.GetConnectionString(Consts.SQLSERVER_DB_ID))
                 .AddCustomGraphQL(c =>

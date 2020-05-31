@@ -21,7 +21,11 @@ namespace CoolStore.WebUI
 
             var identity = userInfo.IsAuthenticated
                 ? new ClaimsIdentity(
-                    new[] {new Claim(ClaimTypes.Name, userInfo.Name), new Claim("access_token", userInfo.AccessToken)},
+                    new[]
+                    {
+                        new Claim("user_id", userInfo?.UserId), new Claim(ClaimTypes.Name, userInfo?.Name),
+                        new Claim("access_token", userInfo?.AccessToken)
+                    },
                     "serverauth")
                 : new ClaimsIdentity();
 
@@ -32,9 +36,8 @@ namespace CoolStore.WebUI
     public class UserInfo
     {
         public bool IsAuthenticated { get; set; }
-
         public string Name { get; set; }
-
+        public string UserId { get; set; }
         public string AccessToken { get; set; }
     }
 }

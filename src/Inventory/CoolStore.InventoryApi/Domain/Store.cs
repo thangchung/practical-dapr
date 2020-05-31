@@ -7,11 +7,11 @@ namespace CoolStore.InventoryApi.Domain
 {
     public class Store : EntityBase, IAggregateRoot
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; private set; } = default!;
         public string Location { get; private set; } = default!;
         public string? Description { get; private set; }
         public string Website { get; private set; } = default!;
-        public ICollection<StoreProductPrice> StoreProductPrices { get; private set; }
+        public ICollection<StoreProductPrice> StoreProductPrices { get; private set; } = null!;
 
         private Store()
         {

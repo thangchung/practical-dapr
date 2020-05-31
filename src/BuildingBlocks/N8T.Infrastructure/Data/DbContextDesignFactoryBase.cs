@@ -12,7 +12,10 @@ namespace N8T.Infrastructure.Data
         public TDbContext CreateDbContext(string[] args)
         {
             var connString = ConfigurationHelper.GetConfiguration(AppContext.BaseDirectory)
-                ?.GetConnectionString("MainDb");
+                ?.GetConnectionString("sqlserver");
+
+            Console.WriteLine($"Connection String: {connString}");
+
             var optionsBuilder = new DbContextOptionsBuilder<TDbContext>()
                 .UseSqlServer(
                     connString ?? throw new InvalidOperationException(),

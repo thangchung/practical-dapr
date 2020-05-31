@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoolStore.ProductCatalogApi.Domain;
 using CoolStore.Protobuf.Inventory.V1;
+using CoolStore.ShoppingCartApi.Domain;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using N8T.Infrastructure;
 
-namespace CoolStore.ProductCatalogApi.Apis.Gateways
+namespace CoolStore.ShoppingCartApi.Infrastructure.Apis.Gateways
 {
     public class InventoryGateway : IInventoryGateway
     {

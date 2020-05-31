@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +18,14 @@ namespace CoolStore.WebUI.Host.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
-                return new UserInfo {Name = User.Identity.Name, IsAuthenticated = true, AccessToken = accessToken};
+                return new UserInfo
+                {
+                    UserId = User.Claims.FirstOrDefault(x => x
+                        .Type.Equals(ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value,
+                    Name = User.Identity.Name,
+                    IsAuthenticated = true,
+                    AccessToken = accessToken
+                };
             }
 
             return loggedOutUser;

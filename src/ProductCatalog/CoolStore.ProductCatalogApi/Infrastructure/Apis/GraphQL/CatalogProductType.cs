@@ -18,7 +18,7 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 
             descriptor.Field("store").Type<NonNullType<InventoryType>>().Resolver(async ctx =>
             {
-                var inventoryGateway = ctx.Service<IStoreGateway>();
+                var inventoryGateway = ctx.Service<IInventoryGateway>();
 
                 var dataLoader = ctx.BatchDataLoader<Guid, Protobuf.Inventory.V1.StoreDto>(
                     "StoreById",

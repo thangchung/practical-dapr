@@ -14,6 +14,14 @@ extensions:
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 
+ingress:
+  - name: ingress
+    bindings:
+      - port: 8888
+    rules:
+      - path: /
+        service: webuihost
+
 services:
 
 - name: graphapi
@@ -24,6 +32,8 @@ services:
   project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
 - name: inventoryapi
   project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
+- name: shoppingcartapi
+  project: src/ShoppingCart/CoolStore.ShoppingCartApi/CoolStore.ShoppingCartApi.csproj
 - name: webuihost
   project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
 

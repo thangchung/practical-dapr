@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CoolStore.ShoppingCartApi": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5016;https://localhost:15016"
+    }
+  }
+}

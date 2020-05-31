@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoolStore.Protobuf.Inventory.V1;
 
-namespace CoolStore.ProductCatalogApi.Domain
+namespace CoolStore.ShoppingCartApi.Domain
 {
-    public interface IStoreGateway
+    public interface IInventoryGateway
     {
         Task<IReadOnlyDictionary<Guid, StoreDto>> GetStoresAsync(
             IReadOnlyCollection<Guid> storeIds,
