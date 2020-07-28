@@ -11,16 +11,18 @@ extensions:
   log-level: debug
   config: appconfig
 
+# - name: zipkin
+
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
 
-ingress:
-  - name: ingress
-    bindings:
-      - port: 8888
-    rules:
-      - path: /
-        service: webuihost
+# ingress:
+#   - name: ingress
+#     bindings:
+#       - port: 8888
+#     rules:
+#       - path: /
+#         service: webuihost
 
 services:
 

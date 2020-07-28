@@ -30,7 +30,13 @@ namespace CoolStore.ProductCatalogApi.Apis.Gateways
         {
             var headers = _httpContext.HttpContext.Request.Headers;
             var metadata = new Metadata();
-            // todo: will propagate headers to grpc headers
+
+            // propagate headers to grpc headers
+            _ = headers.Select(h =>
+            {
+                metadata.Add(new Metadata.Entry(h.Key, h.Value));
+                return h;
+            }).ToList();
 
             var request = new GetStoresByIdsRequest();
             request.Ids.AddRange(storeIds.Select(x => x.ToString()));

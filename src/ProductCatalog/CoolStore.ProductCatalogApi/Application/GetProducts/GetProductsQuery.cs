@@ -1,10 +1,11 @@
-using System.Linq;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
+using N8T.Infrastructure.GraphQL;
+using N8T.Infrastructure.GraphQL.OffsetPaging;
 
 namespace CoolStore.ProductCatalogApi.Application.GetProducts
 {
-    public class GetProductsQuery : IRequest<IQueryable<CatalogProductDto>>
+    public class GetProductsQuery : GraphQueryBase<CatalogProductDto>, IRequest<OffsetPaging<CatalogProductDto>>
     {
     }
 }

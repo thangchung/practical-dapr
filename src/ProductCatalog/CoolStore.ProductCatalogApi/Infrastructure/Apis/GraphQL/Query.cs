@@ -10,14 +10,14 @@ namespace CoolStore.ProductCatalogApi.Apis.GraphQL
 {
     public class Query
     {
-        public async Task<IEnumerable<CatalogProductDto>> GetProducts([Service] IMediator mediator)
-        {
-            return await mediator.Send(new GetProductsQuery());
-        }
+        // public async Task<IEnumerable<CatalogProductDto>> GetProducts([Service] IMediator mediator)
+        // {
+        //     return await mediator.Send(new GetProductsQuery());
+        // }
 
-        public async Task<IEnumerable<CategoryDto>> GetCategories([Service] IMediator mediator)
-        {
-            return await mediator.Send(new GetCategoriesQuery());
-        }
+        // public async Task<IEnumerable<CategoryDto>> GetCategories([Service] IMediator mediator)
+        // {
+        //     return await mediator.Send(new GetCategoriesQuery());
+        // }
     }
 }

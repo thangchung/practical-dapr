@@ -1,10 +1,15 @@
 using System;
 using System.Linq;
-using System.Reflection;
+using System.Linq.Expressions;
 using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
+using HotChocolate.Language;
+using HotChocolate.Resolvers;
 using HotChocolate.Types;
+using HotChocolate.Types.Filters;
+using HotChocolate.Types.Sorting;
+using HotChocolate.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.GraphQL.Errors;
 
@@ -25,8 +30,7 @@ namespace N8T.Infrastructure.GraphQL
                     }),
                     new QueryExecutionOptions
                     {
-                        IncludeExceptionDetails = true,
-                        TracingPreference = TracingPreference.Always
+                        IncludeExceptionDetails = true, TracingPreference = TracingPreference.Always
                     })
                 .AddErrorFilter<ValidationErrorFilter>();
 
@@ -35,7 +39,8 @@ namespace N8T.Infrastructure.GraphQL
             return services;
         }
 
-        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration, Type marker)
+        public static ISchemaConfiguration RegisterObjectTypes(this ISchemaConfiguration schemaConfiguration,
+            Type marker)
         {
             var objectTypes = marker
                 .Assembly
@@ -48,6 +53,80 @@ namespace N8T.Infrastructure.GraphQL
             }
 
             return schemaConfiguration;
+        }
+
+        public static Expression<Func<TDto, bool>> GetQueryableFilterExpr<TDto>(this IResolverContext context)
+        {
+            Expression<Func<TDto, bool>> filter = null;
+            if (context.Field?.Arguments["where"]?.Type is InputObjectType whereIot
+                && whereIot is IFilterInputType whereFit)
+            {
+                var whereValueNode = context.Argument<IValueNode>("where");
+                if (whereValueNode != null)
+                {
+                    var queryableFilterVisitor = new QueryableFilterVisitor(
+                        whereIot,
+                        whereFit.EntityType,
+                        TypeConversion.Default);
+
+                    if (whereValueNode.Kind != NodeKind.NullValue)
+                    {
+                        whereValueNode.Accept(queryableFilterVisitor);
+                        filter = queryableFilterVisitor?.CreateFilter<TDto>();
+                    }
+                }
+            }
+
+            return filter;
+        }
+
+        public static QueryableSortVisitor GetQueryableSortExpr<TDto>(this IResolverContext context)
+        {
+            QueryableSortVisitor queryableSortVisitor = null;
+            if (context.Field?.Arguments[SortObjectFieldDescriptorExtensions.OrderByArgumentName]?.Type is
+                    InputObjectType iot
+                && iot is ISortInputType fit)
+            {
+                var orderByValueNode =
+                    context.Argument<IValueNode>(SortObjectFieldDescriptorExtensions.OrderByArgumentName);
+                if (orderByValueNode != null)
+                {
+                    queryableSortVisitor = new QueryableSortVisitor(iot, fit.EntityType);
+                    orderByValueNode.Accept(queryableSortVisitor);
+                }
+            }
+
+            return queryableSortVisitor;
+        }
+
+        public static GraphQueryBase<TDto> ExtractParams<TDto>(this GraphQueryBase<TDto> request,
+            IResolverContext context)
+        {
+            var page = context.Argument<int>("page") <= 0 ? 1 : context.Argument<int>("page");
+            var pageSize = context.Argument<int>("pageSize") <= 0 ? 20 : context.Argument<int>("pageSize");
+            var filterExpr = context.GetQueryableFilterExpr<TDto>();
+            var sortExpr = context.GetQueryableSortExpr<TDto>();
+
+            request.Page = page;
+            request.PageSize = pageSize;
+            request.FilterExpr = filterExpr;
+            request.SortingVisitor = sortExpr;
+
+            return request;
+        }
+
+        public static IObjectFieldDescriptor AddPagingArguments(this IObjectFieldDescriptor descriptor)
+        {
+            return descriptor
+                .Argument("page", a => a.Type<IntType>())
+                .Argument("pageSize", a => a.Type<IntType>());
+        }
+
+        public static IObjectFieldDescriptor AddSortingArguments<TSortType>(this IObjectFieldDescriptor descriptor)
+            where TSortType : IInputType
+        {
+            return descriptor.Argument(SortObjectFieldDescriptorExtensions.OrderByArgumentName,
+                a => a.Type<TSortType>());
         }
     }
 }

@@ -17,6 +17,7 @@ using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
+using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 
@@ -66,6 +67,7 @@ namespace CoolStore.ProductCatalogApi
                 .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
                 .UseRouting()
                 .UseCloudEvents()
+                .UseMiddleware<LogContextMiddleware>()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapGet("/", context =>

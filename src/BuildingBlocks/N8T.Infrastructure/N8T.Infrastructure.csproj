@@ -62,4 +62,8 @@
     <ProjectReference Include="..\N8T.Domain\N8T.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Caching\" />
+  </ItemGroup>
+
 </Project>

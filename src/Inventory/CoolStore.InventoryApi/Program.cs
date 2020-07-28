@@ -18,6 +18,7 @@ using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Kestrel;
+using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
 
 namespace CoolStore.InventoryApi
@@ -65,6 +66,7 @@ namespace CoolStore.InventoryApi
                 .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
                 .UseRouting()
                 .UseCloudEvents()
+                .UseMiddleware<LogContextMiddleware>()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
