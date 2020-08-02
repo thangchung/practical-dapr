@@ -18,8 +18,10 @@ using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Kestrel;
-using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.ValidationModel;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Trace.Samplers;
+using N8T.Infrastructure.OTel;
 
 namespace CoolStore.InventoryApi
 {
@@ -48,7 +50,8 @@ namespace CoolStore.InventoryApi
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program))
-                .AddCustomDbContext<InventoryDbContext>(typeof(Program), config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+                .AddCustomDbContext<InventoryDbContext>(typeof(Program),
+                    config.GetConnectionString(Consts.SQLSERVER_DB_ID))
                 .AddCustomMvc(typeof(Program), withDapr: true)
                 .AddCustomGraphQL(c =>
                 {
@@ -57,7 +60,20 @@ namespace CoolStore.InventoryApi
                     c.RegisterExtendedScalarTypes();
                 })
                 .AddCustomGrpc()
-                .AddCustomDaprClient();
+                .AddCustomDaprClient()
+                .AddOpenTelemetry(b => b
+                    .SetSampler(new AlwaysOnSampler())
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddSqlClientDependencyInstrumentation()
+                    .AddMediatRInstrumentation()
+                    .UseZipkinExporter(o =>
+                    {
+                        o.ServiceName = "inventory-api";
+                        o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans");
+                    })
+                );
 
             var app = builder.Build();
 
@@ -66,7 +82,6 @@ namespace CoolStore.InventoryApi
                 .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
                 .UseRouting()
                 .UseCloudEvents()
-                .UseMiddleware<LogContextMiddleware>()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();

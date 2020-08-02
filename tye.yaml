@@ -11,7 +11,10 @@ extensions:
   log-level: debug
   config: appconfig
 
-# - name: zipkin
+- name: elastic
+  logPath: ./.logs
+
+- name: zipkin
 
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg

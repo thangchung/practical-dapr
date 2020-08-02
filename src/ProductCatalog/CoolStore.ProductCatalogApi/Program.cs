@@ -17,9 +17,11 @@ using N8T.Infrastructure.Dapr;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
-using N8T.Infrastructure.Logging;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Trace.Samplers;
+using N8T.Infrastructure.OTel;
 
 namespace CoolStore.ProductCatalogApi
 {
@@ -36,7 +38,7 @@ namespace CoolStore.ProductCatalogApi
             var appOptions = config.GetOptions<AppOptions>("app");
             Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
 
-            builder.Services
+            _ = builder.Services
                 .AddHttpContextAccessor()
                 .AddCustomMediatR(typeof(Program))
                 .AddCustomValidators(typeof(Program))
@@ -58,7 +60,20 @@ namespace CoolStore.ProductCatalogApi
                     });
                 })
                 .AddCustomDaprClient()
-                .AddScoped<IInventoryGateway, InventoryGateway>();
+                .AddScoped<IInventoryGateway, InventoryGateway>()
+                .AddOpenTelemetry(b => b
+                    .SetSampler(new AlwaysOnSampler())
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddSqlClientDependencyInstrumentation()
+                    .AddMediatRInstrumentation()
+                    .UseZipkinExporter(o =>
+                    {
+                        o.ServiceName = "product-catalog-api";
+                        o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans");
+                    })
+                );
 
             var app = builder.Build();
 
@@ -67,7 +82,6 @@ namespace CoolStore.ProductCatalogApi
                 .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
                 .UseRouting()
                 .UseCloudEvents()
-                .UseMiddleware<LogContextMiddleware>()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapGet("/", context =>

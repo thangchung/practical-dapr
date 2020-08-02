@@ -8,9 +8,12 @@ using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Execution;
 using HotChocolate.Stitching;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure;
 using N8T.Infrastructure.Tye;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Trace.Samplers;
 
 namespace CoolStore.GraphApi
 {
@@ -45,6 +48,16 @@ namespace CoolStore.GraphApi
                 .AddStitchedSchema(stitchingBuilder => stitchingBuilder
                     .AddSchemaFromHttp(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT)
                     .AddSchemaFromHttp(Consts.INVENTORY_GRAPHQL_CLIENT)
+                )
+                .AddOpenTelemetry(b => b
+                    .SetSampler(new AlwaysOnSampler())
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .UseZipkinExporter(o =>
+                    {
+                        o.ServiceName = "graph-api";
+                        o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans");
+                    })
                 );
 
             var app = builder.Build();

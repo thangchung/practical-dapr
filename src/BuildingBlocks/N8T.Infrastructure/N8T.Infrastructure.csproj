@@ -6,56 +6,62 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="0.7.0-preview01" />
+    <PackageReference Include="Dapr.AspNetCore" Version="0.9.0-preview01" />
     <PackageReference Include="FeatherHttp" Version="0.1.67-alpha.g69b43bed72" />
     <PackageReference Include="Figgle" Version="0.3.0" />
-    <PackageReference Include="FluentValidation" Version="9.0.0-preview5" />
-    <PackageReference Include="Google.Protobuf" Version="3.12.2" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.29.0" />
-    <PackageReference Include="Grpc.Core" Version="2.29.0" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.29.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.29.0" />
-    <PackageReference Include="MediatR" Version="8.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="HotChocolate" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.Types" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.4.1" />
-    <PackageReference Include="HotChocolate.Stitching" Version="10.4.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-preview.4.20220.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-preview.4.20220.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.4.20220.10" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-preview.3-runtime.20214.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.4.20251.6" />
-    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.6.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="5.0.0-preview.4.20257.10" />
-    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.2.0-alpha.20258.3" />
-    <PackageReference Include="Scrutor" Version="3.2.1" />
-    <PackageReference Include="Serilog" Version="2.9.1-dev-01154" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-preview.4.20220.10">
+    <PackageReference Include="FluentValidation" Version="9.0.1" />
+    <PackageReference Include="Google.Protobuf" Version="4.0.0-rc2" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.30.0" />
+    <PackageReference Include="Grpc.Core" Version="2.31.0-pre2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.30.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.30.0" />
+    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="HotChocolate" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.Types" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.2" />
+    <PackageReference Include="HotChocolate.Stitching" Version="10.5.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-preview.7.20365.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-preview.7.20365.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.7.20365.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-preview.7.20365.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0-preview.3-runtime.20214.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.7.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="5.0.0-preview.7.20365.19" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.4.0-alpha.20371.1" />
+    <PackageReference Include="OpenTelemetry" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Grpc" Version="0.4.0-beta.2" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="0.4.0-beta.2" />
+    <PackageReference Include="Scrutor" Version="3.2.1" />
+    <PackageReference Include="Serilog" Version="2.10.0-dev-01221" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10280" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00887" />
   </ItemGroup>
 
   <ItemGroup>
