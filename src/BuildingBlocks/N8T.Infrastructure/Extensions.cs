@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Logging;
-using N8T.Infrastructure.OTel;
 using N8T.Infrastructure.OTel.MediatR;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;

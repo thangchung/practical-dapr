@@ -20,63 +20,54 @@ using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Tye;
 using N8T.Infrastructure.ValidationModel;
 
-namespace CoolStore.ShoppingCartApi
-{
-    internal class Program
+Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+var (builder, config) = WebApplication.CreateBuilder(args)
+    .AddCustomConfiguration();
+
+var appOptions = config.GetOptions<AppOptions>("app");
+Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+
+builder.Services
+    .AddHttpContextAccessor()
+    .AddCustomMediatR(typeof(Cart))
+    .AddCustomValidators(typeof(Cart))
+    .AddCustomDbContext<ShoppingCartDbContext>(
+        typeof(Cart),
+        config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+    .AddCustomGraphQL(c =>
     {
-        private static async Task Main(string[] args)
+        c.RegisterQueryType<QueryType>();
+        c.RegisterMutationType<MutationType>();
+        c.RegisterObjectTypes(typeof(Cart));
+        c.RegisterExtendedScalarTypes();
+    })
+    .AddCustomGrpcClient(svc =>
+    {
+        svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
         {
-            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            o.Address = config.GetGrpcUriFor(Consts.INVENTORY_API_ID);
+        });
+    })
+    .AddCustomDaprClient()
+    .AddScoped<IInventoryGateway, InventoryGateway>();
 
-            var (builder, config) = WebApplication.CreateBuilder(args)
-                .AddCustomConfiguration();
+var app = builder.Build();
 
-            var appOptions = config.GetOptions<AppOptions>("app");
-            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+app.UseStaticFiles()
+    .UseGraphQL("/graphql")
+    .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
+    .UseRouting()
+    .UseCloudEvents()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapGet("/", context =>
+        {
+            context.Response.Redirect("/playground");
+            return Task.CompletedTask;
+        });
+        endpoints.MapSubscribeHandler();
+    });
 
-            builder.Services
-                .AddHttpContextAccessor()
-                .AddCustomMediatR(typeof(Program))
-                .AddCustomValidators(typeof(Program))
-                .AddCustomDbContext<ShoppingCartDbContext>(
-                    typeof(Program),
-                    config.GetConnectionString(Consts.SQLSERVER_DB_ID))
-                .AddCustomGraphQL(c =>
-                {
-                    c.RegisterQueryType<QueryType>();
-                    c.RegisterMutationType<MutationType>();
-                    c.RegisterObjectTypes(typeof(Program));
-                    c.RegisterExtendedScalarTypes();
-                })
-                .AddCustomGrpcClient(svc =>
-                {
-                    svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
-                    {
-                        o.Address = config.GetGrpcUriFor(Consts.INVENTORY_API_ID);
-                    });
-                })
-                .AddCustomDaprClient()
-                .AddScoped<IInventoryGateway, InventoryGateway>();
-
-            var app = builder.Build();
-
-            app.UseStaticFiles()
-                .UseGraphQL("/graphql")
-                .UsePlayground(new PlaygroundOptions {QueryPath = "/graphql", Path = "/playground"})
-                .UseRouting()
-                .UseCloudEvents()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapGet("/", context =>
-                    {
-                        context.Response.Redirect("/playground");
-                        return Task.CompletedTask;
-                    });
-                    endpoints.MapSubscribeHandler();
-                });
-
-            await app.RunAsync();
-        }
-    }
-}
+await app.RunAsync();

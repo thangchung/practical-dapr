@@ -15,72 +15,63 @@ using N8T.Infrastructure.Tye;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Trace.Samplers;
 
-namespace CoolStore.GraphApi
-{
-    internal class Program
+Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
+var (builder, config) = WebApplication.CreateBuilder(args)
+    .AddCustomConfiguration();
+
+var appOptions = config.GetOptions<AppOptions>("app");
+Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+
+builder.Services.AddHttpClient(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT,
+    (sp, client) =>
     {
-        private static async Task Main(string[] args)
+        client.BaseAddress = config.GetGraphQLUriFor(Consts.PRODUCT_CATALOG_API_ID);
+    });
+
+builder.Services.AddHttpClient(Consts.INVENTORY_GRAPHQL_CLIENT,
+    (sp, client) =>
+    {
+        client.BaseAddress = config.GetGraphQLUriFor(Consts.INVENTORY_API_ID);
+    });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IQueryResultSerializer, JsonQueryResultSerializer>();
+builder.Services
+    .AddGraphQLSubscriptions()
+    .AddStitchedSchema(stitchingBuilder => stitchingBuilder
+        .AddSchemaFromHttp(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT)
+        .AddSchemaFromHttp(Consts.INVENTORY_GRAPHQL_CLIENT)
+    )
+    .AddOpenTelemetry(b => b
+        .SetSampler(new AlwaysOnSampler())
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .UseZipkinExporter(o =>
         {
-            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+            o.ServiceName = "graph-api";
+            o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans");
+        })
+    );
 
-            var (builder, config) = WebApplication.CreateBuilder(args)
-                .AddCustomConfiguration();
+var app = builder.Build();
 
-            var appOptions = config.GetOptions<AppOptions>("app");
-            Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
+app.UseStaticFiles();
+app.UseGraphQL("/graphql");
+app.UsePlayground(new PlaygroundOptions
+{
+    QueryPath = "/graphql",
+    Path = "/playground",
+});
 
-            builder.Services.AddHttpClient(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT,
-                (sp, client) =>
-                {
-                    client.BaseAddress = config.GetGraphQLUriFor(Consts.PRODUCT_CATALOG_API_ID);
-                });
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", context =>
+    {
+        context.Response.Redirect("/playground");
+        return Task.CompletedTask;
+    });
+});
 
-            builder.Services.AddHttpClient(Consts.INVENTORY_GRAPHQL_CLIENT,
-                (sp, client) =>
-                {
-                    client.BaseAddress = config.GetGraphQLUriFor(Consts.INVENTORY_API_ID);
-                });
-
-            builder.Services.AddHttpContextAccessor();
-            builder.Services.AddSingleton<IQueryResultSerializer, JsonQueryResultSerializer>();
-            builder.Services
-                .AddGraphQLSubscriptions()
-                .AddStitchedSchema(stitchingBuilder => stitchingBuilder
-                    .AddSchemaFromHttp(Consts.PRODUCT_CATALOG_GRAPHQL_CLIENT)
-                    .AddSchemaFromHttp(Consts.INVENTORY_GRAPHQL_CLIENT)
-                )
-                .AddOpenTelemetry(b => b
-                    .SetSampler(new AlwaysOnSampler())
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .UseZipkinExporter(o =>
-                    {
-                        o.ServiceName = "graph-api";
-                        o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans");
-                    })
-                );
-
-            var app = builder.Build();
-
-            app.UseStaticFiles();
-            app.UseGraphQL("/graphql");
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql",
-                Path = "/playground",
-            });
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", context =>
-                {
-                    context.Response.Redirect("/playground");
-                    return Task.CompletedTask;
-                });
-            });
-
-            await app.RunAsync();
-        }
-    }
-}
+await app.RunAsync();
