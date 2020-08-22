@@ -22,7 +22,7 @@ namespace N8T.Infrastructure.OTel
                 .AddMediatRInstrumentation()
                 .UseZipkinExporter(o =>
                 {
-                    config.Bind("JwtAuth", o);
+                    config.Bind("OtelZipkin", o);
                     configureZipkin?.Invoke(o);
                 })
             );

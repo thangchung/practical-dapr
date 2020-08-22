@@ -42,11 +42,10 @@ Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
 
 builder.Services
     .AddHttpContextAccessor()
-    .AddCustomMediatR(typeof(Store))
-    .AddCustomValidators(typeof(Store))
-    .AddCustomDbContext<InventoryDbContext>(typeof(Store),
-        config.GetConnectionString(Consts.SQLSERVER_DB_ID))
-    .AddCustomMvc(typeof(Store), withDapr: true)
+    .AddCustomMediatR<Store>()
+    .AddCustomValidators<Store>()
+    .AddCustomDbContext<InventoryDbContext, Store>(config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+    .AddCustomMvc<Store>(withDapr: true)
     .AddCustomGraphQL(c =>
     {
         c.RegisterQueryType<QueryType>();

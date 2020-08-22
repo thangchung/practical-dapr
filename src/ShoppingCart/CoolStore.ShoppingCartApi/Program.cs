@@ -31,10 +31,9 @@ Console.WriteLine(Figgle.FiggleFonts.Doom.Render($"{appOptions.Name}"));
 
 builder.Services
     .AddHttpContextAccessor()
-    .AddCustomMediatR(typeof(Cart))
-    .AddCustomValidators(typeof(Cart))
-    .AddCustomDbContext<ShoppingCartDbContext>(
-        typeof(Cart),
+    .AddCustomMediatR<Cart>()
+    .AddCustomValidators<Cart>()
+    .AddCustomDbContext<ShoppingCartDbContext, Cart>(
         config.GetConnectionString(Consts.SQLSERVER_DB_ID))
     .AddCustomGraphQL(c =>
     {

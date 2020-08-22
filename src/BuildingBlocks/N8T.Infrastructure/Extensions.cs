@@ -33,11 +33,10 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static IServiceCollection AddCustomMediatR(this IServiceCollection services,
-            Type markedType,
+        public static IServiceCollection AddCustomMediatR<TType>(this IServiceCollection services,
             Action<IServiceCollection> doMoreActions = null)
         {
-            services.AddMediatR(markedType)
+            services.AddMediatR(typeof(TType))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
@@ -47,8 +46,7 @@ namespace N8T.Infrastructure
         }
 
         [DebuggerStepThrough]
-        public static IServiceCollection AddCustomMvc(this IServiceCollection services,
-            Type markedType,
+        public static IServiceCollection AddCustomMvc<TType>(this IServiceCollection services,
             bool withDapr = false,
             Action<IServiceCollection> doMoreActions = null)
         {
@@ -59,7 +57,7 @@ namespace N8T.Infrastructure
                 mvcBuilder.AddDapr();
             }
 
-            mvcBuilder.AddApplicationPart(markedType.Assembly);
+            mvcBuilder.AddApplicationPart(typeof(TType).Assembly);
 
             doMoreActions?.Invoke(services);
 

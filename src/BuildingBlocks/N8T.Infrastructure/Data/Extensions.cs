@@ -8,7 +8,7 @@ namespace N8T.Infrastructure.Data
 {
     public static class Extensions
     {
-        public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services, Type marker, string connString)
+        public static IServiceCollection AddCustomDbContext<TDbContext, TType>(this IServiceCollection services, string connString)
             where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
         {
             services
@@ -16,7 +16,7 @@ namespace N8T.Infrastructure.Data
                 {
                     options.UseSqlServer(connString, sqlOptions =>
                     {
-                        sqlOptions.MigrationsAssembly(marker.Assembly.GetName().Name);
+                        sqlOptions.MigrationsAssembly(typeof(TType).Assembly.GetName().Name);
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, TimeSpan.FromSeconds(30), null);
                     });
                 });

@@ -8,7 +8,6 @@ using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using CoolStore.Protobuf.Inventory.V1;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,13 +38,16 @@ namespace CoolStore.ProductCatalogApi
 
             builder.Services
                 .AddHttpContextAccessor()
-                .AddCustomMediatR(typeof(Product))
-                .AddCustomValidators(typeof(Product))
-                .AddCustomDbContext<ProductCatalogDbContext>(typeof(Product), config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+                .AddCustomMediatR<Program>()
+                .AddCustomValidators<Program>()
+
+                .AddCustomDbContext<ProductCatalogDbContext, Program>(config.GetConnectionString(Consts.SQLSERVER_DB_ID))
+
                 .AddCustomGraphQL<QueryType, MutationType>(c =>
                 {
-                    c.RegisterObjectTypes(typeof(Product));
+                    c.RegisterObjectTypes(typeof(Program));
                 })
+
                 .AddCustomGrpcClient(svc =>
                 {
                     svc.AddGrpcClient<InventoryApi.InventoryApiClient>(o =>
@@ -53,22 +55,16 @@ namespace CoolStore.ProductCatalogApi
                         o.Address = config.GetGrpcUriFor(Consts.INVENTORY_API_ID);
                     });
                 })
-                .AddCustomDaprClient()
-                .AddCustomAuth(config,
-                    services => services.Scan(s => s
-                            .FromAssemblyOf<Product>()
-                                .AddClasses(c => c
-                                    .AssignableTo<IAuthorizationHandler>()).As<IAuthorizationHandler>()
-                                .AddClasses(c=>c
-                                    .AssignableTo<IAuthorizationRequirement>()).As<IAuthorizationRequirement>()
-                        ),
 
-                        //.AddScoped<IAuthorizationHandler, GetProductsAuthzHandler>()
-                        //.AddScoped<IAuthorizationRequirement, GetProductsQuery>()
-                        //.AddScoped<IAuthorizationHandler, GetCategoriesAuthzHandler>()
-                        //.AddScoped<IAuthorizationRequirement, GetCategoriesQuery>(),
+                .AddCustomAuth<Program>(config,
                     options => options.Authority = config.GetServiceUri("identityserver")?.Authority)
-                .AddCustomOtelWithZipkin(config, o => o.Endpoint = new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans"))
+
+                .AddCustomOtelWithZipkin(config,
+                    o => o.Endpoint =
+                        new Uri($"http://{config.GetServiceUri("zipkin")?.DnsSafeHost}:9411/api/v2/spans"))
+
+                .AddCustomDaprClient()
+
                 .AddScoped<IInventoryGateway, InventoryGateway>();
 
             var app = builder.Build();
