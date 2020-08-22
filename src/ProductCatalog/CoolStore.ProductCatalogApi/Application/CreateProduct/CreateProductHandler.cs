@@ -6,7 +6,6 @@ using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.CreateProduct
 {
@@ -19,7 +18,6 @@ namespace CoolStore.ProductCatalogApi.Application.CreateProduct
             _dbContext = dbContext;
         }
 
-        [TransactionScope]
         public async Task<CatalogProductDto> Handle(
             CreateProductCommand request,
             CancellationToken cancellationToken)

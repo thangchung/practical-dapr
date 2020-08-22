@@ -18,7 +18,7 @@ using N8T.Infrastructure.Data;
 using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Tye;
-using N8T.Infrastructure.ValidationModel;
+using N8T.Infrastructure.Validator;
 
 Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);

@@ -7,11 +7,9 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using N8T.Infrastructure.Data;
 using N8T.Infrastructure.Logging;
-using N8T.Infrastructure.OTel.MediatR;
 using N8T.Infrastructure.Tye;
-using N8T.Infrastructure.ValidationModel;
+using N8T.Infrastructure.Validator;
 using Path = System.IO.Path;
 
 namespace N8T.Infrastructure
@@ -41,9 +39,7 @@ namespace N8T.Infrastructure
         {
             services.AddMediatR(markedType)
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(OTelMediatRTracingBehavior<,>));
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             doMoreActions?.Invoke(services);
 

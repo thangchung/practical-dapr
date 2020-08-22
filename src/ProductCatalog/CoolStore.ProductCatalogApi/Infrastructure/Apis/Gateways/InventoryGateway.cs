@@ -28,11 +28,11 @@ namespace CoolStore.ProductCatalogApi.Apis.Gateways
             IReadOnlyCollection<Guid> storeIds,
             CancellationToken cancellationToken)
         {
-            var headers = _httpContext.HttpContext.Request.Headers;
+            var headers = _httpContext?.HttpContext?.Request?.Headers;
             var metadata = new Metadata();
 
             // propagate headers to grpc headers
-            _ = headers.Select(h =>
+            _ = headers?.Select(h =>
             {
                 metadata.Add(new Metadata.Entry(h.Key, h.Value));
                 return h;

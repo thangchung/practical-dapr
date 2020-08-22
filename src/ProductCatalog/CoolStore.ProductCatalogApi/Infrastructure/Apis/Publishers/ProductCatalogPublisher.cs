@@ -10,8 +10,8 @@ namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreat
 {
     public class ProductCatalogPublisher
         : INotificationHandler<ProductCreated>
-        , INotificationHandler<ProductUpdated>
-        , INotificationHandler<ProductDeleted>
+            , INotificationHandler<ProductUpdated>
+            , INotificationHandler<ProductDeleted>
     {
         private readonly DaprClient _daprClient;
         private readonly ILogger<ProductCatalogPublisher> _logger;
@@ -24,28 +24,28 @@ namespace CoolStore.ProductCatalogApi.Application.Publishers.PublishProductCreat
             _logger = logger;
         }
 
-        public async Task Handle(
-            ProductCreated notification,
-            CancellationToken cancellationToken)
+        public async Task Handle(ProductCreated notification, CancellationToken token)
         {
-            _logger.LogInformation($"We publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
-            await _daprClient.PublishEventAsync("product-created", notification);
+            _logger.LogInformation(
+                $"Publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
+
+            await _daprClient.PublishEventAsync("pubsub", "product-created", notification, token);
         }
 
-        public async Task Handle(
-            ProductUpdated notification,
-            CancellationToken cancellationToken)
+        public async Task Handle(ProductUpdated notification, CancellationToken token)
         {
-            _logger.LogInformation($"We publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
-            await _daprClient.PublishEventAsync("product-updated", notification);
+            _logger.LogInformation(
+                $"Publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
+
+            await _daprClient.PublishEventAsync("pubsub", "product-updated", notification, token);
         }
 
-        public async Task Handle(
-            ProductDeleted notification,
-            CancellationToken cancellationToken)
+        public async Task Handle(ProductDeleted notification, CancellationToken token)
         {
-            _logger.LogInformation($"We publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
-            await _daprClient.PublishEventAsync("product-deleted", notification);
+            _logger.LogInformation(
+                $"Publish the message {nameof(notification)}: {JsonSerializer.Serialize(notification)}");
+
+            await _daprClient.PublishEventAsync("pubsub", "product-deleted", notification, token);
         }
     }
 }

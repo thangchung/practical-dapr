@@ -5,7 +5,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace N8T.Infrastructure.ValidationModel
+namespace N8T.Infrastructure.Validator
 {
     public static class Extensions
     {

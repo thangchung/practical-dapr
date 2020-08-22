@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using CoolStore.InventoryApi.Application.AddStoreProductPrice;
+using CoolStore.InventoryApi.Application.DeleteStoreProductPrice;
+using CoolStore.InventoryApi.Application.UpdateStoreProductPrice;
 using Dapr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +12,25 @@ namespace CoolStore.InventoryApi.Infrastructure.Apis.Subscribers
     [Route("")]
     public class SubscribeController : ControllerBase
     {
-        [Topic("product-created")]
+        [Topic("pubsub", "product-created")]
         [HttpPost("product-created")]
-        public async Task SubcribeProductCreated(
-            AddStoreProductPriceCommand command,
+        public async Task SubcribeProductCreated(AddStoreProductPriceCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);
         }
 
-        [Topic("product-updated")]
+        [Topic("pubsub", "product-updated")]
         [HttpPost("product-updated")]
-        public async Task SubcribeProductUpdated(
-            AddStoreProductPriceCommand command,
+        public async Task SubcribeProductUpdated(UpdateStoreProductPriceCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);
         }
 
-        [Topic("product-deleted")]
+        [Topic("pubsub", "product-deleted")]
         [HttpPost("product-deleted")]
-        public async Task SubcribeProductDeleted(
-            AddStoreProductPriceCommand command,
+        public async Task SubcribeProductDeleted(DeleteStoreProductPriceCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);

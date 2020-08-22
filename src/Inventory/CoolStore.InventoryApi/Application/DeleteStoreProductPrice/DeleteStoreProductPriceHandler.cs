@@ -17,7 +17,6 @@ namespace CoolStore.InventoryApi.Application.DeleteStoreProductPrice
             _dbContext = dbContext;
         }
 
-        [TransactionScope]
         public async Task<bool> Handle(
             DeleteStoreProductPriceCommand request,
             CancellationToken cancellationToken)

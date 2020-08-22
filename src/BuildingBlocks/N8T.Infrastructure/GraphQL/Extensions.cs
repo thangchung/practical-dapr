@@ -27,6 +27,34 @@ namespace N8T.Infrastructure.GraphQL
                     {
                         c.RegisterServiceProvider(sp);
                         schemaConfiguration.Invoke(c);
+                        c.RegisterExtendedScalarTypes();
+                    }),
+                    new QueryExecutionOptions
+                    {
+                        IncludeExceptionDetails = true, TracingPreference = TracingPreference.Always
+                    })
+                .AddErrorFilter<ValidationErrorFilter>();
+
+            doMoreActions?.Invoke(services);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomGraphQL<TQuery, TMutation>(this IServiceCollection services,
+            Action<ISchemaConfiguration> schemaConfiguration,
+            Action<IServiceCollection> doMoreActions = null)
+            where TQuery: ObjectType
+            where TMutation: ObjectType
+        {
+            services.AddDataLoaderRegistry();
+
+            services.AddGraphQL(sp => Schema.Create(c =>
+                    {
+                        c.RegisterServiceProvider(sp);
+                        c.RegisterQueryType<TQuery>();
+                        c.RegisterMutationType<TMutation>();
+                        schemaConfiguration.Invoke(c);
+                        c.RegisterExtendedScalarTypes();
                     }),
                     new QueryExecutionOptions
                     {

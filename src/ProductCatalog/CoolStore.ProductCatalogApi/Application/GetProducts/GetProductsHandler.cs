@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
@@ -20,9 +21,8 @@ namespace CoolStore.ProductCatalogApi.Application.GetProducts
         {
             if (request is null)
             {
-                throw new System.ArgumentNullException(nameof(request));
+                throw new ArgumentNullException(nameof(request));
             }
-
 
             var dtoQueryable = _dbContext.Products
                 .AsNoTracking()
@@ -44,17 +44,17 @@ namespace CoolStore.ProductCatalogApi.Application.GetProducts
             {
                 dtoQueryable = dtoQueryable.Where(request.FilterExpr);
             }
-
+        
             // order_by by GraphQL 
             if (request.SortingVisitor != null)
             {
                 dtoQueryable = request.SortingVisitor.Sort(dtoQueryable);
             }
-
+        
             // pagination
             var totalCount = dtoQueryable.Count();
             dtoQueryable = dtoQueryable.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize);
-
+        
             // build pagination model
             var model = new OffsetPaging<CatalogProductDto> {TotalCount = totalCount, Edges = dtoQueryable.ToList()};
             return model;

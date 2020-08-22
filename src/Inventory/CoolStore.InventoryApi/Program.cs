@@ -5,7 +5,6 @@ using CoolStore.InventoryApi.Domain;
 using CoolStore.InventoryApi.Infrastructure.Apis.GraphQL;
 using CoolStore.InventoryApi.Infrastructure.Apis.Grpc;
 using CoolStore.InventoryApi.Infrastructure.Persistence;
-using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +19,7 @@ using N8T.Infrastructure.GraphQL;
 using N8T.Infrastructure.Grpc;
 using N8T.Infrastructure.Kestrel;
 using N8T.Infrastructure.OTel;
-using N8T.Infrastructure.ValidationModel;
+using N8T.Infrastructure.Validator;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Trace.Samplers;
 
@@ -52,7 +51,6 @@ builder.Services
     {
         c.RegisterQueryType<QueryType>();
         c.RegisterObjectTypes(typeof(Store));
-        c.RegisterExtendedScalarTypes();
     })
     .AddCustomGrpc()
     .AddCustomDaprClient()

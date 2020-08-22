@@ -13,6 +13,9 @@ A lightweight low ceremony .NET microservices are lifted and shifted to Kubernet
 
 ![](docs/assets/high_level_architecture.png)
 
+- Dapr: 0.10.0
+- Tye: 0.5.0-alpha.20421.1+ad882b7cb3d69c7fcae24a484a232ed19e2555ab
+
 # CoolStore demo application
 
 ![](docs/assets/webui-products.png)

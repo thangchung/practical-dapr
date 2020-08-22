@@ -1,10 +1,11 @@
 using System;
 using CoolStore.ProductCatalogApi.Dtos;
 using MediatR;
+using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UpdateProduct
 {
-    public class UpdateProductCommand : IRequest<CatalogProductDto>
+    public class UpdateProductCommand : IRequest<CatalogProductDto>, ITxRequest
     {
         public Guid Id { get; set; } = default!;
         public string Name { get; set; } = default!;

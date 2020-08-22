@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using N8T.Infrastructure.ValidationModel;
+using N8T.Infrastructure.Validator;
 using Serilog;
 
 namespace N8T.Infrastructure.Grpc

@@ -1,4 +1,4 @@
-namespace N8T.Infrastructure.ValidationModel
+namespace N8T.Infrastructure.Validator
 {
     public class ValidationError
     {

@@ -1,9 +1,10 @@
 using System;
 using MediatR;
+using N8T.Infrastructure.Data;
 
 namespace CoolStore.InventoryApi.Application.AddStoreProductPrice
 {
-    public class AddStoreProductPriceCommand : IRequest<bool>
+    public class AddStoreProductPriceCommand : IRequest<bool>, ITxRequest
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; } = string.Empty;

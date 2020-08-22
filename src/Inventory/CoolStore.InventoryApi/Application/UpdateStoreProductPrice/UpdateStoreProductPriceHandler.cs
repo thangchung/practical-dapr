@@ -18,7 +18,6 @@ namespace CoolStore.InventoryApi.Application.UpdateStoreProductPrice
             _dbContext = dbContext;
         }
 
-        [TransactionScope]
         public async Task<bool> Handle(
             UpdateStoreProductPriceCommand request,
             CancellationToken cancellationToken)

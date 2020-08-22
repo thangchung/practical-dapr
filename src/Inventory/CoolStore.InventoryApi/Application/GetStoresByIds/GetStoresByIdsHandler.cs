@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +13,15 @@ namespace CoolStore.InventoryApi.Application.GetStoresByIds
     public class GetStoresByIdsHandler : IRequestHandler<GetStoresByIdsQuery, IEnumerable<StoreDto>>
     {
         private readonly InventoryDbContext _dbContext;
+
+        private static Func<InventoryDbContext, IEnumerable<Guid>, IAsyncEnumerable<Domain.Store>>
+            _getStoresByIdsHandler =
+                EF.CompileAsyncQuery((InventoryDbContext context, IEnumerable<Guid> guids) =>
+                    context
+                        .Stores
+                        .Include(x => x.StoreProductPrices)
+                        .AsNoTracking()
+                        .Where(x => guids.Contains(x.Id)));
 
         public GetStoresByIdsHandler(InventoryDbContext dbContext)
         {
@@ -29,14 +37,9 @@ namespace CoolStore.InventoryApi.Application.GetStoresByIds
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var current = Activity.Current;
+            var stores = await _getStoresByIdsHandler(_dbContext, request.Ids).ToListAsync();
 
-            var stores = await _dbContext.Stores
-                .AsNoTracking()
-                .Where(x => request.Ids.Contains(x.Id))
-                .ToListAsync();
-
-            if (stores == null)
+            if (stores is null)
             {
                 throw new Exception("Could not get the records from the database.");
             }

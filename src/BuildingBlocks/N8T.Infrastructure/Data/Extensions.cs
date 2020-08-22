@@ -1,7 +1,6 @@
 using System;
-using System.Reflection;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using N8T.Domain;
 
@@ -24,26 +23,7 @@ namespace N8T.Infrastructure.Data
 
             services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
             services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
-            services.AddHostedService<DbContextMigratorHostedService>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services, Assembly anchorAssembly, IConfiguration config)
-            where TDbContext : DbContext, IDbFacadeResolver, IDomainEventContext
-        {
-            services
-                .AddDbContext<TDbContext>(options =>
-                {
-                    options.UseSqlServer(config.GetConnectionString("MainDb"), sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(anchorAssembly.GetName().Name);
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
-                    });
-                });
-
-            services.AddScoped<IDbFacadeResolver>(provider => provider.GetService<TDbContext>());
-            services.AddScoped<IDomainEventContext>(provider => provider.GetService<TDbContext>());
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TxBehavior<,>));
             services.AddHostedService<DbContextMigratorHostedService>();
 
             return services;

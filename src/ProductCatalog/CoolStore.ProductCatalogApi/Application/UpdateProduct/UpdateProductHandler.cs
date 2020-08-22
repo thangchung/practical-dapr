@@ -5,7 +5,6 @@ using CoolStore.ProductCatalogApi.Dtos;
 using CoolStore.ProductCatalogApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using N8T.Infrastructure.Data;
 
 namespace CoolStore.ProductCatalogApi.Application.UpdateProduct
 {
@@ -18,7 +17,6 @@ namespace CoolStore.ProductCatalogApi.Application.UpdateProduct
             _dbContext = dbContext;
         }
 
-        [TransactionScope]
         public async Task<CatalogProductDto> Handle(
             UpdateProductCommand request,
             CancellationToken cancellationToken)

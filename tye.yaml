@@ -10,11 +10,14 @@ extensions:
 - name: dapr
   log-level: debug
   config: appconfig
+  # components-path configures the components path of the dapr sidecard
+  components-path: "./components/"
 
 - name: elastic
   logPath: ./.logs
 
 - name: zipkin
+
 
 # registry: dapracr.azurecr.io or docker.pkg.github.com/thangchung/practical-dapr
 registry: vndg
@@ -31,14 +34,19 @@ services:
 
 - name: graphapi
   project: src/GraphApi/CoolStore.GraphApi/CoolStore.GraphApi.csproj
+
 - name: identityserver
   project: src/Identity/CoolStore.IdentityServer/CoolStore.IdentityServer.csproj
+
 - name: productcatalogapi
   project: src/ProductCatalog/CoolStore.ProductCatalogApi/CoolStore.ProductCatalogApi.csproj
+
 - name: inventoryapi
   project: src/Inventory/CoolStore.InventoryApi/CoolStore.InventoryApi.csproj
+
 - name: shoppingcartapi
   project: src/ShoppingCart/CoolStore.ShoppingCartApi/CoolStore.ShoppingCartApi.csproj
+
 - name: webuihost
   project: src/WebUI/CoolStore.WebUI.Host/CoolStore.WebUI.Host.csproj
 
@@ -52,7 +60,16 @@ services:
   bindings:
     - port: 1433
       connectionString: Data Source=${host},${port};Initial Catalog=coolstoredb;User Id=sa;Password=${env:SA_PASSWORD};MultipleActiveResultSets=True;
+
 - name: redis
   image: redis
   bindings:
     - port: 6379
+
+# To ensure that your are running a dapr placement container with the right binding port.
+# (50005 as HostPort)
+- name: placement
+  image: daprio/dapr
+  args: ./placement
+  bindings:
+    - port: 50005

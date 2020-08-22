@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace N8T.Infrastructure.ValidationModel
+namespace N8T.Infrastructure.Validator
 {
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

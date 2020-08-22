@@ -17,7 +17,6 @@ namespace CoolStore.ProductCatalogApi.Application.DeleteProduct
             _dbContext = dbContext;
         }
 
-        [TransactionScope]
         public async Task<bool> Handle(
             DeleteProductCommand request,
             CancellationToken cancellationToken)

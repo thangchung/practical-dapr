@@ -1,5 +1,5 @@
 ﻿using HotChocolate;
-using N8T.Infrastructure.ValidationModel;
+using N8T.Infrastructure.Validator;
 
 namespace N8T.Infrastructure.GraphQL.Errors
 {
