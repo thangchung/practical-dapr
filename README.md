@@ -1,4 +1,4 @@
-# practical-dapr project
+# practical-dapr  project
 
 A lightweight low ceremony .NET microservices are lifted and shifted to Kubernetes platform and run on Dapr runtime (with and without Tye options).
 
@@ -17,9 +17,9 @@ A lightweight low ceremony .NET microservices are lifted and shifted to Kubernet
 
 ![](docs/assets/webui-products.png)
 
-> Want to develop this application? Reference at [Developer Guidance](/docs/developer_guide.md)
+> Who want to develop this application?  look for more details Reference at [Developer Guidance](/docs/developer_guide.md)
 
-> Want to deployment this application? Reference at [Deployment Guidance](/docs/deployment_guide.md)
+> Who want to deployment this application? look for more details Reference at [Deployment Guidance](/docs/deployment_guide.md)
 
 # Dapr building blocks
 
@@ -33,7 +33,7 @@ A lightweight low ceremony .NET microservices are lifted and shifted to Kubernet
 - Using state management to store the shopping cart data and its items
 - Redis for state management
 
-## Pub/sub message
+## Pub/sub messages
 
 - Create, update and delete a project at `product-catalog-api`, and subsequently publish an event to `inventory-api` to create `price`, `rop`, and `eoq`
 - Redis for pub/sub
@@ -62,10 +62,10 @@ $ tye run --dtrace zipkin=http://localhost:9411 --logs seq=http://localhost:5340
 
 ## Show your support
 
-If you liked `practical-dapr` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
+If you liked `practical-dapr` this project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
 
 ## Contributing
-
+Go through these easy steps given below :
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
