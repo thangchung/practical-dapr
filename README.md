@@ -9,6 +9,10 @@ A lightweight low ceremony .NET microservices are lifted and shifted to Kubernet
 ![product-catalog-api](https://github.com/thangchung/practical-dapr/workflows/product-catalog-ci/badge.svg?branch=master)
 ![inventory-api](https://github.com/thangchung/practical-dapr/workflows/inventory-ci/badge.svg?branch=master)
 
+> This repository based on some of the old libraries. So be careful if you use it in your production environment!!!
+>
+> We are working on [practical-clean-ddd](https://github.com/thangchung/practical-clean-ddd) for the new version of building the .NET apps with domain-driven design, clean architecture with Docker, Kubernetes, Tye, and Dapr in a practical way 👍
+
 # High level architecture
 
 ![](docs/assets/high_level_architecture.png)
