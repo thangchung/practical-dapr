@@ -11,7 +11,7 @@ A lightweight low ceremony .NET microservices are lifted and shifted to Kubernet
 
 > This repository based on some of the old libraries. So be careful if you use it in your production environment!!!
 >
-> We are working on [practical-clean-ddd](https://github.com/thangchung/practical-clean-ddd) for the new version of building the .NET apps with domain-driven design, clean architecture with Docker, Kubernetes, Tye, and Dapr in a practical way 👍
+> We're working on [`clean-architecture-dotnet`](https://github.com/thangchung/clean-architecture-dotnet) for the new and lightweight version of the minimal Clean Architecture, Domain-driven Design lite, CQRS lite, and just enough Cloud-native patterns, then package into Docker, and finally deploy it using Tye on Kubernetes and Dapr in a practical way 👍
 
 # High level architecture
 
